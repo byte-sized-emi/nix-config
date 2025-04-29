@@ -16,10 +16,10 @@
 
     programs.zsh = {
         enable = true;
+        autocd = true;
         enableCompletion = true;
-        autosuggestions.enable = true;
+        autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
-        histSize = 5000;
         shellAliases = {
             update = "nixos-rebuild switch --use-remote-sudo";
         };
