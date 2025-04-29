@@ -58,17 +58,6 @@
     git
   ];
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-    histSize = 5000;
-    shellAliases = {
-      update = "nixos-rebuild switch --use-remote-sudo";
-    };
-  };
-
   services.openssh = {
     enable = true;
     ports = [ 2222 ];
