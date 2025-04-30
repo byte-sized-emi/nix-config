@@ -69,10 +69,31 @@
         "type": "indirect"
       }
     },
+    "quadlet-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1743361017,
+        "narHash": "sha256-RELV9YxfhwjuN4edtVmpupVvHUiWu/KuF4mqzU+neYE=",
+        "owner": "SEIAROTg",
+        "repo": "quadlet-nix",
+        "rev": "971479231c7dd2433954dd26c240e1bdc5bd9849",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SEIAROTg",
+        "repo": "quadlet-nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
+        "quadlet-nix": "quadlet-nix",
         "vscode-server": "vscode-server"
       }
     },

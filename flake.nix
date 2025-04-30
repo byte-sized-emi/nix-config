@@ -9,15 +9,19 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    quadlet-nix = {
+      url = "github:SEIAROTg/quadlet-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, vscode-server, ... }@inputs: {
+  outputs = { nixpkgs, home-manager, vscode-server, quadlet-nix, ... }@inputs: {
     nixosConfigurations.nixnest = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        # Import the previous configuration.nix we used,
-        # so the old configuration file still takes effect
         ./configuration.nix
+        ./containers.nix
+
         home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -25,10 +29,13 @@
 
             home-manager.users.emi = import ./home.nix;
           }
+
         vscode-server.nixosModules.default
         ({ config, pkgs, ... }: {
           services.vscode-server.enable = true;
         })
+
+        quadlet-nix.nixosModules.quadlet
       ];
     };
   };
