@@ -44,12 +44,28 @@ in {
     };
   };
 
+  virtualisation.quadlet.volumes.whisper-data = {
+    volumeConfig = {
+      type = "bind";
+      device = "/tmp/whisper-data";
+    };
+  };
+
+  virtualisation.quadlet.volumes.piper-data = {
+    volumeConfig = {
+      type = "bind";
+      device = "/tmp/piper-data";
+    };
+  };
+
   virtualisation.quadlet.containers.whisper = {
+    # volume
     containerConfig = {
       image = "rhasspy/wyoming-whisper:2.4.0";
       environments.TZ = "Europe/Berlin";
       publishPorts = [ "127.0.0.1:10300:10300" ];
-      exec = "--model distil-small.en --language en";
+      exec = "--model small-int8 --language de";
+      volumes = [ "whisper-data:/data" ];
     };
     serviceConfig = {
       Restart = "always";
@@ -61,7 +77,8 @@ in {
       image = "rhasspy/wyoming-piper:1.5.0";
       environments.TZ = "Europe/Berlin";
       publishPorts = [ "127.0.0.1:10200:10200" ];
-      exec = "--voice en_US-amy-medium";
+      exec = "--voice de_DE-ramona-low";
+      volumes = [ "piper-data:/data" ];
     };
     serviceConfig = {
       Restart = "always";
