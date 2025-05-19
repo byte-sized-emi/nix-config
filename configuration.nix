@@ -22,7 +22,7 @@
 
   users.users.emi = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "podman" ];
+    extraGroups = [ "wheel" "podman" "audio" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       tree
@@ -37,6 +37,9 @@
     nano
     wget
     git
+    pulseaudio
+    pciutils
+    alsa-utils
   ];
 
   services.openssh = {
@@ -53,6 +56,8 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINVLqQSi5EhE8NPWcYjtolf4F6m/L/wjjmO2jf3W0ozL emilia@fedora-pc"
   ];
 
+  # mDNS setup
+
   services.resolved = {
     enable = true;
     extraConfig = "MulticastDNS=yes";
@@ -68,6 +73,21 @@
   networking.firewall.allowedUDPPorts = [
     5355 # mDNS using systemd-resolved / LLMNR
   ];
+
+  # Audio setup
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    socketActivation = false;
+  };
+
+  systemd.user.services.wireplumber.wantedBy = [ "default.target" ];
+  users.users.emi.linger = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

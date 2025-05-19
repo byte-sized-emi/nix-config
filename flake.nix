@@ -21,6 +21,7 @@
       modules = [
         ./configuration.nix
         ./containers.nix
+        ./spotify.nix
 
         home-manager.nixosModules.home-manager
           {
