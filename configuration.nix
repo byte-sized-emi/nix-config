@@ -83,10 +83,11 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    socketActivation = false;
+    socketActivation = true;
   };
 
   systemd.user.services.wireplumber.wantedBy = [ "default.target" ];
+  systemd.user.services.pipewire.wantedBy = [ "default.target" ];
   users.users.emi.linger = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
