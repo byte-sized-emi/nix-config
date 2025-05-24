@@ -38,7 +38,7 @@
           originUrl = "https://login.tailscale.com/a/oauth_response";
           originLanding = "https://tailscale.com/";
           basicSecretFile = "/var/tailscale/oauth_secret";
-          allowInsecureClientDisablePkce = true;
+          allowInsecureClientDisablePkce = true; # tailscale doesn't support PKCE. grrrrrr
           scopeMaps = {
             tailnet = [
               "openid"

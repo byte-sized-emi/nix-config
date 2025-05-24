@@ -44,5 +44,7 @@
 
   services.tailscale = {
     enable = true;
+    extraUpFlags = [ "--ssh" ];
+    authKeyFile = "/var/tailscale/auth_key";
   };
 }
