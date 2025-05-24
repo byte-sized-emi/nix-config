@@ -28,6 +28,7 @@
       tree
       kanidm_1_5
       openssl
+      cloudflared
     ];
   };
 

@@ -12,7 +12,7 @@ Whisper running locally on 10300
 
 Piper running locally on 10200
 
-### KaniDm
+### kanidm
 
 running on localhost:8443
 
