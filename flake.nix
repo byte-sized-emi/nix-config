@@ -3,10 +3,10 @@
 
   inputs = {
     # NixOS official package source, using the nixos-24.11 branch here
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     quadlet-nix = {
