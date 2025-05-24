@@ -15,13 +15,24 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, vscode-server, quadlet-nix, ... }@inputs: {
+  outputs = { nixpkgs, home-manager, vscode-server, quadlet-nix, ... }@inputs:
+  let specialArgs = {
+    settings = {
+      domain = "byte-sized.fyi";
+      sso.domain = "sso.${specialArgs.settings.domain}";
+    };
+  };
+  in
+  {
     nixosConfigurations.nixnest = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = specialArgs;
       modules = [
         ./configuration.nix
         ./containers.nix
         ./spotify.nix
+        ./kanidm.nix
+        ./networking.nix
 
         home-manager.nixosModules.home-manager
           {
