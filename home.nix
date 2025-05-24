@@ -22,7 +22,6 @@
     syntaxHighlighting.enable = true;
     shellAliases = {
         update = "nixos-rebuild switch --use-remote-sudo";
-        upgrade = "update --upgrade";
     };
   };
 

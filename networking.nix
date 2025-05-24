@@ -1,6 +1,28 @@
 { config, settings, ... }:
 
 {
+  networking.hostName = "nixnest";
+  networking.nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+  networking.search = [ "bushbaby-chimera.ts.net" ];
+
+  # mDNS setup
+
+  services.resolved = {
+    enable = true;
+    extraConfig = "MulticastDNS=yes";
+  };
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  # Open ports in the firewall.
+  networking.firewall.allowedUDPPorts = [
+    5355 # mDNS using systemd-resolved / LLMNR
+  ];
+
   users.groups.cloudflared = {};
   users.users.cloudflared = {
     isSystemUser = true;
@@ -18,5 +40,9 @@
         "sso.byte-sized.fyi" = "https://localhost:8443";
       };
     };
+  };
+
+  services.tailscale = {
+    enable = true;
   };
 }

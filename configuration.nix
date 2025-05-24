@@ -9,8 +9,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixnest";
-
   time.timeZone = "Europe/Berlin";
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -26,7 +24,7 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       tree
-      kanidm_1_5
+      kanidm
       openssl
       cloudflared
     ];
@@ -57,24 +55,6 @@
   users.users.emi.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOkbGLfWyjFJQxJY8pDodBG4r567LoOT9gzPFnx5rBx8"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINVLqQSi5EhE8NPWcYjtolf4F6m/L/wjjmO2jf3W0ozL emilia@fedora-pc"
-  ];
-
-  # mDNS setup
-
-  services.resolved = {
-    enable = true;
-    extraConfig = "MulticastDNS=yes";
-  };
-
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
-
-  # Open ports in the firewall.
-  networking.firewall.allowedUDPPorts = [
-    5355 # mDNS using systemd-resolved / LLMNR
   ];
 
   # Audio setup

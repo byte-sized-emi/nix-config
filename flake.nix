@@ -2,7 +2,7 @@
   description = "Top-Level configuration";
 
   inputs = {
-    # NixOS official package source, using the nixos-24.11 branch here
+    # NixOS official package source, using the nixos-25.05 branch here
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     home-manager = {
@@ -31,7 +31,7 @@
         ./configuration.nix
         ./containers.nix
         ./spotify.nix
-        ./kanidm.nix
+        ./sso.nix
         ./networking.nix
 
         home-manager.nixosModules.home-manager
