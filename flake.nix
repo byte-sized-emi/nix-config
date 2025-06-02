@@ -29,7 +29,8 @@
       specialArgs = specialArgs;
       modules = [
         ./configuration.nix
-        ./containers.nix
+        ./podman.nix
+        ./hass.nix
         ./spotify.nix
         ./sso.nix
         ./networking.nix
