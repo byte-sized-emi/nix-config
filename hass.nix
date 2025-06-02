@@ -42,6 +42,7 @@ in {
       containerConfig = {
         image = "rhasspy/wyoming-whisper:2.4.0";
         environments.TZ = "Europe/Berlin";
+        # FIXME: Switch to expose?
         publishPorts = [ "127.0.0.1:10300:10300" ];
         exec = "--model small-int8 --language de";
         volumes = [
@@ -57,6 +58,7 @@ in {
       containerConfig = {
         image = "rhasspy/wyoming-piper:1.5.0";
         environments.TZ = "Europe/Berlin";
+        # FIXME: Switch to expose?
         publishPorts = [ "127.0.0.1:10200:10200" ];
         exec = "--voice de_DE-ramona-low";
         volumes = [
