@@ -1,8 +1,15 @@
 { config, lib, settings, ... }:
 if (settings.dawarich.enable == false)
 then { }
-else
-{
+else let
+port = "3000";
+in {
+  services.caddy.virtualHosts."http://location.${settings.services.domain}" = {
+    extraConfig = ''
+      reverse_proxy localhost:${port}
+    '';
+  };
+
   virtualisation.quadlet = let
     inherit (config.virtualisation.quadlet) volumes;
   in {
@@ -50,12 +57,12 @@ else
       };
     };
 
-    # Main application service
+    # TODO: Enable reverse geocoding
     containers.dawarich-app = {
       containerConfig = {
         image = "freikin/dawarich:0.27.2";
-        exec = "web-entrypoint.sh bin/rails server -p 3000 -b ::";
-        publishPorts = [ "3000:3000" ];
+        exec = "web-entrypoint.sh bin/rails server -p ${port} -b ::";
+        publishPorts = [ "${port}:${port}" ];
         volumes = [
           "${volumes.dawarich-public.ref}:/var/app/public"
           "${volumes.dawarich-watched.ref}:/var/app/tmp/imports/watched"
@@ -73,7 +80,7 @@ else
           CACHE_DATABASE_PATH = "/dawarich_db_data/dawarich_development_cache.sqlite3";
           CABLE_DATABASE_PATH = "/dawarich_db_data/dawarich_development_cable.sqlite3";
           MIN_MINUTES_SPENT_IN_CITY = "60";
-          APPLICATION_HOSTS = "localhost,nixnest";
+          APPLICATION_HOSTS = "localhost,nixnest,location.${settings.services.domain}";
           TIME_ZONE = "Europe/Berlin";
           APPLICATION_PROTOCOL = "http";
           PROMETHEUS_EXPORTER_ENABLED = "false";
@@ -83,7 +90,7 @@ else
           STORE_GEODATA = "true";
         };
         # healthcheck = {
-        #   test = [ "CMD-SHELL" "wget -qO - http://127.0.0.1:3000/api/v1/health | grep -q '\"status\"\\s*:\\s*\"ok\"'" ];
+        #   test = [ "CMD-SHELL" "wget -qO - http://127.0.0.1:${port}/api/v1/health | grep -q '\"status\"\\s*:\\s*\"ok\"'" ];
         #   interval = "10s";
         #   retries = 30;
         #   startPeriod = "30s";
