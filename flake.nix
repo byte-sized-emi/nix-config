@@ -20,7 +20,8 @@
     settings = {
       domain = "byte-sized.fyi";
       sso.domain = "sso.${specialArgs.settings.domain}";
-      dawarich.enabled = false;
+      services.domain = "service.${specialArgs.settings.domain}";
+      dawarich.enable = true;
     };
   };
   in

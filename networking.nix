@@ -47,4 +47,10 @@
     extraUpFlags = [ "--ssh" ];
     authKeyFile = "/var/tailscale/auth_key";
   };
+
+  # reverse proxy setup is done where it is needed
+  services.caddy = {
+    enable = true;
+    acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
+  };
 }

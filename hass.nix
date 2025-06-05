@@ -1,6 +1,30 @@
-{ config, ...}: let
+{ config, settings, ...}: let
   homeAssistantPath = "/etc/stacks/home-assistant";
 in {
+  services.caddy.virtualHosts."homeassistant" = {
+    hostName = "http://homeassistant.${settings.services.domain}";
+    extraConfig = ''
+      reverse_proxy localhost:8123
+    '';
+  };
+
+  environment.etc."stacks/home-assistant/config/configuration.yaml".text = # yaml
+    ''
+      # Loads default set of integrations. Do not remove.
+      default_config:
+
+      automation: !include automations.yaml
+      script: !include scripts.yaml
+      scene: !include scenes.yaml
+
+      http:
+        use_x_forwarded_for: true
+        trusted_proxies:
+          - 127.0.0.1
+          - ::1
+          - 100.64.0.0/10
+    '';
+
   virtualisation.quadlet = let
     inherit (config.virtualisation.quadlet) volumes;
   in {
@@ -42,7 +66,6 @@ in {
       containerConfig = {
         image = "rhasspy/wyoming-whisper:2.4.0";
         environments.TZ = "Europe/Berlin";
-        # FIXME: Switch to expose?
         publishPorts = [ "127.0.0.1:10300:10300" ];
         exec = "--model small-int8 --language de";
         volumes = [
@@ -58,7 +81,6 @@ in {
       containerConfig = {
         image = "rhasspy/wyoming-piper:1.5.0";
         environments.TZ = "Europe/Berlin";
-        # FIXME: Switch to expose?
         publishPorts = [ "127.0.0.1:10200:10200" ];
         exec = "--voice de_DE-ramona-low";
         volumes = [

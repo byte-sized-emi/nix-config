@@ -19,7 +19,3 @@ running on localhost:8443
 with the cloudflare origin certificate
 
 This is meant to be used either locally through the kanidm CLI, or through cloudflare.
-
-### mDNS setup
-
-mDNS / avahi, so I can connect to this system using `nixnest.local`
