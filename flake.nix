@@ -17,6 +17,7 @@
 
   outputs = { nixpkgs, home-manager, vscode-server, quadlet-nix, ... }@inputs:
   let specialArgs = {
+    inputs = inputs;
     settings = {
       domain = "byte-sized.fyi";
       sso.domain = "sso.${specialArgs.settings.domain}";
@@ -37,6 +38,7 @@
         ./spotify.nix
         ./sso.nix
         ./networking.nix
+        ./monitoring.nix
 
         home-manager.nixosModules.home-manager
           {

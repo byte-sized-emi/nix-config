@@ -12,6 +12,4 @@
       dns_enabled = true;
     };
   };
-
-  networking.firewall.allowedTCPPorts = [ 8123 ];
 }

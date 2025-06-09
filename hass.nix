@@ -1,12 +1,14 @@
-{ config, settings, ...}: let
+{ config, settings, lib, ...}: let
   homeAssistantPath = "/etc/stacks/home-assistant";
-  port = "8123";
+  port = 8123;
 in {
   services.caddy.virtualHosts."http://homeassistant.${settings.services.domain}" = {
     extraConfig = ''
-      reverse_proxy localhost:${port}
+      reverse_proxy localhost:${toString port}
     '';
   };
+
+  networking.firewall.allowedTCPPorts = [ port ];
 
   environment.etc."stacks/home-assistant/config/configuration.yaml".text = # yaml
     ''
@@ -32,7 +34,7 @@ in {
       containerConfig = {
         image = "ghcr.io/home-assistant/home-assistant:2025.4.4";
         environments.TZ = "Europe/Berlin";
-        exposePorts = [ "${port}" ];
+        exposePorts = [ "${toString port}" ];
         addCapabilities = [ "CAP_NET_RAW" ];
         volumes = [
           "${homeAssistantPath}/config:/config"

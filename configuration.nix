@@ -1,4 +1,4 @@
-{ config, lib, pkgs, settings, ... }:
+{ config, lib, pkgs, settings, inputs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -27,6 +27,7 @@
       kanidm
       openssl
       cloudflared
+      htop
     ];
   };
 
@@ -72,6 +73,21 @@
   systemd.user.services.wireplumber.wantedBy = [ "default.target" ];
   systemd.user.services.pipewire.wantedBy = [ "default.target" ];
   users.users.emi.linger = true;
+
+  # automatic upgrade
+  # Upgrade log can be seen using:
+  # `systemctl status nixos-upgrade.service`
+  system.autoUpgrade = {
+    enable = true;
+    flake = inputs.self.outPath;
+    flags = [
+      "--update-input"
+      "nixpkgs"
+      "-L" # print build logs
+    ];
+    dates = "02:00";
+    randomizedDelaySec = "45min";
+  };
 
   system.stateVersion = "24.11"; # Did you read the comment?
 }
