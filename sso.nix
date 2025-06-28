@@ -29,7 +29,11 @@
       groups.tailnet = { };
       persons.emilia = {
         displayName = "Emilia";
-        mailAddresses = [ "emilia@sso.byte-sized.fyi" "jaser.emilia@gmail.com" ];
+        mailAddresses = [
+          "emilia@sso.byte-sized.fyi"
+          "emilia@byte-sized.fyi"
+          "jaser.emilia@gmail.com"
+        ];
         groups = [ "tailnet" ];
       };
       systems.oauth2 = {

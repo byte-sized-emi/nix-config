@@ -28,6 +28,8 @@
       openssl
       cloudflared
       htop
+      btop
+      bottom
     ];
   };
 
@@ -85,7 +87,7 @@
       "nixpkgs"
       "-L" # print build logs
     ];
-    dates = "02:00";
+    dates = "Mon,Fri 02:00";
     randomizedDelaySec = "45min";
   };
 
