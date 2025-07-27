@@ -9,6 +9,10 @@
 
   # TODO: backups
 
+  services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
+    ${settings.sso.domain} = "https://${config.services.kanidm.serverSettings.bindaddress}";
+  };
+
   # NOTE: cloudflare is setup to redirect requests from
   #  byte-sized.fyi/.well-known/webfinger
   #  to
@@ -27,6 +31,7 @@
     provision = {
       enable = true;
       groups.tailnet = { };
+      groups.git = { };
       persons.emilia = {
         displayName = "Emilia";
         mailAddresses = [
@@ -34,7 +39,7 @@
           "emilia@byte-sized.fyi"
           "jaser.emilia@gmail.com"
         ];
-        groups = [ "tailnet" ];
+        groups = [ "tailnet" "git" ];
       };
       systems.oauth2 = {
         tailscale = {
@@ -45,6 +50,19 @@
           allowInsecureClientDisablePkce = true; # tailscale doesn't support PKCE. grrrrrr
           scopeMaps = {
             tailnet = [
+              "openid"
+              "email"
+              "profile"
+            ];
+          };
+        };
+        forgejo = {
+          displayName = "forgejo";
+          originUrl = "https://git.byte-sized.fyi/user/oauth2/SSO/callback";
+          originLanding = "https://git.byte-sized.fyi/";
+          basicSecretFile = "/var/forgejo/oauth_secret";
+          scopeMaps = {
+            git = [
               "openid"
               "email"
               "profile"

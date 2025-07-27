@@ -4,7 +4,7 @@ then { }
 else let
 port = "3000";
 in {
-  services.caddy.virtualHosts."http://location.${settings.services.domain}" = {
+  services.caddy.virtualHosts."location.${settings.services.domain}" = {
     extraConfig = ''
       reverse_proxy localhost:${port}
     '';

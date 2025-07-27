@@ -92,7 +92,7 @@
     };
   };
 
-  services.caddy.virtualHosts."http://grafana.${settings.services.domain}" = {
+  services.caddy.virtualHosts."grafana.${settings.services.domain}" = {
     extraConfig = ''
       reverse_proxy localhost:${toString config.services.grafana.settings.server.http_port}
     '';

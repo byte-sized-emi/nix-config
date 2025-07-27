@@ -2,7 +2,7 @@
   homeAssistantPath = "/etc/stacks/home-assistant";
   port = 8123;
 in {
-  services.caddy.virtualHosts."http://homeassistant.${settings.services.domain}" = {
+  services.caddy.virtualHosts."homeassistant.${settings.services.domain}" = {
     extraConfig = ''
       reverse_proxy localhost:${toString port}
     '';

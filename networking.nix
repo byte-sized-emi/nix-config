@@ -1,5 +1,4 @@
-{ config, settings, ... }:
-
+{ config, settings, pkgs, ... }:
 {
   networking.hostName = "nixnest";
   networking.nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
@@ -29,16 +28,17 @@
     group = "cloudflared";
   };
 
-  # systemd service name: cloudflared-tunnel-b68b3740-8dc9-4136-aa64-bf1ed77d4886
+  # created using:
+  # $ cloudflared tunnel login
+  # $ cloudflared tunnel create <tunnel-name>
+  # systemd service name: cloudflared-tunnel-${settings.ingress_tunnel}
   services.cloudflared = {
     enable = true;
-    tunnels."b68b3740-8dc9-4136-aa64-bf1ed77d4886" = {
-      credentialsFile = "/var/cloudflare-creds/b68b3740-8dc9-4136-aa64-bf1ed77d4886.json";
+    tunnels.${settings.ingress_tunnel} = {
+      credentialsFile = "/var/cloudflare-creds/${settings.ingress_tunnel}.json";
       default = "http_status:404";
       originRequest.originServerName = settings.sso.domain;
-      ingress = {
-        "sso.byte-sized.fyi" = "https://localhost:8443";
-      };
+      ingress = {}; # defined in the individual services
     };
   };
 
@@ -51,6 +51,22 @@
   # reverse proxy setup is done where it is needed
   services.caddy = {
     enable = true;
-    acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
+    package = pkgs.caddy.withPlugins {
+      plugins = [
+        "github.com/caddy-dns/cloudflare@v0.2.1"
+      ];
+      hash = "sha256-Gsuo+ripJSgKSYOM9/yl6Kt/6BFCA6BuTDvPdteinAI=";
+    };
+    # acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
+    environmentFile = "/var/caddy-secrets.env";
+    globalConfig = ''
+      acme_dns cloudflare {env.CF_API_TOKEN}
+    '';
+    virtualHosts."https://".extraConfig = ''
+      tls {
+        dns cloudflare {env.CF_API_TOKEN}
+        resolvers 1.1.1.1
+      }
+    '';
   };
 }
