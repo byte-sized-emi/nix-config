@@ -8,6 +8,10 @@
     enable = true;
     userName = "Emilia Jaser";
     userEmail = "vapor.schitcrafter@gmail.com";
+    # git config credential.helper store
+    extraConfig = {
+      credential.helper = "store";
+    };
   };
 
   programs.starship = {

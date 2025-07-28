@@ -76,6 +76,10 @@
   systemd.user.services.pipewire.wantedBy = [ "default.target" ];
   users.users.emi.linger = true;
 
+  # NOTE: for garbage collecting old EFI entries, use:
+  # `sudo nix-env -p /nix/var/nix/profiles/system --list-generations`
+  # to list generations
+
   # automatic upgrade
   # Upgrade log can be seen using:
   # `systemctl status nixos-upgrade.service`
@@ -87,8 +91,20 @@
       "nixpkgs"
       "-L" # print build logs
     ];
-    dates = "Mon,Fri 02:00";
+    dates = "Fri 02:00";
     randomizedDelaySec = "45min";
+  };
+
+  nix.optimise = {
+    automatic = true;
+    dates = [ "Fri 07:00" ];
+  };
+
+  nix.gc = {
+     automatic = true;
+     dates = "Fri 05:00";
+     randomizedDelaySec = "15min";
+     options = "--delete-older-than 30d"; # Delete generations older than 30 days
   };
 
   system.stateVersion = "24.11"; # Did you read the comment?
