@@ -43,6 +43,7 @@
         ./networking.nix
         ./monitoring.nix
         ./git.nix
+        ./food.nix
 
         home-manager.nixosModules.home-manager
           {

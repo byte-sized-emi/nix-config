@@ -30,8 +30,11 @@
     };
     provision = {
       enable = true;
-      groups.tailnet = { };
-      groups.git = { };
+      groups = {
+        git = { };
+        tailnet = { };
+        mealie_users = { };
+      };
       persons.emilia = {
         displayName = "Emilia";
         mailAddresses = [
@@ -39,7 +42,7 @@
           "emilia@byte-sized.fyi"
           "jaser.emilia@gmail.com"
         ];
-        groups = [ "tailnet" "git" ];
+        groups = [ "tailnet" "git" "mealie_users" ];
       };
       systems.oauth2 = {
         tailscale = {
@@ -66,6 +69,21 @@
               "openid"
               "email"
               "profile"
+            ];
+          };
+        };
+        mealie = {
+          displayName = "mealie";
+          originUrl = "https://meals.service.byte-sized.fyi/login";
+          originLanding = "https://meals.service.byte-sized.fyi/";
+          basicSecretFile = "/var/mealie/oauth_secret";
+          preferShortUsername = true;
+          scopeMaps = {
+            mealie_users = [
+              "openid"
+              "email"
+              "profile"
+              "groups"
             ];
           };
         };
