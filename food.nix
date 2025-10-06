@@ -30,7 +30,6 @@ in {
           ALLOW_PASSWORD_LOGIN = "true";
           ALLOW_SIGNUP = "false";
           DB_ENGINE = "sqlite";
-          # Default Recipe Settings
           RECIPE_PUBLIC = "true";
           RECIPE_SHOW_NUTRITION = "true";
           RECIPE_SHOW_ASSETS = "true";
