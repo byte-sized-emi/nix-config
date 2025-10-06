@@ -44,8 +44,10 @@
 
   services.tailscale = {
     enable = true;
-    extraUpFlags = [ "--ssh" ];
+    extraUpFlags = [ "--ssh" "--advertise-exit-node" ];
     authKeyFile = "/var/tailscale/auth_key";
+    useRoutingFeatures = "server";
+    openFirewall = true;
   };
 
   # reverse proxy setup is done where it is needed
@@ -55,7 +57,7 @@
       plugins = [
         "github.com/caddy-dns/cloudflare@v0.2.1"
       ];
-      hash = "sha256-Gsuo+ripJSgKSYOM9/yl6Kt/6BFCA6BuTDvPdteinAI=";
+      hash = "sha256-p9AIi6MSWm0umUB83HPQoU8SyPkX5pMx989zAi8d/74=";
     };
     # acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
     environmentFile = "/var/caddy-secrets.env";
