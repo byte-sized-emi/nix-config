@@ -34,7 +34,10 @@
         git = { };
         tailnet = { };
         mealie_users = { };
+        mealie_admins = { };
       };
+      # when adding a new user, run `sudo kanidmd recover-account <username>`
+      # to generate a new temporary password
       persons.emilia = {
         displayName = "Emilia";
         mailAddresses = [
@@ -42,7 +45,15 @@
           "emilia@byte-sized.fyi"
           "jaser.emilia@gmail.com"
         ];
-        groups = [ "tailnet" "git" "mealie_users" ];
+        groups = [ "tailnet" "git" "mealie_users" "mealie_admins" ];
+      };
+      persons.mika = {
+        displayName = "Mika";
+        mailAddresses = [
+          "mika@sso.byte-sized.fyi"
+          "mika@byte-sized.fyi"
+        ];
+        groups = [ "mealie_users" ];
       };
       systems.oauth2 = {
         tailscale = {
@@ -74,12 +85,18 @@
         };
         mealie = {
           displayName = "mealie";
-          originUrl = "https://meals.service.byte-sized.fyi/login";
-          originLanding = "https://meals.service.byte-sized.fyi/";
+          originUrl = "https://meals.byte-sized.fyi/login";
+          originLanding = "https://meals.byte-sized.fyi/";
           basicSecretFile = "/var/mealie/oauth_secret";
           preferShortUsername = true;
           scopeMaps = {
             mealie_users = [
+              "openid"
+              "email"
+              "profile"
+              "groups"
+            ];
+            mealie_admins = [
               "openid"
               "email"
               "profile"

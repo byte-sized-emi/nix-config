@@ -3,10 +3,16 @@ let
   port = "9925";
   hostname = "meals.${settings.services.domain}";
 in {
+  # for local tailscale access
   services.caddy.virtualHosts."${hostname}" = {
     extraConfig = ''
       reverse_proxy localhost:${port}
     '';
+  };
+
+  # for public access
+  services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
+    ${settings.meals.domain} = "http://localhost:${port}";
   };
 
   virtualisation.quadlet = let
@@ -26,7 +32,7 @@ in {
           PUID = "1000";
           PGID = "1000";
           TZ = "Europe/Berlin";
-          BASE_URL = "https://${hostname}";
+          BASE_URL = "https://${settings.meals.domain}";
           ALLOW_PASSWORD_LOGIN = "true";
           ALLOW_SIGNUP = "false";
           DB_ENGINE = "sqlite";
@@ -43,7 +49,7 @@ in {
           OIDC_PROVIDER_NAME = "kanidm";
           OIDC_USER_CLAIM = "preferred_username";
           OIDC_USER_GROUP = "mealie_users@sso.byte-sized.fyi";
-          OIDC_ADMIN_GROUP = "mealie_users@sso.byte-sized.fyi";
+          OIDC_ADMIN_GROUP = "mealie_admins@sso.byte-sized.fyi";
           OIDC_AUTO_REDIRECT = "true"; # set ?direct=1 to disable
           OIDC_REMEMBER_ME = "true";
         };

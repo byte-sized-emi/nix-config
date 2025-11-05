@@ -21,6 +21,7 @@
     settings = {
       domain = "byte-sized.fyi";
       sso.domain = "sso.${specialArgs.settings.domain}";
+      meals.domain = "meals.${specialArgs.settings.domain}";
       services.domain = "service.${specialArgs.settings.domain}";
       git.domain = "git.${specialArgs.settings.domain}";
       git.ssh_domain = "git-ssh.${specialArgs.settings.domain}";
