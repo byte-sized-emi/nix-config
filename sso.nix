@@ -38,6 +38,7 @@
         tailnet = { };
         mealie_users = { };
         mealie_admins = { };
+        immich_users = { };
       };
       # when adding a new user, run `sudo kanidmd recover-account <username>`
       # to generate a new temporary password
@@ -48,7 +49,7 @@
           "emilia@byte-sized.fyi"
           "jaser.emilia@gmail.com"
         ];
-        groups = [ "tailnet" "git" "mealie_users" "mealie_admins" ];
+        groups = [ "tailnet" "git" "mealie_users" "mealie_admins" "immich_users" ];
       };
       persons.mika = {
         displayName = "Mika";
@@ -104,6 +105,23 @@
               "email"
               "profile"
               "groups"
+            ];
+          };
+        };
+        immich = {
+          displayName = "immich";
+          originUrl = [
+            "app.immich:///oauth-callback"
+            "https://images.byte-sized.fyi/auth/login"
+            "https://images.byte-sized.fyi/user-settings"
+          ];
+          originLanding = "https://images.byte-sized.fyi/";
+          basicSecretFile = config.sops.secrets."kanidm/immichOauthSecret".path;
+          scopeMaps = {
+            immich_users = [
+              "openid"
+              "email"
+              "profile"
             ];
           };
         };

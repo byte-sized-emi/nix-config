@@ -124,11 +124,13 @@
         owner = users.forgejo.name;
         group = groups.forgejo.name;
       };
+      "immich/envFile".owner = "root";
       "kanidm/tlsChain".owner = users.kanidm.name;
       "kanidm/tlsKey".owner = users.kanidm.name;
       "kanidm/tailscaleOauthSecret".owner = users.kanidm.name;
       "kanidm/forgejoOauthSecret".owner = users.kanidm.name;
       "kanidm/mealieOauthSecret".owner = users.kanidm.name;
+      "kanidm/immichOauthSecret".owner = users.kanidm.name;
       "kanidm/mealieOauthSecretEnv".owner = "root";
     };
   };

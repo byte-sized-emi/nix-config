@@ -1,17 +1,22 @@
-{ config, ... }:
+{ config, settings, ... }:
 let
+  UPLOAD_LOCATION = "/var/immich/upload_location";
+  IMMICH_VERSION = "v2.2.3";
   stackPath = "/etc/stacks/immich";
 in
 {
   systemd.tmpfiles.rules = [
     "d ${stackPath}/pgdata 0770 999 999"
     "d ${stackPath}/model-cache 0770 root root"
+    "d /var/immich/upload_location 0770 root root"
   ];
+
+  services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
+    ${settings.immich.domain} = "http://localhost:2283";
+  };
 
   virtualisation.quadlet =
     let
-      UPLOAD_LOCATION = "/var/immich/upload_location";
-      IMMICH_VERSION = "v2.2.3";
       inherit (config.virtualisation.quadlet) networks;
     in
     {
@@ -25,14 +30,14 @@ in
           containerConfig = {
             image = "ghcr.io/immich-app/immich-server:${IMMICH_VERSION}";
             publishPorts = [
-              "2283:2283" # TODO: Remove me!!!!
+              "0.0.0.0:2283:2283" # TODO: Remove me!!!!
               # "127.0.0.1:2283:2283"
             ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               "${UPLOAD_LOCATION}:/data"
             ];
-            environmentFiles = [ config.sops.secrets.immichEnv.path ];
+            environmentFiles = [ config.sops.secrets."immich/envFile".path ];
             networks = [ networks.immich.ref ];
           };
           serviceConfig = {
@@ -56,10 +61,7 @@ in
             volumes = [
               "${stackPath}/model-cache:/cache"
             ];
-            environmentFiles = [ config.sops.secrets.immichEnv.path ];
-            labels = [
-              "wud.tag.include=^v\\d+\\.\\d+\\.\\d+$"
-            ];
+            environmentFiles = [ config.sops.secrets."immich/envFile".path ];
             networks = [ networks.immich.ref ];
           };
           serviceConfig = {
@@ -78,7 +80,6 @@ in
             networks = [ networks.immich.ref ];
             networkAliases = [ "redis" ];
             notify = "healthy";
-            labels = [ "wud.watch=false" ];
           };
           serviceConfig = {
             Restart = "always";
@@ -88,7 +89,7 @@ in
         immich-database = {
           containerConfig = {
             image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
-            environmentFiles = [ config.sops.secrets.immichEnv.path ];
+            environmentFiles = [ config.sops.secrets."immich/envFile".path ];
             environments = {
               POSTGRES_INITDB_ARGS = "--data-checksums";
             };
@@ -97,8 +98,7 @@ in
               "${stackPath}/pgdata:/var/lib/postgresql/data:z"
             ];
             networks = [ networks.immich.ref ];
-            networkAliases = [ "postgres" ];
-            labels = [ "wud.watch=false" ];
+            networkAliases = [ "database" ];
           };
           serviceConfig = {
             Restart = "always";

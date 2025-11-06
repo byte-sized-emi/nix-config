@@ -43,6 +43,5 @@
 
   services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
     ${settings.git.domain} = "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
-    # ${settings.git.ssh_domain} = "ssh://localhost:${toString config.services.forgejo.settings.server.SSH_PORT}";
   };
 }
