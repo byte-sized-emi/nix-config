@@ -30,6 +30,8 @@
       htop
       btop
       bottom
+      age
+      sops
     ];
   };
 
@@ -105,6 +107,30 @@
      dates = "Fri 12:00";
      randomizedDelaySec = "15min";
      options = "--delete-older-than 30d"; # Delete generations older than 30 days
+  };
+
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    age.keyFile = "/var/lib/sops-nix/key.txt";
+    secrets = let users = config.users.users; groups = config.users.groups; in {
+      "tailscale/auth_key".owner = "root";
+      "borg/backupKey" = {
+        owner = users.borg.name;
+        group = groups.borg.name;
+      };
+      "cloudflared/tunnel".owner = users.cloudflared.name;
+      "caddy/secretsEnv".owner = users.caddy.name;
+      "forgejo/actionsRunnerToken" = {
+        owner = users.forgejo.name;
+        group = groups.forgejo.name;
+      };
+      "kanidm/tlsChain".owner = users.kanidm.name;
+      "kanidm/tlsKey".owner = users.kanidm.name;
+      "kanidm/tailscaleOauthSecret".owner = users.kanidm.name;
+      "kanidm/forgejoOauthSecret".owner = users.kanidm.name;
+      "kanidm/mealieOauthSecret".owner = users.kanidm.name;
+      "kanidm/mealieOauthSecretEnv".owner = "root";
+    };
   };
 
   system.stateVersion = "24.11"; # Did you read the comment?

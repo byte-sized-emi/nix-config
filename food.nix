@@ -54,7 +54,7 @@ in {
           OIDC_REMEMBER_ME = "true";
         };
         environmentFiles = [
-          "/var/mealie/oauth_secret.env" # Sets OIDC_CLIENT_SECRET
+          config.sops.secrets."kanidm/mealieOauthSecretEnv".path # Sets OIDC_CLIENT_SECRET
         ];
         volumes = [
           "${volumes.mealie-data.ref}:/app/data"

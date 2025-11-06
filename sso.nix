@@ -23,8 +23,8 @@
       origin = "https://${settings.sso.domain}";
       domain = settings.sso.domain;
       bindaddress = "127.0.0.1:8443";
-      tls_chain = "/var/cloudflare-creds/cert.pem";
-      tls_key = "/var/cloudflare-creds/private.pem";
+      tls_chain = config.sops.secrets."kanidm/tlsChain".path;
+      tls_key = config.sops.secrets."kanidm/tlsKey".path;
       online_backup = {
         path = "/var/backup/kanidm";
         schedule = "10 1 * * 5"; # at Fri 1:20
@@ -63,7 +63,7 @@
           displayName = "tailscale";
           originUrl = "https://login.tailscale.com/a/oauth_response";
           originLanding = "https://tailscale.com/";
-          basicSecretFile = "/var/tailscale/oauth_secret";
+          basicSecretFile = config.sops.secrets."kanidm/tailscaleOauthSecret".path;
           allowInsecureClientDisablePkce = true; # tailscale doesn't support PKCE. grrrrrr
           scopeMaps = {
             tailnet = [
@@ -77,7 +77,7 @@
           displayName = "forgejo";
           originUrl = "https://git.byte-sized.fyi/user/oauth2/SSO/callback";
           originLanding = "https://git.byte-sized.fyi/";
-          basicSecretFile = "/var/forgejo/oauth_secret";
+          basicSecretFile = config.sops.secrets."kanidm/forgejoOauthSecret".path;
           scopeMaps = {
             git = [
               "openid"
@@ -90,7 +90,7 @@
           displayName = "mealie";
           originUrl = "https://meals.byte-sized.fyi/login";
           originLanding = "https://meals.byte-sized.fyi/";
-          basicSecretFile = "/var/mealie/oauth_secret";
+          basicSecretFile = config.sops.secrets."kanidm/mealieOauthSecret".path;
           preferShortUsername = true;
           scopeMaps = {
             mealie_users = [

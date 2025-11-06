@@ -35,7 +35,7 @@
   services.cloudflared = {
     enable = true;
     tunnels.${settings.ingress_tunnel} = {
-      credentialsFile = "/var/cloudflare-creds/${settings.ingress_tunnel}.json";
+      credentialsFile = config.sops.secrets."cloudflared/tunnel".path;
       default = "http_status:404";
       originRequest.originServerName = settings.sso.domain;
       ingress = {}; # defined in the individual services
@@ -45,7 +45,7 @@
   services.tailscale = {
     enable = true;
     extraUpFlags = [ "--ssh" "--advertise-exit-node" ];
-    authKeyFile = "/var/tailscale/auth_key";
+    authKeyFile = config.sops.secrets."tailscale/auth_key".path;
     useRoutingFeatures = "server";
     openFirewall = true;
   };
@@ -60,7 +60,7 @@
       hash = "sha256-p9AIi6MSWm0umUB83HPQoU8SyPkX5pMx989zAi8d/74=";
     };
     # acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
-    environmentFile = "/var/caddy-secrets.env";
+    environmentFile = config.sops.secrets."caddy/secretsEnv".path;
     globalConfig = ''
       acme_dns cloudflare {env.CF_API_TOKEN}
     '';

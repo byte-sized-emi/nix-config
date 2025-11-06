@@ -1,0 +1,11 @@
+keys:
+  - users:
+    - &emilia age1qgn0n4wjjews7tdnqtyw9mcfjenzcxmn8kvcc2ydpdy300ue75dq07rjws
+  - hosts:
+    - &nixnest age1w26z0e92ldnhlwspuutwyjqg28akhj0ghjqzlvc8l0reaeqy7dpsf24u07
+creation_rules:
+  - path_regex: secrets.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *emilia
+        - *nixnest

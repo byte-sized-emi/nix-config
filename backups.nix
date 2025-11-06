@@ -13,7 +13,7 @@
     script = ''
       rm -rf /var/backup/mealie/
       mkdir -p /var/backup/mealie/
-      ${pkgs.podman}/bin/podman volume export mealie-data | ${pkgs.gnutar}/bin/tar xf - -C /var/backup/mealie/
+      ${config.virtualisation.podman.package}/bin/podman volume export mealie-data | ${pkgs.gnutar}/bin/tar xf - -C /var/backup/mealie/
     '';
     serviceConfig = {
       Type = "oneshot";
@@ -54,7 +54,7 @@
     startAt = "Fri 02:00";
     encryption = {
       mode = "repokey";
-      passCommand = "cat /var/borg_backup_key";
+      passCommand = "cat ${config.sops.secrets."borg/backupKey".path}";
     };
     persistentTimer = true;
     user = "borg";

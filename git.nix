@@ -31,9 +31,7 @@
       enable = true;
       name = "monolith";
       url = "https://${settings.git.domain}";
-      # Obtaining the path to the runner token file may differ
-      # tokenFile should be in format TOKEN=<secret>, since it's EnvironmentFile for systemd
-      tokenFile = "/var/forgejo/actions-runner-token";
+      tokenFile = config.sops.secrets."forgejo/actionsRunnerToken".path;
       labels = [
         "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
         "ubuntu-24.04:docker://ghcr.io/catthehacker/ubuntu:rust-24.04"

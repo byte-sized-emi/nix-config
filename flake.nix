@@ -13,9 +13,13 @@
       url = "github:SEIAROTg/quadlet-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, vscode-server, quadlet-nix, ... }@inputs:
+  outputs = { nixpkgs, home-manager, vscode-server, quadlet-nix, sops-nix, ... }@inputs:
   let specialArgs = {
     inputs = inputs;
     settings = {
@@ -45,7 +49,9 @@
         ./monitoring.nix
         ./git.nix
         ./food.nix
+        # ./immich.nix
         ./backups.nix
+        sops-nix.nixosModules.sops
 
         home-manager.nixosModules.home-manager
           {
