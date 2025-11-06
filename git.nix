@@ -9,7 +9,6 @@
         ROOT_URL = "https://${settings.git.domain}";
         HTTP_PORT = 7001;
         SSH_PORT = 2222;
-        SSH_DOMAIN = settings.git.ssh_domain;
       };
       repository.ENABLE_PUSH_CREATE_USER = true;
       session.COOKIE_SECURE = true;

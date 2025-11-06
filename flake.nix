@@ -28,7 +28,6 @@
       meals.domain = "meals.${specialArgs.settings.domain}";
       services.domain = "service.${specialArgs.settings.domain}";
       git.domain = "git.${specialArgs.settings.domain}";
-      git.ssh_domain = "git-ssh.${specialArgs.settings.domain}";
       immich.domain = "images.${specialArgs.settings.domain}";
       dawarich.enable = true;
       ingress_tunnel = "a7cff2a8-b287-4edc-94fd-35527c3c3858";
