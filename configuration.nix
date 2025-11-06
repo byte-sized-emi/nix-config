@@ -91,18 +91,18 @@
       "nixpkgs"
       "-L" # print build logs
     ];
-    dates = "Fri 02:00";
+    dates = "Fri 10:00";
     randomizedDelaySec = "45min";
   };
 
   nix.optimise = {
     automatic = true;
-    dates = [ "Fri 07:00" ];
+    dates = [ "monthly" ];
   };
 
   nix.gc = {
      automatic = true;
-     dates = "Fri 05:00";
+     dates = "Fri 12:00";
      randomizedDelaySec = "15min";
      options = "--delete-older-than 30d"; # Delete generations older than 30 days
   };

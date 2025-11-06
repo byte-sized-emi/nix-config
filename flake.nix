@@ -45,6 +45,7 @@
         ./monitoring.nix
         ./git.nix
         ./food.nix
+        ./backups.nix
 
         home-manager.nixosModules.home-manager
           {

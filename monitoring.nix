@@ -13,6 +13,12 @@
     listenAddress = "127.0.0.1";
     port = 9090;
     checkConfig = true;
+    # TODO: Backups
+    # can be created with curl -XPOST http://localhost:9090/api/v1/admin/tsdb/snapshot
+    # will then be located in /var/lib/prometheus2/data/snapshots/
+    # Make sure to delete old snapshots - even though they are hardlinked,
+    # they will take up space.
+    extraFlags = [ "--web.enable-admin-api" ];
 
     exporters = {
       node = {

@@ -1,6 +1,5 @@
 { config, pkgs, settings, ... }:
 {
-  # TODO: SSH configuration
   services.forgejo = {
     enable = true;
     package = pkgs.forgejo-lts;
@@ -16,6 +15,13 @@
       session.COOKIE_SECURE = true;
       service.DISABLE_REGISTRATION = true;
       # TODO: configure SSO here
+    };
+
+    dump = {
+      enable = true;
+      interval = "Fri 01:00";
+      type = "tar.gz";
+      backupDir = "/var/backup/forgejo/";
     };
   };
 

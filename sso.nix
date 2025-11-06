@@ -7,8 +7,6 @@
     group = "kanidm";
   };
 
-  # TODO: backups
-
   services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
     ${settings.sso.domain} = "https://${config.services.kanidm.serverSettings.bindaddress}";
   };
@@ -27,6 +25,11 @@
       bindaddress = "127.0.0.1:8443";
       tls_chain = "/var/cloudflare-creds/cert.pem";
       tls_key = "/var/cloudflare-creds/private.pem";
+      online_backup = {
+        path = "/var/backup/kanidm";
+        schedule = "10 1 * * 5"; # at Fri 1:20
+        versions = 7;
+      };
     };
     provision = {
       enable = true;
