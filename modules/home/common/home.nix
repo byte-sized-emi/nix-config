@@ -1,8 +1,19 @@
-{ config, pkgs, ... }:
-
+{ pkgs, ... }:
 {
-  home.username = "emi";
-  home.homeDirectory = "/home/emi";
+  home.username = "emilia";
+  home.homeDirectory = "/home/emilia";
+
+  home.packages = with pkgs; [
+    tree
+    openssl
+    htop
+    btop
+    bottom
+    age
+    sops
+    nixd
+    nil
+  ];
 
   programs.git = {
     enable = true;

@@ -59,7 +59,7 @@
       "/var/immich/upload_location"
 
     ];
-    environment.BORG_RSH = "ssh -i /home/emi/.ssh/id_borgbase";
+    environment.BORG_RSH = "ssh -i /home/emilia/.ssh/id_borgbase";
     repo = "ssh://d0804253@d0804253.repo.borgbase.com/./repo";
     compression = "auto,zstd";
     startAt = settings.backup.interval;

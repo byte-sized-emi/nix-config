@@ -2,6 +2,11 @@
 
 The NixOS config for my Soyo M4 minipc, on which I self-host a couple of things.
 
+## Before using this on nixnest:
+
+- rename "emi" user to "emilia"
+- run "kanidmd domain upgrade-check" to check for kanidm upgrade to 1.7
+
 ## Network setup
 
 ### home assistant

@@ -18,27 +18,6 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  users.users.emi = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "podman" "audio" ];
-    shell = pkgs.zsh;
-    packages = with pkgs; [
-      tree
-      kanidm
-      openssl
-      cloudflared
-      htop
-      btop
-      bottom
-      age
-      sops
-      nixd
-      nil
-    ];
-  };
-
-  programs.zsh.enable = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -59,7 +38,7 @@
     };
   };
 
-  users.users.emi.openssh.authorizedKeys.keys = [
+  users.users.emilia.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOkbGLfWyjFJQxJY8pDodBG4r567LoOT9gzPFnx5rBx8"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINVLqQSi5EhE8NPWcYjtolf4F6m/L/wjjmO2jf3W0ozL emilia@fedora-pc"
   ];
@@ -78,7 +57,7 @@
 
   systemd.user.services.wireplumber.wantedBy = [ "default.target" ];
   systemd.user.services.pipewire.wantedBy = [ "default.target" ];
-  users.users.emi.linger = true;
+  users.users.emilia.linger = true;
 
   # NOTE: for garbage collecting old EFI entries, use:
   # `sudo nix-env -p /nix/var/nix/profiles/system --list-generations`
