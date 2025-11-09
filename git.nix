@@ -18,7 +18,7 @@
 
     dump = {
       enable = true;
-      interval = "Fri 01:00";
+      interval = settings.backup.prepare.interval;
       type = "tar.gz";
       backupDir = "/var/backup/forgejo/";
     };

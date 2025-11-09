@@ -31,6 +31,9 @@
       immich.domain = "images.${specialArgs.settings.domain}";
       dawarich.enable = true;
       ingress_tunnel = "a7cff2a8-b287-4edc-94fd-35527c3c3858";
+      backup.interval = "Mon,Fri 02:00";
+      backup.prepare.interval = "Mon,Fri 01:20";
+      backup.prepare.interval_cron = "20 1 * * 1,5";
     };
   };
   in
@@ -62,7 +65,7 @@
           }
 
         vscode-server.nixosModules.default
-        ({ config, pkgs, ... }: {
+        ({ ... }: {
           services.vscode-server.enable = true;
         })
 

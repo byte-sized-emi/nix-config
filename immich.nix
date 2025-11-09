@@ -30,8 +30,7 @@ in
           containerConfig = {
             image = "ghcr.io/immich-app/immich-server:${IMMICH_VERSION}";
             publishPorts = [
-              "0.0.0.0:2283:2283" # TODO: Remove me!!!!
-              # "127.0.0.1:2283:2283"
+              "127.0.0.1:2283:2283"
             ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
@@ -86,6 +85,7 @@ in
           };
         };
 
+        # this is backed up in ./backups.nix
         immich-database = {
           containerConfig = {
             image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
@@ -106,14 +106,4 @@ in
         };
       };
     };
-
-  services.nginx.virtualHosts."immich.lab.keyruu.de" = {
-    useACMEHost = "lab.keyruu.de";
-    forceSSL = true;
-
-    locations."/" = {
-      proxyPass = "http://127.0.0.1:2283";
-      proxyWebsockets = true;
-    };
-  };
 }

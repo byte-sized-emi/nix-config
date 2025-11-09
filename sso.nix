@@ -27,7 +27,7 @@
       tls_key = config.sops.secrets."kanidm/tlsKey".path;
       online_backup = {
         path = "/var/backup/kanidm";
-        schedule = "10 1 * * 5"; # at Fri 1:20
+        schedule = settings.backup.prepare.interval_cron;
         versions = 7;
       };
     };

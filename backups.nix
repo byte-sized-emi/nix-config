@@ -1,19 +1,26 @@
 { config, pkgs, settings, ... }:
 {
   # systemctl list-timers
-  systemd.timers."mealie-backup" = {
+  systemd.timers."prepare-backup" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "Fri 01:20";
+      OnCalendar = settings.backup.prepare.interval;
       Persistent = true;
     };
   };
 
-  systemd.services."mealie-backup" = {
+  systemd.services."prepare-backup" = {
     script = ''
-      rm -rf /var/backup/mealie/
-      mkdir -p /var/backup/mealie/
-      ${config.virtualisation.podman.package}/bin/podman volume export mealie-data | ${pkgs.gnutar}/bin/tar xf - -C /var/backup/mealie/
+      shopt -s expand_aliases
+      alias podman=${config.virtualisation.podman.package}/bin/podman
+      alias tar=${pkgs.gnutar}/bin/tar
+      alias gzip=${pkgs.gzip}/bin/gzip
+
+      rm -rf /var/backup/mealie/ /var/backup/immich_db/
+      mkdir /var/backup/mealie/
+      mkdir /var/backup/immich_db/
+      podman volume export mealie-data | tar xf - -C /var/backup/mealie/
+      podman exec -t immich-database pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/immich_db/dump.sql.gz"
     '';
     serviceConfig = {
       Type = "oneshot";
@@ -47,11 +54,15 @@
   services.borgbackup.jobs.nixnest = {
     paths = [
       "/var/backup"
+      # NOTE: This stores both the images as well as automatic database dumps (inside ./backups).
+      #   If these get too big, you can change the settings in the admin menu
+      "/var/immich/upload_location"
+
     ];
     environment.BORG_RSH = "ssh -i /home/emi/.ssh/id_borgbase";
     repo = "ssh://d0804253@d0804253.repo.borgbase.com/./repo";
     compression = "auto,zstd";
-    startAt = "Fri 02:00";
+    startAt = settings.backup.interval;
     encryption = {
       mode = "repokey";
       passCommand = "cat ${config.sops.secrets."borg/backupKey".path}";

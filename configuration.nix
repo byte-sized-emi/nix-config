@@ -32,6 +32,8 @@
       bottom
       age
       sops
+      nixd
+      nil
     ];
   };
 
