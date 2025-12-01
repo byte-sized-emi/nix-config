@@ -88,8 +88,21 @@ in
       signal-desktop
       slack
       todoist-electron
+      slippi-launcher
     ]
     ++ [ pkgs-unstable.deezer-enhanced ];
+
+  # horrible workaround for slippi
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+    package = pkgs.appimage-run.override {
+      extraPkgs =
+        pkgs: with pkgs; [
+          curl
+        ];
+    };
+  };
 
   programs.thunderbird.enable = true;
 

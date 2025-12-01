@@ -55,6 +55,16 @@
             modules = [
               ./hosts/nixlaptop
               (homeManagerConfig { extraModules = [ ./modules/home/graphical ]; })
+              (
+                { pkgs, ... }:
+                {
+                  nixpkgs.overlays = [
+                    (final: prev: {
+                      slippi-launcher = import ./packages/slippi.nix { inherit pkgs; };
+                    })
+                  ];
+                }
+              )
             ];
             specialArgs = { inherit inputs; };
           };
