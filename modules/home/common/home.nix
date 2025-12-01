@@ -13,17 +13,26 @@
     sops
     nixd
     nil
+    usbutils
   ];
 
   programs.git = {
+    package = pkgs.gitFull;
     enable = true;
-    userName = "Emilia Jaser";
-    userEmail = "vapor.schitcrafter@gmail.com";
-    # git config credential.helper store
-    extraConfig = {
-      credential.helper = "store";
+    settings = {
+      user.name = "Emilia Jaser";
+      user.email = "vapor.schitcrafter@gmail.com";
+      push = {
+        autoSetupRemote = true;
+      };
+      signing = {
+        signByDefault = true;
+        format = "ssh";
+      };
     };
   };
+
+  programs.git-credential-oauth.enable = true;
 
   programs.starship = {
     enable = true;
@@ -36,9 +45,25 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
-        update = "nixos-rebuild switch --use-remote-sudo";
+      update = "nixos-rebuild switch --sudo";
+      update-test = "nixos-rebuild test --sudo";
+      ls = "eza";
+      cat = "bat";
     };
   };
+
+  programs.eza = {
+    enable = true;
+    enableZshIntegration = true;
+    git = true;
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.bat.enable = true;
 
   home.stateVersion = "24.11";
   programs.home-manager.enable = true;

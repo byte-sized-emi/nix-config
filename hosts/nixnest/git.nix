@@ -1,4 +1,9 @@
-{ config, pkgs, settings, ... }:
+{
+  config,
+  pkgs,
+  settings,
+  ...
+}:
 {
   services.forgejo = {
     enable = true;
@@ -41,6 +46,7 @@
   };
 
   services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
-    ${settings.git.domain} = "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
+    ${settings.git.domain} =
+      "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
   };
 }

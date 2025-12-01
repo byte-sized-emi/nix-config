@@ -1,7 +1,11 @@
-{ pkgs, config, settings, ... }:
-
 {
-  users.groups.kanidm = {};
+  pkgs,
+  config,
+  settings,
+  ...
+}:
+{
+  users.groups.kanidm = { };
   users.users.kanidm = {
     isSystemUser = true;
     group = "kanidm";
@@ -49,7 +53,13 @@
           "emilia@byte-sized.fyi"
           "jaser.emilia@gmail.com"
         ];
-        groups = [ "tailnet" "git" "mealie_users" "mealie_admins" "immich_users" ];
+        groups = [
+          "tailnet"
+          "git"
+          "mealie_users"
+          "mealie_admins"
+          "immich_users"
+        ];
       };
       persons.mika = {
         displayName = "Mika";

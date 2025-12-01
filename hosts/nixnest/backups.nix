@@ -1,4 +1,9 @@
-{ config, pkgs, settings, ... }:
+{
+  config,
+  pkgs,
+  settings,
+  ...
+}:
 {
   # systemctl list-timers
   systemd.timers."prepare-backup" = {
@@ -28,7 +33,7 @@
     };
   };
 
-  users.groups.borg = {};
+  users.groups.borg = { };
   users.users.borg = {
     isSystemUser = true;
     group = "borg";

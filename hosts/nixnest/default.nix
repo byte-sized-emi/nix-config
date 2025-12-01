@@ -16,9 +16,12 @@
     ./backups.nix
     inputs.sops-nix.nixosModules.sops
     inputs.vscode-server.nixosModules.default
-    ({ ... }: {
-      services.vscode-server.enable = true;
-    })
+    (
+      { ... }:
+      {
+        services.vscode-server.enable = true;
+      }
+    )
 
     inputs.quadlet-nix.nixosModules.quadlet
   ];

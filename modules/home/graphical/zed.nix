@@ -3,6 +3,7 @@
     enable = true;
 
     userSettings = {
+      autosave = "on_focus_change";
       features = {
         edit_prediction_provider = "copilot";
       };
@@ -13,7 +14,7 @@
         light = "One Light";
         dark = "One Dark";
       };
-      buffer_font_family = "Fira Code";
+      buffer_font_family = "FiraCode Nerd Font";
       buffer_font_features = {
         calt = true;
       };
@@ -30,6 +31,7 @@
       {
         context = "Editor";
         bindings = {
+          "ctrl-t" = "workspace::NewCenterTerminal";
           "ctrl-k ctrl-c" = "editor::ToggleComments";
           "ctrl-k c" = "editor::ToggleComments";
         };

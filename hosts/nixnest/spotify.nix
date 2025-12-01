@@ -1,6 +1,8 @@
-{ config, ... }: let
+{ config, ... }:
+let
   ZEROCONF_PORT = 10709;
-in {
+in
+{
   services.spotifyd = {
     enable = true;
     settings = {

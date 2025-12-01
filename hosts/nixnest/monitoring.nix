@@ -78,7 +78,6 @@
       };
     };
 
-
     provision = {
       enable = true;
       dashboards.settings.providers = [

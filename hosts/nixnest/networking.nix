@@ -1,7 +1,16 @@
-{ config, settings, pkgs, ... }:
+{
+  config,
+  settings,
+  pkgs,
+  ...
+}:
 {
   networking.hostName = "nixnest";
-  networking.nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+  networking.nameservers = [
+    "100.100.100.100"
+    "8.8.8.8"
+    "1.1.1.1"
+  ];
   networking.search = [ "bushbaby-chimera.ts.net" ];
 
   # mDNS setup
@@ -22,7 +31,7 @@
     5355 # mDNS using systemd-resolved / LLMNR
   ];
 
-  users.groups.cloudflared = {};
+  users.groups.cloudflared = { };
   users.users.cloudflared = {
     isSystemUser = true;
     group = "cloudflared";
@@ -38,13 +47,16 @@
       credentialsFile = config.sops.secrets."cloudflared/tunnel".path;
       default = "http_status:404";
       originRequest.originServerName = settings.sso.domain;
-      ingress = {}; # defined in the individual services
+      ingress = { }; # defined in the individual services
     };
   };
 
   services.tailscale = {
     enable = true;
-    extraUpFlags = [ "--ssh" "--advertise-exit-node" ];
+    extraUpFlags = [
+      "--ssh"
+      "--advertise-exit-node"
+    ];
     authKeyFile = config.sops.secrets."tailscale/auth_key".path;
     useRoutingFeatures = "server";
     openFirewall = true;
