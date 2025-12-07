@@ -10,7 +10,7 @@
       ui_font_size = 16;
       buffer_font_size = 15;
       theme = {
-        mode = "system";
+        mode = "dark";
         light = "One Light";
         dark = "One Dark";
       };
@@ -18,6 +18,7 @@
       buffer_font_features = {
         calt = true;
       };
+      load_direnv = "shell_hook";
     };
 
     userKeymaps = [

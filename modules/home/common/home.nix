@@ -49,7 +49,16 @@
       update-test = "nixos-rebuild test --sudo";
       ls = "eza";
       cat = "bat";
+      # for opening a directory in the current zed window
+      zopen = "zeditor -r";
     };
+  };
+
+  programs.direnv = {
+    enable = true;
+    silent = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
   };
 
   programs.eza = {

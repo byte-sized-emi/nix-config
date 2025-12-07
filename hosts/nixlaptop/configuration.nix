@@ -1,7 +1,8 @@
-{ pkgs, inputs, ... }:
-let
-  pkgs-unstable = import inputs.nixpkgs-unstable { system = pkgs.stdenv.hostPlatform.system; };
-in
+{
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -77,31 +78,30 @@ in
     pulse.enable = true;
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.emilia.packages =
-    with pkgs;
-    [
-      kdePackages.kate
-      discord
-      obsidian
-      # spotify
-      signal-desktop
-      slack
-      todoist-electron
-      slippi-launcher
-    ]
-    ++ [ pkgs-unstable.deezer-enhanced ];
+    let
+      normal-packages = with pkgs; [
+        kdePackages.kate
+        discord
+        obsidian
+        # spotify
+        signal-desktop
+        slack
+        todoist-electron
+        jetbrains.idea-ultimate
+        xournalpp
+        wev
+      ];
+      unstable-packages = with pkgs-unstable; [
+        deezer-enhanced
+        mission-center
+      ];
+    in
+    normal-packages ++ unstable-packages;
 
-  # horrible workaround for slippi
-  programs.appimage = {
+  programs.slippi-launcher = {
     enable = true;
-    binfmt = true;
-    package = pkgs.appimage-run.override {
-      extraPkgs =
-        pkgs: with pkgs; [
-          curl
-        ];
-    };
+    enableAppImageSupport = true;
   };
 
   programs.thunderbird.enable = true;

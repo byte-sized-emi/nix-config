@@ -27,12 +27,22 @@
     };
     niri.url = "github:sodiboo/niri-flake";
     vicinae.url = "github:vicinaehq/vicinae";
+    slippi-launcher = {
+      url = "github:byte-sized-emi/slippi-launcher-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }@inputs:
     {
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      slippi-launcher,
+      ...
+    }@inputs:
+    {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
       nixosConfigurations =
         let
           homeManagerConfig =
@@ -55,18 +65,12 @@
             modules = [
               ./hosts/nixlaptop
               (homeManagerConfig { extraModules = [ ./modules/home/graphical ]; })
-              (
-                { pkgs, ... }:
-                {
-                  nixpkgs.overlays = [
-                    (final: prev: {
-                      slippi-launcher = import ./packages/slippi.nix { inherit pkgs; };
-                    })
-                  ];
-                }
-              )
+              slippi-launcher.nixosModules.default
             ];
-            specialArgs = { inherit inputs; };
+            specialArgs = {
+              inherit inputs;
+              pkgs-unstable = import nixpkgs-unstable { system = "x86_64-linux"; };
+            };
           };
 
           nixnest = nixpkgs.lib.nixosSystem {

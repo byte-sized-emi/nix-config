@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   services.xserver.enable = true;
 
@@ -12,9 +11,4 @@
     layout = "de";
     variant = "";
   };
-
-  users.users.emilia.packages = with pkgs; [
-    wev
-    xournalpp
-  ];
 }
