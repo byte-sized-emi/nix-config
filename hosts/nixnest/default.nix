@@ -6,7 +6,6 @@
     ./podman.nix
     ./hass.nix
     ./dawarich.nix
-    ./spotify.nix
     ./sso.nix
     ./networking.nix
     ./monitoring.nix

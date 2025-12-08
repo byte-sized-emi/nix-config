@@ -10,7 +10,7 @@ let
 in
 {
   # for local tailscale access
-  services.caddy.virtualHosts."${hostname}" = {
+  services.caddy.virtualHosts.${hostname} = {
     extraConfig = ''
       reverse_proxy localhost:${port}
     '';

@@ -67,20 +67,14 @@
     enable = true;
     package = pkgs.caddy.withPlugins {
       plugins = [
-        "github.com/caddy-dns/cloudflare@v0.2.1"
+        "github.com/caddy-dns/cloudflare@v0.2.2"
       ];
-      hash = "sha256-p9AIi6MSWm0umUB83HPQoU8SyPkX5pMx989zAi8d/74=";
+      hash = "sha256-ea8PC/+SlPRdEVVF/I3c1CBprlVp1nrumKM5cMwJJ3U=";
     };
-    # acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
     environmentFile = config.sops.secrets."caddy/secretsEnv".path;
     globalConfig = ''
       acme_dns cloudflare {env.CF_API_TOKEN}
-    '';
-    virtualHosts."https://".extraConfig = ''
-      tls {
-        dns cloudflare {env.CF_API_TOKEN}
-        resolvers 1.1.1.1
-      }
+      dns cloudflare {env.CF_API_TOKEN}
     '';
   };
 }
