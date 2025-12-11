@@ -75,14 +75,14 @@
   # Upgrade log can be seen using:
   # `systemctl status nixos-upgrade.service`
   system.autoUpgrade = {
-    enable = false;
+    enable = true;
     flake = inputs.self.outPath;
     flags = [
       "--update-input"
       "nixpkgs"
       "-L" # print build logs
     ];
-    dates = "Fri 10:00";
+    dates = "Mon,Fri 10:00";
     randomizedDelaySec = "45min";
   };
 
