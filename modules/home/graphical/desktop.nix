@@ -10,6 +10,10 @@
 
   home.packages = with pkgs; [
     xwayland-satellite
+    # gnome-keyring
+    # xdg-desktop-portal-gtk
+    # xdg-desktop-portal-gnome
+    # polkit-kde-agent
   ];
 
   # https://github.com/sodiboo/niri-flake/blob/main/docs.md
@@ -63,6 +67,7 @@
           "1-browser".name = "browser";
           "2-editor".name = "editor";
           "3-social".name = "social";
+          "4-music".name = "music";
         };
         window-rules = [
           {
@@ -82,8 +87,16 @@
           {
             matches = [
               { app-id = "^discord$"; }
+              { app-id = "^signal$"; }
             ];
             open-on-workspace = "social";
+            open-maximized = true;
+          }
+          {
+            matches = [
+              { app-id = "^deezer-enhanced$"; }
+            ];
+            open-on-workspace = "music";
             open-maximized = true;
           }
         ];
@@ -129,7 +142,7 @@
           "Mod+1" = action-with-arg "focus-workspace" "browser";
           "Mod+2" = action-with-arg "focus-workspace" "editor";
           "Mod+3" = action-with-arg "focus-workspace" "social";
-          "Mod+4" = action-with-arg "focus-workspace" 4;
+          "Mod+4" = action-with-arg "focus-workspace" "music";
           "Mod+5" = action-with-arg "focus-workspace" 5;
           "Mod+6" = action-with-arg "focus-workspace" 6;
           "Mod+7" = action-with-arg "focus-workspace" 7;

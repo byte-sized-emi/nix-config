@@ -5,5 +5,6 @@
     ./fonts.nix
     ./launcher.nix
     ./desktop.nix
+    ./fachschaft.nix
   ];
 }

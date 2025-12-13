@@ -55,7 +55,7 @@
         # When enabled other devices can connect faster to us, however
         # the tradeoff is increased power consumption. Defaults to
         # 'false'.
-        FastConnectable = true;
+        # FastConnectable = true;
       };
       Policy = {
         # Enable all controllers when they are found. This includes
@@ -91,6 +91,8 @@
         jetbrains.idea-ultimate
         xournalpp
         wev
+        element-desktop
+        keepassxc
       ];
       unstable-packages = with pkgs-unstable; [
         deezer-enhanced
@@ -119,9 +121,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    nano
     wget
-    git
     pulseaudio
     pciutils
     alsa-utils

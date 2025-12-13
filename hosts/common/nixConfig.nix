@@ -13,9 +13,9 @@
         "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       ];
     };
-    extraOptions = ''
-      # Ensure we can still build when a binary cache is not accessible
-      fallback = true
-    '';
+    # extraOptions = ''
+    #   # Ensure we can still build when a binary cache is not accessible
+    #   fallback = true
+    # '';
   };
 }

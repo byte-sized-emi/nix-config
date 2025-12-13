@@ -1,4 +1,3 @@
-{ config, ... }:
 {
   virtualisation.containers.enable = true;
 

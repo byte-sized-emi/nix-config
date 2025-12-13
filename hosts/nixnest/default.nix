@@ -13,7 +13,7 @@
     ./food.nix
     ./immich.nix
     ./backups.nix
-    inputs.sops-nix.nixosModules.sops
+    ./secrets.nix
     inputs.vscode-server.nixosModules.default
     (
       { ... }:

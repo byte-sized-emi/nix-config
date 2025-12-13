@@ -20,6 +20,7 @@
     package = pkgs.gitFull;
     enable = true;
     settings = {
+      init.defaultBranch = "main";
       user.name = "Emilia Jaser";
       user.email = "vapor.schitcrafter@gmail.com";
       push = {
@@ -34,9 +35,7 @@
 
   programs.git-credential-oauth.enable = true;
 
-  programs.starship = {
-    enable = true;
-  };
+  programs.starship.enable = true;
 
   programs.zsh = {
     enable = true;
