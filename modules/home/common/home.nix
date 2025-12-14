@@ -51,6 +51,7 @@
       cat = "bat";
       # for opening a directory in the current zed window
       zopen = "zeditor -r";
+      sops-zed = "EDITOR=\"zeditor --wait\" sops";
     };
   };
 
