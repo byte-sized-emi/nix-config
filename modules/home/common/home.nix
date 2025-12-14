@@ -14,6 +14,7 @@
     nixd
     nil
     usbutils
+    libargon2
   ];
 
   programs.git = {

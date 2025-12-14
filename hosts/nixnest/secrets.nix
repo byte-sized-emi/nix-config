@@ -23,5 +23,6 @@
       "kanidm/mealieOauthSecret".owner = users.kanidm.name;
       "kanidm/immichOauthSecret".owner = users.kanidm.name;
       "kanidm/mealieOauthSecretEnv".owner = "root";
+      "vaultwarden/env".owner = users.vaultwarden.name;
     };
 }

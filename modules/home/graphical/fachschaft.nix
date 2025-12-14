@@ -1,4 +1,8 @@
+{ pkgs, ... }:
 {
+  home.packages = with pkgs; [
+    kubectl
+  ];
   programs.ssh.enable = true;
   programs.ssh.extraConfig = ''
      Host fs-lab01

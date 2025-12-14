@@ -84,6 +84,7 @@
                 services.domain = "service.${domain}";
                 git.domain = "git.${domain}";
                 immich.domain = "images.${domain}";
+                secrets.domain = "secrets.${domain}";
                 dawarich.enable = true;
                 ingress_tunnel = "a7cff2a8-b287-4edc-94fd-35527c3c3858";
                 backup.interval = "Mon,Fri 02:00";
