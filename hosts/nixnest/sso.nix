@@ -77,6 +77,7 @@
             "calla@byte-sized.fyi"
           ];
           groups = [ "mealie_users" ];
+        };
       };
       systems.oauth2 = {
         tailscale = {
