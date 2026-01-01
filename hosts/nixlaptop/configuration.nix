@@ -84,7 +84,7 @@
         signal-desktop
         slack
         todoist-electron
-        jetbrains.idea-ultimate
+        jetbrains.idea
         xournalpp
         wev
         element-desktop

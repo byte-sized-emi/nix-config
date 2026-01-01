@@ -70,6 +70,25 @@
           "4-music".name = "music";
         };
         window-rules = [
+          # TODO: Add window rule here to block out screencasts:
+          # https://github.com/YaLTeR/niri/wiki/Screencasting
+          {
+            matches = [
+              {
+                is-window-cast-target = true;
+              }
+            ];
+            focus-ring = {
+              active.color = "#f38ba8";
+              inactive.color = "#7d0d2d";
+            };
+            border.inactive.color = "#7d0d2d";
+            shadow.color = "#7d0d2d70";
+            tab-indicator = {
+              active.color = "#f38ba8";
+              inactive.color = "#7d0d2d";
+            };
+          }
           {
             matches = [
               { app-id = "^firefox$"; }

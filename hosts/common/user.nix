@@ -20,5 +20,14 @@
     ];
   };
 
+  security.doas.enable = true;
+  security.doas.extraRules = [
+    {
+      users = [ config.users.users.emilia.name ];
+      keepEnv = true;
+      persist = true;
+    }
+  ];
+
   programs.zsh.enable = true;
 }

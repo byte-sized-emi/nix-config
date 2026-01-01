@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   imports = [
     ./browser.nix
@@ -6,5 +7,9 @@
     ./launcher.nix
     ./desktop.nix
     ./fachschaft.nix
+  ];
+
+  home.packages = with pkgs; [
+    vlc
   ];
 }

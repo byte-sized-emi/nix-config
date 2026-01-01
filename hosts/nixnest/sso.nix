@@ -46,28 +46,37 @@
       };
       # when adding a new user, run `sudo kanidmd recover-account <username>`
       # to generate a new temporary password
-      persons.emilia = {
-        displayName = "Emilia";
-        mailAddresses = [
-          "emilia@sso.byte-sized.fyi"
-          "emilia@byte-sized.fyi"
-          "jaser.emilia@gmail.com"
-        ];
-        groups = [
-          "tailnet"
-          "git"
-          "mealie_users"
-          "mealie_admins"
-          "immich_users"
-        ];
-      };
-      persons.mika = {
-        displayName = "Mika";
-        mailAddresses = [
-          "mika@sso.byte-sized.fyi"
-          "mika@byte-sized.fyi"
-        ];
-        groups = [ "mealie_users" ];
+      persons = {
+        emilia = {
+          displayName = "Emilia";
+          mailAddresses = [
+            "emilia@sso.byte-sized.fyi"
+            "emilia@byte-sized.fyi"
+            "jaser.emilia@gmail.com"
+          ];
+          groups = [
+            "tailnet"
+            "git"
+            "mealie_users"
+            "mealie_admins"
+            "immich_users"
+          ];
+        };
+        mika = {
+          displayName = "Mika";
+          mailAddresses = [
+            "mika@sso.byte-sized.fyi"
+            "mika@byte-sized.fyi"
+          ];
+          groups = [ "mealie_users" ];
+        };
+        calla = {
+          displayName = "Calla";
+          mailAddresses = [
+            "calla@sso.byte-sized.fyi"
+            "calla@byte-sized.fyi"
+          ];
+          groups = [ "mealie_users" ];
       };
       systems.oauth2 = {
         tailscale = {

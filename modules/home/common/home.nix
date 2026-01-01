@@ -20,6 +20,7 @@
   programs.git = {
     package = pkgs.gitFull;
     enable = true;
+    # TODO: Use proper ssh keys here
     settings = {
       init.defaultBranch = "main";
       user.name = "Emilia Jaser";
