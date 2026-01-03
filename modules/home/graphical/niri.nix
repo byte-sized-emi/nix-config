@@ -59,6 +59,8 @@
             sh = "QS_ICON_THEME=\"Adwaita\" noctalia-shell";
           }
           {
+            # to unblock bluetooth on startup - for some reason neither niri nor quickshell
+            # does this automatically
             command = [
               "rfkill"
               "unblock"
@@ -74,24 +76,25 @@
           { command = [ "discord" ]; }
           { command = [ "firefox" ]; }
           { command = [ "zeditor" ]; }
+          { command = [ "todoist-electron" ]; }
+          { command = [ "obsidian" ]; }
+          { command = [ "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init" ]; }
           {
             sh = "signal-desktop --password-store=\"kwallet6\"";
           }
         ];
         workspaces = {
           "1-browser".name = "browser";
-          "2-editor".name = "editor";
-          "3-social".name = "social";
-          "4-music".name = "music";
+          "2-social".name = "social";
+          "3-editor".name = "editor";
+          "4-extra".name = "extra";
         };
         window-rules = [
           # TODO: Add window rule here to block out screencasts:
           # https://github.com/YaLTeR/niri/wiki/Screencasting
           {
             matches = [
-              {
-                is-window-cast-target = true;
-              }
+              { is-window-cast-target = true; }
             ];
             focus-ring = {
               active.color = "#f38ba8";
@@ -114,6 +117,7 @@
           {
             matches = [
               { app-id = "dev.zed.Zed"; }
+              { app-id = "^obsidian$"; }
             ];
             open-on-workspace = "editor";
             open-maximized = true;
@@ -129,8 +133,9 @@
           {
             matches = [
               { app-id = "^deezer-enhanced$"; }
+              { app-id = "^Todoist$"; }
             ];
-            open-on-workspace = "music";
+            open-on-workspace = "extra";
             open-maximized = true;
           }
         ];
@@ -152,18 +157,18 @@
           "Mod+Q" = action "close-window";
           "Mod+H" = action "show-hotkey-overlay";
           # I have no idea why this workaround is necessary.
-          "Mod+M" = action-with-arg "spawn" [
+          "Mod+F" = action-with-arg "spawn" [
             "niri"
             "msg"
             "action"
             "maximize-window-to-edges"
           ];
+          "Mod+Shift+F" = action "fullscreen-window";
           "Mod+P" = {
             repeat = false;
             action.spawn-sh = "wl-mirror $(niri msg --json focused-output | jq -r .name)";
           };
           # "Mod+M" = action "maximize-column";
-          "Mod+Shift+M" = action "fullscreen-window";
           "Mod+L" = noctalia-action "sessionMenu lockAndSuspend";
           "Mod+V" = noctalia-action "launcher clipboard";
           "Mod+Shift+S" = action "screenshot";
@@ -178,9 +183,9 @@
           "Ctrl+Shift+Up" = action "move-window-to-workspace-up";
           "Ctrl+Shift+Down" = action "move-window-to-workspace-down";
           "Mod+1" = action-with-arg "focus-workspace" "browser";
-          "Mod+2" = action-with-arg "focus-workspace" "editor";
-          "Mod+3" = action-with-arg "focus-workspace" "social";
-          "Mod+4" = action-with-arg "focus-workspace" "music";
+          "Mod+2" = action-with-arg "focus-workspace" "social";
+          "Mod+3" = action-with-arg "focus-workspace" "editor";
+          "Mod+4" = action-with-arg "focus-workspace" "extra";
           "Mod+5" = action-with-arg "focus-workspace" 5;
           "Mod+6" = action-with-arg "focus-workspace" 6;
           "Mod+7" = action-with-arg "focus-workspace" 7;
