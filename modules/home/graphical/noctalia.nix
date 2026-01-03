@@ -67,7 +67,7 @@
             }
             {
               id = "Clock";
-              formatHorizontal = "HH:mm";
+              formatHorizontal = "HH:mm d. MMM";
               formatVertical = "HH mm";
               useMonospacedFont = true;
               usePrimaryColor = true;

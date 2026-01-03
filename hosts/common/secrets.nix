@@ -1,4 +1,9 @@
-{ inputs, config, ... }:
+{
+  inputs,
+  config,
+  lib,
+  ...
+}:
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
   sops = {
@@ -7,22 +12,33 @@
     secrets =
       let
         inherit (config.users) users;
+        sshKeys = [
+          "byte_sized"
+          "github"
+          "fachschaft"
+        ];
+        generateSshConfig = name: {
+          "ssh_keys/${name}/pub" = {
+            owner = users.emilia.name;
+            path = "${users.emilia.home}/.ssh/id_${name}.pub";
+          };
+          "ssh_keys/${name}/priv" = {
+            owner = users.emilia.name;
+            path = "${users.emilia.home}/.ssh/id_${name}";
+          };
+        };
       in
-      {
+      lib.pipe sshKeys [
+        (map generateSshConfig)
+        lib.mkMerge
+      ]
+      // {
         "kube/config" = {
           owner = users.emilia.name;
           path = "${users.emilia.home}/.kube/config";
         };
         "tailscale/auth_key".owner = "root";
         # TODO: add more ssh keys here
-        "ssh_keys/byte_sized/pub" = {
-          owner = users.emilia.name;
-          path = "${users.emilia.home}/.ssh/id_byte_sized.pub";
-        };
-        "ssh_keys/byte_sized/priv" = {
-          owner = users.emilia.name;
-          path = "${users.emilia.home}/.ssh/id_byte_sized";
-        };
       };
   };
 }

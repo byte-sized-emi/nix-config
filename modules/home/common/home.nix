@@ -26,9 +26,15 @@
     };
     includes = [
       {
-        condition = "hasconfig:remote.origin.url:https://git.byte-sized.fyi/**";
+        condition = "hasconfig:remote.*.url:https://git.byte-sized.fyi/**";
         contents = {
           user.signingKey = "~/.ssh/id_byte_sized";
+        };
+      }
+      {
+        condition = "hasconfig:remote.*.url:git@github.com:*/**";
+        contents = {
+          user.signingKey = "~/.ssh/id_github";
         };
       }
     ];
