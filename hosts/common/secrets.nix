@@ -14,6 +14,15 @@
           path = "${users.emilia.home}/.kube/config";
         };
         "tailscale/auth_key".owner = "root";
+        # TODO: add more ssh keys here
+        "ssh_keys/byte_sized/pub" = {
+          owner = users.emilia.name;
+          path = "${users.emilia.home}/.ssh/id_byte_sized.pub";
+        };
+        "ssh_keys/byte_sized/priv" = {
+          owner = users.emilia.name;
+          path = "${users.emilia.home}/.ssh/id_byte_sized";
+        };
       };
   };
 }

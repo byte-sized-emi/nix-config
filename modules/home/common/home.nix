@@ -20,17 +20,24 @@
   programs.git = {
     package = pkgs.gitFull;
     enable = true;
-    # TODO: Use proper ssh keys here
+    signing = {
+      signByDefault = true;
+      format = "ssh";
+    };
+    includes = [
+      {
+        condition = "hasconfig:remote.origin.url:https://git.byte-sized.fyi/**";
+        contents = {
+          user.signingKey = "~/.ssh/id_byte_sized";
+        };
+      }
+    ];
     settings = {
       init.defaultBranch = "main";
       user.name = "Emilia Jaser";
       user.email = "vapor.schitcrafter@gmail.com";
       push = {
         autoSetupRemote = true;
-      };
-      signing = {
-        signByDefault = true;
-        format = "ssh";
       };
     };
   };
