@@ -5,7 +5,8 @@
     ./zed.nix
     ./fonts.nix
     ./launcher.nix
-    ./desktop.nix
+    ./niri.nix
+    ./noctalia.nix
     ./fachschaft.nix
   ];
 

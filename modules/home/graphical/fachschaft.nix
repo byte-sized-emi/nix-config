@@ -4,7 +4,8 @@
     kubectl
   ];
   programs.ssh.enable = true;
-  # programs.ssh.enableDefaultConfig = false;
+  programs.ssh.enableDefaultConfig = false;
+  programs.ssh.matchBlocks."*" = { };
   programs.ssh.extraConfig = ''
     Host fs-lab01
             HostName 10.19.5.111
@@ -21,7 +22,7 @@
             ProxyJump fs-gateway
 
     Host fs-labbackup
-    HostName 10.19.5.113
+            HostName 10.19.5.113
             Port 22
             User root
             IdentityFile ~/.ssh/fs/hmKey
@@ -55,7 +56,7 @@
             IdentityFile ~/.ssh/fs/hmKey
 
     Host fs-ldap
-    HostName 10.19.5.11
+            HostName 10.19.5.11
             Port 22
             User fsadmin
             IdentityFile ~/.ssh/fs/hmKey
@@ -170,5 +171,4 @@
             IdentityFile ~/.ssh/fs/hmKey
             ProxyJump fs-gateway
   '';
-
 }

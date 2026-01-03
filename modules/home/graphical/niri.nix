@@ -2,7 +2,6 @@
 {
   # import the home manager module
   imports = [
-    inputs.noctalia.homeModules.default
     inputs.niri.homeModules.niri
   ];
 
@@ -10,10 +9,15 @@
 
   home.packages = with pkgs; [
     xwayland-satellite
+    wl-mirror
+    jq
+    kdePackages.kwallet
+    kdePackages.kwallet-pam
     # gnome-keyring
     # xdg-desktop-portal-gtk
     # xdg-desktop-portal-gnome
     # polkit-kde-agent
+    kdePackages.polkit-kde-agent-1
   ];
 
   # https://github.com/sodiboo/niri-flake/blob/main/docs.md
@@ -49,9 +53,17 @@
           ELECTRON_OZONE_PLATFORM_HINT = "auto";
         };
         prefer-no-csd = true;
+        debug.honor-xdg-activation-with-invalid-serial = [ ];
         spawn-at-startup = [
           {
             sh = "QS_ICON_THEME=\"Adwaita\" noctalia-shell";
+          }
+          {
+            command = [
+              "rfkill"
+              "unblock"
+              "bluetooth"
+            ];
           }
           {
             command = [
@@ -62,6 +74,9 @@
           { command = [ "discord" ]; }
           { command = [ "firefox" ]; }
           { command = [ "zeditor" ]; }
+          {
+            sh = "signal-desktop --password-store=\"kwallet6\"";
+          }
         ];
         workspaces = {
           "1-browser".name = "browser";
@@ -143,6 +158,10 @@
             "action"
             "maximize-window-to-edges"
           ];
+          "Mod+P" = {
+            repeat = false;
+            action.spawn-sh = "wl-mirror $(niri msg --json focused-output | jq -r .name)";
+          };
           # "Mod+M" = action "maximize-column";
           "Mod+Shift+M" = action "fullscreen-window";
           "Mod+L" = noctalia-action "sessionMenu lockAndSuspend";
@@ -196,75 +215,4 @@
         };
       };
     };
-
-  programs.noctalia-shell = {
-    enable = true;
-    settings = {
-      location = {
-        name = "Munich, Germany";
-      };
-      appLauncher = {
-        enableClipboardHistory = true;
-        enableClipPreview = false;
-      };
-      dock.enabled = false;
-      bar = {
-        density = "compact";
-        position = "top";
-        showCapsule = true;
-        widgets = {
-          left = [
-            {
-              id = "SidePanelToggle";
-              useDistroLogo = true;
-            }
-            {
-              id = "ActiveWindow";
-            }
-          ];
-          center = [
-            {
-              hideUnoccupied = false;
-              id = "Workspace";
-              labelMode = "none";
-            }
-          ];
-          right = [
-            {
-              id = "MediaMini";
-            }
-            {
-              id = "WiFi";
-            }
-            {
-              id = "Bluetooth";
-            }
-            {
-              id = "Microphone";
-            }
-            {
-              id = "Volume";
-              displayMode = "alwaysShow";
-            }
-            {
-              id = "Battery";
-              alwaysShowPercentage = true;
-              warningThreshold = 30;
-              displayMode = "alwaysShow";
-            }
-            {
-              id = "Clock";
-              formatHorizontal = "HH:mm";
-              formatVertical = "HH mm";
-              useMonospacedFont = true;
-              usePrimaryColor = true;
-            }
-            {
-              id = "NotificationHistory";
-            }
-          ];
-        };
-      };
-    };
-  };
 }
