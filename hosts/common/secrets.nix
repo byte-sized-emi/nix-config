@@ -27,18 +27,19 @@
             path = "${users.emilia.home}/.ssh/id_${name}";
           };
         };
+        sshSecrets = map generateSshConfig sshKeys;
       in
-      lib.pipe sshKeys [
-        (map generateSshConfig)
-        lib.mkMerge
-      ]
-      // {
-        "kube/config" = {
-          owner = users.emilia.name;
-          path = "${users.emilia.home}/.kube/config";
-        };
-        "tailscale/auth_key".owner = "root";
-        # TODO: add more ssh keys here
-      };
+      lib.mkMerge (
+        [
+          {
+            "kube/config" = {
+              owner = users.emilia.name;
+              path = "${users.emilia.home}/.kube/config";
+            };
+            "tailscale/auth_key".owner = "root";
+          }
+        ]
+        ++ sshSecrets
+      );
   };
 }

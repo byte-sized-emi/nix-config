@@ -15,6 +15,7 @@
     ./backups.nix
     ./secrets.nix
     ./vaultwarden.nix
+    ./homepage.nix
     inputs.vscode-server.nixosModules.default
     (
       { ... }:
