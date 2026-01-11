@@ -1,4 +1,10 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   # import the home manager module
   imports = [
@@ -56,7 +62,7 @@
         debug.honor-xdg-activation-with-invalid-serial = [ ];
         spawn-at-startup = [
           {
-            sh = "QS_ICON_THEME=\"Adwaita\" noctalia-shell";
+            sh = "QS_ICON_THEME=\"Adwaita\" ${lib.getExe config.programs.noctalia-shell.package}";
           }
           {
             # to unblock bluetooth on startup - for some reason neither niri nor quickshell
@@ -140,10 +146,30 @@
           }
         ];
         binds = {
-          "XF86AudioRaiseVolume" = noctalia-action-locked "volume increase";
-          "XF86AudioLowerVolume" = noctalia-action-locked "volume decrease";
-          "XF86AudioMute" = noctalia-action-locked "volume muteOutput";
-          "XF86AudioMicMute" = noctalia-action-locked "volume muteInput";
+          "XF86AudioRaiseVolume" = action-with-arg "spawn" [
+            "pactl"
+            "set-sink-volume"
+            "@DEFAULT_SINK@"
+            "+5%"
+          ];
+          "XF86AudioLowerVolume" = action-with-arg "spawn" [
+            "pactl"
+            "set-sink-volume"
+            "@DEFAULT_SINK@"
+            "-5%"
+          ];
+          "XF86AudioMute" = action-with-arg "spawn" [
+            "pactl"
+            "set-sink-mute"
+            "@DEFAULT_SINK@"
+            "toggle"
+          ];
+          "XF86AudioMicMute" = action-with-arg "spawn" [
+            "pactl"
+            "set-source-mute"
+            "@DEFAULT_SOURCE@"
+            "toggle"
+          ];
           "XF86AudioPlay" = noctalia-action-hidden "media playPause";
           "XF86AudioNext" = noctalia-action-hidden "media next";
           "XF86AudioPrev" = noctalia-action-hidden "media previous";

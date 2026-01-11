@@ -33,21 +33,36 @@
             }
             {
               id = "ActiveWindow";
+              maxWidth = 600;
+              colorizeIcons = true;
+            }
+            {
+              id = "LockKeys";
             }
           ];
           center = [
             {
-              hideUnoccupied = false;
               id = "Workspace";
               labelMode = "none";
+              hideUnoccupied = true;
+            }
+            {
+              id = "Taskbar";
             }
           ];
           right = [
+            {
+              id = "Tray";
+              drawerEnabled = false;
+            }
             {
               id = "MediaMini";
             }
             {
               id = "WiFi";
+            }
+            {
+              id = "VPN";
             }
             {
               id = "Bluetooth";

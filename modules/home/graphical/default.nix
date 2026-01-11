@@ -7,6 +7,7 @@
     ./launcher.nix
     ./niri.nix
     ./noctalia.nix
+    ./swayidle.nix
     ./fachschaft.nix
   ];
 
