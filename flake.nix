@@ -20,6 +20,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-utils.url = "github:numtide/flake-utils";
+    naersk.url = "github:nix-community/naersk";
+
     nixpkgs-unstable.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
@@ -39,10 +42,11 @@
       nixpkgs-unstable,
       home-manager,
       slippi-launcher,
+      naersk,
+      flake-utils,
       ...
     }@inputs:
     {
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
       nixosConfigurations =
         let
           homeManagerConfig =
@@ -69,7 +73,10 @@
             ];
             specialArgs = {
               inherit inputs;
-              pkgs-unstable = import nixpkgs-unstable { system = "x86_64-linux"; };
+              pkgs-unstable = import nixpkgs-unstable {
+                system = "x86_64-linux";
+                config.allowUnfree = true;
+              };
             };
           };
 
@@ -99,5 +106,36 @@
             ];
           };
         };
-    };
+    }
+    // (flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = (import nixpkgs) {
+          inherit system;
+        };
+
+        naersk' = pkgs.callPackage naersk { };
+      in
+      rec {
+        formatter = pkgs.nixfmt-tree;
+        packages.nix-update-server = naersk'.buildPackage {
+          src = ./packages/nix-update-server/.;
+          nativeBuildInputs = with pkgs; [
+            pkg-config
+          ];
+          buildInputs = with pkgs; [
+            openssl
+          ];
+        };
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [ packages.nix-update-server ];
+          buildInputs = with pkgs; [
+            bacon
+            rust-analyzer
+            rustfmt
+          ];
+        };
+
+      }
+    ));
 }

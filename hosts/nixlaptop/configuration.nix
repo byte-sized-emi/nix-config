@@ -93,6 +93,7 @@
       unstable-packages = with pkgs-unstable; [
         deezer-enhanced
         mission-center
+        beeper
       ];
     in
     normal-packages ++ unstable-packages;
@@ -112,6 +113,7 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
   virtualisation.docker.enable = true;
 
   # List packages installed in system profile. To search, run:
