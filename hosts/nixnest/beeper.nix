@@ -23,6 +23,7 @@ let
         };
         serviceConfig = {
           Restart = "always";
+          RestartSec = "2s";
         };
       };
     };
