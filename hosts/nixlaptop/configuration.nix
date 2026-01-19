@@ -93,6 +93,7 @@
       unstable-packages = with pkgs-unstable; [
         deezer-enhanced
         mission-center
+        beeper
       ];
     in
     normal-packages ++ unstable-packages;

@@ -16,6 +16,7 @@
     ./secrets.nix
     ./vaultwarden.nix
     ./homepage.nix
+    ./beeper.nix
     inputs.vscode-server.nixosModules.default
     (
       { ... }:

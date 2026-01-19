@@ -24,5 +24,6 @@
       "kanidm/immichOauthSecret".owner = users.kanidm.name;
       "kanidm/mealieOauthSecretEnv".owner = "root";
       "vaultwarden/env".owner = users.vaultwarden.name;
+      "beeper_bridge_manager/config" = { };
     };
 }

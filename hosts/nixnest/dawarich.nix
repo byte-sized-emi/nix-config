@@ -4,9 +4,7 @@
   settings,
   ...
 }:
-if (settings.dawarich.enable == false) then
-  { }
-else
+lib.mkIf settings.dawarich.enable (
   let
     port = "3000";
   in
@@ -116,3 +114,4 @@ else
         };
       };
   }
+)
