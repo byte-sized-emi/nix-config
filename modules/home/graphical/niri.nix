@@ -88,6 +88,7 @@
           {
             sh = "signal-desktop --password-store=\"kwallet6\"";
           }
+          { command = [ "beeper" ]; }
         ];
         workspaces = {
           "1-browser".name = "browser";
@@ -132,6 +133,7 @@
             matches = [
               { app-id = "^discord$"; }
               { app-id = "^signal$"; }
+              { app-id = "^BeeperTexts$"; }
             ];
             open-on-workspace = "social";
             open-maximized = true;
