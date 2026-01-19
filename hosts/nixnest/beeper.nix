@@ -13,6 +13,7 @@ let
       containers."beeper-${name}" = {
         containerConfig = {
           image = "ghcr.io/beeper/bridge-manager:8ff78f238554b359e24eb196649eaea0179a700b";
+          exec = "/usr/local/bin/run-bridge.sh ${name}";
           volumes = [
             "${volumeRef}:/data"
             "${configPath}:/tmp/bbctl.json:ro"
