@@ -1,0 +1,13 @@
+[package]
+name = "nix-update-server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.8"
+bytes = "1.11.0"
+futures = "0.3.31"
+git2 = "0.20.3"
+serde = { version = "1.0.228", features = ["derive"] }
+tokio = { version = "1.49.0", features = ["io-util", "macros", "process", "rt-multi-thread"] }
+tokio-listener = { version = "0.5.2", features = ["axum08"] }

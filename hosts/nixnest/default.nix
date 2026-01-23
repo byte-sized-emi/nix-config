@@ -2,6 +2,7 @@
 {
   imports = [
     ../common
+    ../../modules/auto-update.nix
     ./configuration.nix
     ./podman.nix
     ./hass.nix

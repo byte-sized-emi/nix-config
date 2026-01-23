@@ -20,6 +20,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-utils.url = "github:numtide/flake-utils";
+    naersk.url = "github:nix-community/naersk";
+
     nixpkgs-unstable.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
@@ -35,14 +38,16 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
       slippi-launcher,
+      naersk,
+      flake-utils,
       ...
     }@inputs:
     {
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
       nixosConfigurations =
         let
           homeManagerConfig =
@@ -64,6 +69,9 @@
           nixlaptop = nixpkgs.lib.nixosSystem {
             modules = [
               ./hosts/nixlaptop
+              {
+                nixpkgs.overlays = [ self.overlays.x86_64-linux.default ];
+              }
               (homeManagerConfig { extraModules = [ ./modules/home/graphical ]; })
               slippi-launcher.nixosModules.default
             ];
@@ -99,8 +107,51 @@
             modules = [
               ./hosts/nixnest
               (homeManagerConfig { })
+              {
+                nixpkgs.overlays = [ self.overlays.x86_64-linux.default ];
+              }
             ];
           };
         };
-    };
+    }
+    // (flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = (import nixpkgs-unstable) {
+          inherit system;
+        };
+
+        naersk' = pkgs.callPackage naersk { };
+      in
+      rec {
+        formatter = pkgs.nixfmt-tree;
+        packages.nix-update-server = naersk'.buildPackage {
+          src = ./packages/nix-update-server/.;
+          meta = {
+            mainProgram = "nix-update-server";
+          };
+          nativeBuildInputs = with pkgs; [
+            pkg-config
+          ];
+          buildInputs = with pkgs; [
+            openssl
+            git
+            nixos-rebuild-ng
+          ];
+        };
+        overlays.default = final: prev: {
+          nix-update-server = packages.nix-update-server;
+        };
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [ packages.nix-update-server ];
+          buildInputs = with pkgs; [
+            bacon
+            rust-analyzer
+            rustfmt
+            rustc
+          ];
+        };
+
+      }
+    ));
 }
