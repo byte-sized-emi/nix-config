@@ -67,20 +67,25 @@ async fn update_server_request(Query(params): Query<DeployParams>) -> impl IntoR
     let stream = stream::unfold(
         (lines, channel_rx),
         async move |(mut reader, mut channel_rx)| {
-            tokio::select! {
+            let line = tokio::select! {
                 line = reader.next_line() => {
                     match line {
                         Ok(Some(line)) => {
-                            let line = format!("{line}\n");
-                            Some((Ok::<_, Infallible>(line), (reader, channel_rx)))
+                            Some(line)
                         }
                         _ => None,
                     }
                 }
                 Some(msg) = channel_rx.recv() => {
-                    let line = format!("{msg}\n");
-                    Some((Ok::<_, Infallible>(line), (reader, channel_rx)))
+                    Some(msg)
                 }
+            };
+            if let Some(line) = &line {
+                println!("{line}");
+                let line = format!("{line}\n");
+                Some((Ok::<_, Infallible>(line), (reader, channel_rx)))
+            } else {
+                None
             }
         },
     );
@@ -113,6 +118,11 @@ async fn update_commands(
             let _ = tx.send(msg).await;
             Err(())
         } else {
+            let msg = format!(
+                "Command `{command}` with args {args:?} succeeded with status {:?}",
+                status.code()
+            );
+            tx.send(msg).await.unwrap();
             Ok(())
         }
     };

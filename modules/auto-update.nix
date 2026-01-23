@@ -1,22 +1,25 @@
 { pkgs, lib, ... }:
 let
-  user = "nixupdate";
+  user = "root";
 in
 {
-  users.users.${user} = {
-    isSystemUser = true;
-    description = "User to run the nix update server";
-    createHome = false;
-    group = user;
-  };
-  users.groups.${user} = { };
+  # users.users.${user} = {
+  #   isSystemUser = true;
+  #   description = "User to run the nix update server";
+  #   createHome = false;
+  #   group = user;
+  # };
+  # users.groups.${user} = { };
 
   environment.systemPackages = [ pkgs.nix-update-server ];
   systemd.services.update-daemon = {
     description = "Socket activated daemon to update the NixOS system based on a git branch";
     serviceConfig = {
       ExecStart = lib.getExe pkgs.nix-update-server;
-      User = user;
+      User = "root";
+      WorkingDirectory = "/home/emilia/nix-config";
+      AmbientCapabilities = "CAP_DAC_READ_SEARCH";
+      ReadWriteDirectories = "/nix/store /etc/nixos /home/emilia/nix-config";
     };
     after = [ "network.service" ];
   };
@@ -30,28 +33,28 @@ in
     };
   };
 
-  security.doas.extraRules = [
-    {
-      cmd = "nix-env";
-      args = [ "switch" ];
-      noPass = true;
-      users = [ user ];
-    }
-  ];
+  # security.doas.extraRules = [
+  #   {
+  #     cmd = "nix-env";
+  #     args = [ "switch" ];
+  #     noPass = true;
+  #     users = [ user ];
+  #   }
+  # ];
 
-  security.sudo.extraRules = [
-    {
-      users = [ user ];
-      commands = [
-        {
-          command = "/run/current-system/sw/bin/nix-env";
-          options = [
-            "NOPASSWD"
-          ];
-        }
-      ];
-    }
-  ];
+  # security.sudo.extraRules = [
+  #   {
+  #     users = [ user ];
+  #     commands = [
+  #       {
+  #         command = "/run/current-system/sw/bin/nix-env";
+  #         options = [
+  #           "NOPASSWD"
+  #         ];
+  #       }
+  #     ];
+  #   }
+  # ];
 
   programs.git.enable = true;
   programs.git.config.safe.directory = "/home/emilia/nix-config";
