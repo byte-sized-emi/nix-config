@@ -137,13 +137,13 @@
           buildInputs = with pkgs; [
             openssl
             git
-            nixos-rebuild-ng
+            nixos-rebuild
           ];
           postInstall = ''
             wrapProgram $out/bin/nix-update-server --prefix PATH : ${
               pkgs.lib.makeBinPath [
                 pkgs.git
-                pkgs.nixos-rebuild-ng
+                pkgs.nixos-rebuild
               ]
             }
           '';
