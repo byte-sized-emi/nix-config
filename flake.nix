@@ -117,7 +117,7 @@
     // (flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = (import nixpkgs-unstable) {
+        pkgs = (import nixpkgs) {
           inherit system;
         };
 
