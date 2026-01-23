@@ -132,12 +132,21 @@
           };
           nativeBuildInputs = with pkgs; [
             pkg-config
+            makeWrapper
           ];
           buildInputs = with pkgs; [
             openssl
             git
             nixos-rebuild-ng
           ];
+          postInstall = ''
+            wrapProgram $out/bin/nix-update-server --prefix PATH : ${
+              pkgs.lib.makeBinPath [
+                pkgs.git
+                pkgs.nixos-rebuild-ng
+              ]
+            }
+          '';
         };
         overlays.default = final: prev: {
           nix-update-server = packages.nix-update-server;
