@@ -1,0 +1,18 @@
+name: Check backend code
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  update-hosts:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        host:
+          - nixnest
+
+    steps:
+      - run: echo "Updating host ${{ matrix.host }}"
+      # - run: curl -X POST --no-buffer http://${{ matrix.host }}:36196/update
