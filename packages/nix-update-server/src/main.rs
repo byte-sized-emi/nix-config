@@ -147,7 +147,7 @@ async fn update_commands(
     let msg = format!("Successfully pulled the '{branch}' branch\n");
     tx.send(msg).await.unwrap();
 
-    run_command("nixos-rebuild", &["switch", "--sudo", "-L"]).await?;
+    run_command("nixos-rebuild", &["switch", "-L"]).await?;
 
     println!("Done with all commands!");
     Ok(())
