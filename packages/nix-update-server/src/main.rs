@@ -137,6 +137,7 @@ async fn update_commands(
 
     run_command("nixos-rebuild", &["switch", "-L"]).await?;
 
+    let _ = tx.send("Done with all commands!".to_string()).await;
     println!("Done with all commands!");
     Ok(())
 }

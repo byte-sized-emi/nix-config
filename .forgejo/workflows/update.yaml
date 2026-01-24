@@ -11,8 +11,21 @@ jobs:
     strategy:
       matrix:
         host:
-          - nixnest
+          - nixnest.bushbaby-chimera.ts.net
 
     steps:
+      - run: echo "Joining tailscsale network"
+      - name: Tailscale
+        uses: github.com/tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:cicd
+
+      - name: Tailscale
+        uses: github.com/tailscale/github-action@v4
+        with:
+          ping: ${{ matrix.host }}
+
       - run: echo "Updating host ${{ matrix.host }}"
-      # - run: curl -X POST --no-buffer http://${{ matrix.host }}:36196/update
+      - run: curl -v -X POST --no-buffer http://${{ matrix.host }}:36196/update
