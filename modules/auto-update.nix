@@ -15,6 +15,7 @@
 
   systemd.sockets.update-daemon = {
     wantedBy = [ "sockets.target" ];
+    after = [ "tailscaled.service" ];
     socketConfig = {
       ListenStream = 36196;
       Accept = false;

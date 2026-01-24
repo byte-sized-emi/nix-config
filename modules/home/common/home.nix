@@ -67,6 +67,9 @@
       zopen = "zeditor -r";
       sops-zed = "EDITOR=\"zeditor --wait\" sops";
       sudo = "doas";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
+      "....." = "cd ../../../..";
     };
   };
 

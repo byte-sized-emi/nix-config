@@ -80,8 +80,9 @@ async fn update_server_request(Query(params): Query<DeployParams>) -> impl IntoR
                     Some(msg)
                 }
             };
+
             if let Some(line) = &line {
-                println!("{line}");
+                println!("command output: {line}");
                 let line = format!("{line}\n");
                 Some((Ok::<_, Infallible>(line), (reader, channel_rx)))
             } else {
@@ -102,7 +103,7 @@ async fn update_commands(
 
     let run_command = async |command: &str, args: &[&str]| {
         let msg = format!("Executing `{command}` with args {args:?}");
-        tx.send(msg).await.unwrap();
+        let _ = tx.send(msg).await;
         let status = Command::new(command)
             .args(args)
             .current_dir("/home/emilia/nix-config")
@@ -122,55 +123,20 @@ async fn update_commands(
                 "Command `{command}` with args {args:?} succeeded with status {:?}",
                 status.code()
             );
-            tx.send(msg).await.unwrap();
+            let _ = tx.send(msg).await;
             Ok(())
         }
     };
-
-    // match update_repository(branch) {
-    //     Err(err) => {
-    //         let msg =
-    //             format!("Something went wrong while switching to branch '{branch}':\n{err}\n");
-    //         tx.send(msg).await.unwrap();
-    //         return;
-    //     }
-    //     Ok(head_name) => {
-    //         let msg = format!("HEAD now pointing to '{head_name}'\n");
-    //         tx.send(msg).await.unwrap();
-    //     }
-    // }
 
     run_command("git", &["checkout", branch]).await?;
 
     run_command("git", &["pull", "origin", branch]).await?;
 
     let msg = format!("Successfully pulled the '{branch}' branch\n");
-    tx.send(msg).await.unwrap();
+    let _ = tx.send(msg).await;
 
     run_command("nixos-rebuild", &["switch", "-L"]).await?;
 
     println!("Done with all commands!");
     Ok(())
 }
-
-// fn update_repository(branch_name: &str) -> Result<String, git2::Error> {
-//     let repo = git2::Repository::open("/home/emilia/nix-config")?;
-
-//     let mut remote = repo.find_remote("origin")?;
-//     remote.fetch(&[branch_name], None, None)?;
-
-//     let branch = repo
-//         .find_branch(branch_name, git2::BranchType::Remote)
-//         .unwrap();
-
-//     // branch.
-
-//     let (object, reference) = repo.revparse_ext(branch_name)?;
-
-//     repo.set_head(reference.unwrap().name().unwrap())?;
-//     repo.checkout_tree(&object, None).unwrap();
-//     let head = repo.head().unwrap();
-//     let head_name = head.name().unwrap();
-
-//     Ok(head_name.to_string())
-// }
