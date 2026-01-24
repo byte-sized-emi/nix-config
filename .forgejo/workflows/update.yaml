@@ -14,15 +14,25 @@ jobs:
           - nixnest.bushbaby-chimera.ts.net
 
     steps:
-      - run: echo "Joining tailscsale network"
-      - name: Tailscale
+      - run: echo "Joining tailscale network"
+      - name: Tailscale join
         uses: https://github.com/tailscale/github-action@v4
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:cicd
+          version: latest
+          use-cache: "false"
 
-      - name: Tailscale
+      - name: Test connectivity
+        run: |
+          # Test that we can reach the Tailscale network
+          tailscale status
+
+          # Show our IP address
+          tailscale ip
+
+      - name: Tailscale ping
         uses: https://github.com/tailscale/github-action@v4
         with:
           ping: ${{ matrix.host }}
