@@ -28,7 +28,7 @@ jobs:
           tags: tag:cicd
           version: latest
           use-cache: "false"
-          tailscaled-args: --verbose 2
+          tailscaled-args: --verbose 2 --tun=userspace-networking
 
       - run: cat ~/tailscaled.log
       - name: Test connectivity
