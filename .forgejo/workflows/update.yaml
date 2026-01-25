@@ -21,13 +21,16 @@ jobs:
         run: node --version
       - name: Tailscale join
         uses: https://github.com/tailscale/github-action@v4
+        continue-on-error: true
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:cicd
           version: latest
           use-cache: "false"
+          tailscaled-args: --verbose
 
+      - run: cat ~/tailscale.log
       - name: Test connectivity
         run: |
           # Test that we can reach the Tailscale network
