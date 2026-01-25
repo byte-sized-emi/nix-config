@@ -39,10 +39,8 @@ jobs:
           # Show our IP address
           tailscale ip
 
-      - name: Tailscale ping
-        uses: https://github.com/tailscale/github-action@v4
-        with:
-          ping: ${{ matrix.host }}
+      - name: ping host
+        run: ping ${{ matrix.host }}
 
       - run: echo "Updating host ${{ matrix.host }}"
       - run: curl -v -X POST --no-buffer http://${{ matrix.host }}:36196/update
