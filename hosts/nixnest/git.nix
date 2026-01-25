@@ -39,7 +39,6 @@
       labels = [
         "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
         "ubuntu-24.04:docker://ghcr.io/catthehacker/ubuntu:rust-24.04"
-        "node-25-bookworm:docker://docker.io/library/node:25-bookworm"
       ];
     };
   };

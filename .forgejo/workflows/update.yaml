@@ -6,7 +6,7 @@ on:
 
 jobs:
   update-hosts:
-    runs-on: node-25-bookworm
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -14,6 +14,7 @@ jobs:
           - nixnest.bushbaby-chimera.ts.net
 
     steps:
+      - run: nvm install lts/krypton # should be v24
       - name: NodeJS version
         run: node --version
       - name: Tailscale join
