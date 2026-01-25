@@ -14,7 +14,8 @@ jobs:
           - nixnest.bushbaby-chimera.ts.net
 
     steps:
-      - run: echo "Joining tailscale network with client id ${{ secrets.TS_OAUTH_CLIENT_ID }}"
+      - name: NodeJS version
+        run: node --version
       - name: Tailscale join
         uses: https://github.com/tailscale/github-action@v4
         with:

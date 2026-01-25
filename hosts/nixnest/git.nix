@@ -39,8 +39,6 @@
       labels = [
         "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
         "ubuntu-24.04:docker://ghcr.io/catthehacker/ubuntu:rust-24.04"
-        "ubuntu-22.04:docker://ghcr.io/catthehacker/ubuntu:rust-22.04"
-        "ubuntu-20.04:docker://ghcr.io/catthehacker/ubuntu:rust-20.04"
       ];
     };
   };
