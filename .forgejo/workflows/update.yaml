@@ -30,7 +30,7 @@ jobs:
           use-cache: "false"
           tailscaled-args: --verbose
 
-      - run: cat ~/tailscale.log
+      - run: cat ~/tailscaled.log
       - name: Test connectivity
         run: |
           # Test that we can reach the Tailscale network
