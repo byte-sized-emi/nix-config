@@ -29,6 +29,7 @@ jobs:
           version: latest
           use-cache: "false"
           tailscaled-args: --verbose 2 --tun=userspace-networking
+          ping: ${{ matrix.host }}
 
       - run: cat ~/tailscaled.log
       - name: Test connectivity
@@ -40,4 +41,4 @@ jobs:
           tailscale ip
 
       - run: echo "Updating host ${{ matrix.host }}"
-      - run: curl -X POST --no-buffer http://${{ matrix.host }}:36196/update
+      - run: curl -X POST -sS --no-buffer --connect-timeout 20 http://${{ matrix.host }}:36196/update
