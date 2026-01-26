@@ -19,6 +19,14 @@
         calt = true;
       };
       load_direnv = "shell_hook";
+      git_hosting_providers = [
+        {
+          provider = "forgejo";
+          name = "git.byte-sized.fyi";
+          base_url = "https://git.byte-sized.fyi";
+        }
+      ];
+
     };
 
     userKeymaps = [
