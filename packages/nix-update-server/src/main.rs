@@ -4,7 +4,7 @@ use serde::Deserialize;
 
 use futures::stream;
 use std::convert::Infallible;
-use tokio::io::{AsyncBufReadExt as _, AsyncWriteExt};
+use tokio::io::AsyncBufReadExt as _;
 use tokio::net::unix::pipe::{Sender, pipe};
 use tokio::sync::mpsc;
 use tokio::{io::BufReader, process::Command};
@@ -102,7 +102,12 @@ async fn update_commands(
     let stdout = stdout_sender.into_blocking_fd().unwrap();
 
     let run_command = async |command: &str, args: &[&str]| {
-        let msg = format!("Executing `{command}` with args {args:?}");
+        let full_command = if args.is_empty() {
+            command.to_string()
+        } else {
+            format!("{command} {}", args.join(" "))
+        };
+        let msg = format!("Executing `{full_command}`");
         let _ = tx.send(msg).await;
         let status = Command::new(command)
             .args(args)
@@ -114,14 +119,16 @@ async fn update_commands(
             .unwrap();
 
         if !status.success() {
-            let msg =
-                format!("Command `{command}` with args {args:?} failed with status: {status}");
+            let msg = format!("Command `{full_command}` failed with status: {status}");
             let _ = tx.send(msg).await;
             Err(())
         } else {
             let msg = format!(
-                "Command `{command}` with args {args:?} succeeded with status {:?}",
-                status.code()
+                "Command `{full_command}` succeeded with status {}",
+                status
+                    .code()
+                    .map(|s| s.to_string())
+                    .unwrap_or("(no status)".to_string())
             );
             let _ = tx.send(msg).await;
             Ok(())
