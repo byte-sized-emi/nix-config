@@ -38,6 +38,9 @@
             }
             {
               id = "LockKeys";
+              showCapsLock = true;
+              showNumLock = false;
+              showScrollLock = false;
             }
           ];
           center = [

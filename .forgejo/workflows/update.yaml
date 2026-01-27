@@ -31,7 +31,7 @@ jobs:
           tailscaled-args: --verbose 2 --tun=userspace-networking
           ping: ${{ matrix.host }}
 
-      - run: cat ~/tailscaled.log
+      # - run: cat ~/tailscaled.log
       - name: Test connectivity
         run: |
           # Test that we can reach the Tailscale network
@@ -40,5 +40,10 @@ jobs:
           # Show our IP address
           tailscale ip
 
-      - run: echo "Updating host ${{ matrix.host }}"
-      - run: curl -X POST -sS --no-buffer --connect-timeout 20 http://${{ matrix.host }}:36196/update
+      - name: Updating host
+        run: |
+          export http_proxy=http://localhost:1055/
+          export ALL_PROXY=socks5://localhost:1055/
+          export HTTP_PROXY=http://localhost:1055/
+
+          curl -X POST -sS --no-buffer --connect-timeout 20 http://${{ matrix.host }}:36196/update
