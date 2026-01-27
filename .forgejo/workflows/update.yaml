@@ -28,7 +28,7 @@ jobs:
           tags: tag:cicd
           version: latest
           use-cache: "false"
-          tailscaled-args: --verbose 2 --tun=userspace-networking
+          tailscaled-args: --verbose 2 --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
           ping: ${{ matrix.host }}
 
       # - run: cat ~/tailscaled.log
