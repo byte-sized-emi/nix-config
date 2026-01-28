@@ -1,4 +1,5 @@
 use axum::body::Body;
+use axum::extract::State;
 use axum::{Router, extract::Query, response::IntoResponse};
 use serde::Deserialize;
 
@@ -6,7 +7,8 @@ use futures::stream;
 use std::convert::Infallible;
 use tokio::io::AsyncBufReadExt as _;
 use tokio::net::unix::pipe::{Sender, pipe};
-use tokio::sync::mpsc;
+use tokio::signal;
+use tokio::sync::{mpsc, watch};
 use tokio::{io::BufReader, process::Command};
 use tokio_listener::{Listener, ListenerAddress};
 
@@ -38,9 +40,44 @@ async fn main() {
         }
     };
 
-    let app = Router::new().route("/update", axum::routing::post(update_server_request));
+    let (shutdown_tx, mut shutdown_rx) = watch::channel::<bool>(false);
+
+    let shutdown_signal = async move {
+        let internal_shutdown_loop = async {
+            // wait for shutdown command
+            let _ = shutdown_rx.wait_for(|s| *s).await;
+        };
+
+        let ctrl_c = async {
+            signal::ctrl_c()
+                .await
+                .expect("failed to install Ctrl+C handler");
+        };
+
+        #[cfg(unix)]
+        let terminate = async {
+            signal::unix::signal(signal::unix::SignalKind::terminate())
+                .expect("failed to install signal handler")
+                .recv()
+                .await;
+        };
+
+        #[cfg(not(unix))]
+        let terminate = std::future::pending::<()>();
+
+        tokio::select! {
+            _ = ctrl_c => {},
+            _ = terminate => {},
+            _ = internal_shutdown_loop => {},
+        }
+    };
+
+    let app = Router::new()
+        .route("/update", axum::routing::post(update_server_request))
+        .with_state(shutdown_tx);
 
     axum::serve(listener, app.into_make_service())
+        .with_graceful_shutdown(shutdown_signal)
         .await
         .unwrap();
 }
@@ -50,7 +87,10 @@ struct DeployParams {
     branch: Option<String>,
 }
 
-async fn update_server_request(Query(params): Query<DeployParams>) -> impl IntoResponse {
+async fn update_server_request(
+    Query(params): Query<DeployParams>,
+    State(shutdown_tx): State<watch::Sender<bool>>,
+) -> impl IntoResponse {
     let branch = params.branch.unwrap_or("main".to_string());
     println!("Starting update");
     let (tx, rx) = pipe().unwrap();
@@ -58,7 +98,7 @@ async fn update_server_request(Query(params): Query<DeployParams>) -> impl IntoR
     let (channel_tx, channel_rx) = mpsc::channel::<String>(100);
 
     let _commands_task = tokio::spawn(async move {
-        let _ = update_commands(tx, channel_tx, &branch).await;
+        let _ = update_commands(tx, channel_tx, &branch, shutdown_tx).await;
     });
 
     // Create a stream of lines from the BufReader
@@ -98,6 +138,7 @@ async fn update_commands(
     stdout_sender: Sender,
     tx: mpsc::Sender<String>,
     branch: &str,
+    shutdown_tx: watch::Sender<bool>,
 ) -> Result<(), ()> {
     let stdout = stdout_sender.into_blocking_fd().unwrap();
 
@@ -146,5 +187,7 @@ async fn update_commands(
 
     let _ = tx.send("Done with all commands!".to_string()).await;
     println!("Done with all commands!");
+    let _ = shutdown_tx.send(true);
+
     Ok(())
 }

@@ -26,8 +26,9 @@ This is meant to be used either locally through the kanidm CLI, or through cloud
 # nix-update-server
 
 ## TODOs
-- [ ] automatically update nixlaptop
-- [ ] how to update nix-update-server with nix-update-server?
+- [x] automatically update nixlaptop
+- [x] how to update nix-update-server with nix-update-server?
+- [x] stop server after successful update
 - [ ] automatic nix flake updates
 - [ ] don't update with local changes in the git repo
 - [ ] show notification with cancel button before updating

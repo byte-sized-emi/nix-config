@@ -3,6 +3,7 @@
   environment.systemPackages = [ pkgs.nix-update-server ];
   systemd.services.update-daemon = {
     description = "Socket activated daemon to update the NixOS system based on a git branch";
+    restartIfChanged = false;
     serviceConfig = {
       ExecStart = lib.getExe pkgs.nix-update-server;
       User = "root";
