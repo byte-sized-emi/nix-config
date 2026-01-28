@@ -19,7 +19,7 @@
       timeouts = [
         {
           timeout = lockTimeout - 5;
-          command = "${lib.getExe pkgs.libnotify} 'swayidle' 'Locking soon!' --icon='system-lock-screen' -t 5000";
+          command = "${lib.getExe pkgs.libnotify} -a 'swayidle' --urgency=critical --icon='system-lock-screen' 'Locking soon!'";
         }
         {
           timeout = lockTimeout;

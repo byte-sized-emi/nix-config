@@ -12,13 +12,13 @@ jobs:
       matrix:
         host:
           - nixnest.bushbaby-chimera.ts.net
+          - nixlaptop.bushbaby-chimera.ts.net
 
     steps:
       - uses: actions/setup-node@v6
         with:
           node-version: 24
-      - name: NodeJS version
-        run: node --version
+
       - name: Tailscale join
         uses: https://github.com/tailscale/github-action@v4
         continue-on-error: true

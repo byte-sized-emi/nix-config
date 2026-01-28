@@ -22,3 +22,12 @@ running on localhost:8443
 with the cloudflare origin certificate
 
 This is meant to be used either locally through the kanidm CLI, or through cloudflare.
+
+# nix-update-server
+
+## TODOs
+- [ ] automatically update nixlaptop
+- [ ] how to update nix-update-server with nix-update-server?
+- [ ] automatic nix flake updates
+- [ ] don't update with local changes in the git repo
+- [ ] show notification with cancel button before updating

@@ -24,7 +24,16 @@
     # xdg-desktop-portal-gnome
     # polkit-kde-agent
     kdePackages.polkit-kde-agent-1
+    papirus-icon-theme
   ];
+
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Papirus";
+      package = pkgs.papirus-icon-theme;
+    };
+  };
 
   # https://github.com/sodiboo/niri-flake/blob/main/docs.md
   programs.niri =
