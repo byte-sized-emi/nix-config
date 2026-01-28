@@ -74,7 +74,7 @@
   # Upgrade log can be seen using:
   # `systemctl status nixos-upgrade.service`
   system.autoUpgrade = {
-    enable = true;
+    enable = false;
     flake = inputs.self.outPath;
     flags = [
       "--update-input"
