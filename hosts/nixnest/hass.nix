@@ -39,7 +39,7 @@ in
     {
       containers.home-assistant = {
         containerConfig = {
-          image = "ghcr.io/home-assistant/home-assistant:2025.4.4";
+          image = "ghcr.io/home-assistant/home-assistant:2026.1.3";
           environments.TZ = "Europe/Berlin";
           exposePorts = [ "${toString port}" ];
           addCapabilities = [ "CAP_NET_RAW" ];
