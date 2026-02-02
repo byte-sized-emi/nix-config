@@ -18,7 +18,10 @@
   };
 
   systemd.sockets.update-daemon = {
-    wantedBy = [ "sockets.target" ];
+    wantedBy = [
+      "sockets.target"
+      "multi-user.target"
+    ];
     after = [
       "network.target"
       "tailscaled.service"
