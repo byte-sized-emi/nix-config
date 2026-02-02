@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  settings,
   ...
 }:
 {
@@ -11,8 +10,8 @@
     group = "kanidm";
   };
 
-  services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
-    ${settings.sso.domain} = "https://${config.services.kanidm.serverSettings.bindaddress}";
+  services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
+    ${config.settings.sso.domain} = "https://${config.services.kanidm.serverSettings.bindaddress}";
   };
 
   # NOTE: cloudflare is setup to redirect requests from
@@ -24,14 +23,14 @@
     enableServer = true;
     package = pkgs.kanidmWithSecretProvisioning_1_8;
     serverSettings = {
-      origin = "https://${settings.sso.domain}";
-      domain = settings.sso.domain;
+      origin = "https://${config.settings.sso.domain}";
+      domain = config.settings.sso.domain;
       bindaddress = "127.0.0.1:8443";
       tls_chain = config.sops.secrets."kanidm/tlsChain".path;
       tls_key = config.sops.secrets."kanidm/tlsKey".path;
       online_backup = {
         path = "/var/backup/kanidm";
-        schedule = settings.backup.prepare.interval_cron;
+        schedule = config.settings.backup.prepare.interval_cron;
         versions = 7;
       };
     };

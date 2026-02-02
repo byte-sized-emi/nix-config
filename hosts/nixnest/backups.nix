@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  settings,
   ...
 }:
 {
@@ -9,7 +8,7 @@
   systemd.timers."prepare-backup" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = settings.backup.prepare.interval;
+      OnCalendar = config.settings.backup.prepare.interval;
       Persistent = true;
     };
   };
@@ -67,7 +66,7 @@
     environment.BORG_RSH = "ssh -i /home/emilia/.ssh/id_borgbase";
     repo = "ssh://d0804253@d0804253.repo.borgbase.com/./repo";
     compression = "auto,zstd";
-    startAt = settings.backup.interval;
+    startAt = config.settings.backup.interval;
     encryption = {
       mode = "repokey";
       passCommand = "cat ${config.sops.secrets."borg/backupKey".path}";

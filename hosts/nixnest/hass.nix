@@ -1,6 +1,5 @@
 {
   config,
-  settings,
   ...
 }:
 let
@@ -8,7 +7,7 @@ let
   port = 8123;
 in
 {
-  services.caddy.virtualHosts."homeassistant.${settings.services.domain}" = {
+  services.caddy.virtualHosts."homeassistant.${config.settings.services.domain}" = {
     extraConfig = ''
       reverse_proxy localhost:${toString port}
     '';

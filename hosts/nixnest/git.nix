@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  settings,
   ...
 }:
 {
@@ -10,8 +9,8 @@
     package = pkgs.forgejo-lts;
     settings = {
       server = {
-        DOMAIN = settings.git.domain;
-        ROOT_URL = "https://${settings.git.domain}";
+        DOMAIN = config.settings.git.domain;
+        ROOT_URL = "https://${config.settings.git.domain}";
         HTTP_PORT = 7001;
         SSH_PORT = 2222;
       };
@@ -23,7 +22,7 @@
 
     dump = {
       enable = true;
-      interval = settings.backup.prepare.interval;
+      interval = config.settings.backup.prepare.interval;
       type = "tar.gz";
       backupDir = "/var/backup/forgejo/";
     };
@@ -34,7 +33,7 @@
     instances.default = {
       enable = true;
       name = "monolith";
-      url = "https://${settings.git.domain}";
+      url = "https://${config.settings.git.domain}";
       tokenFile = config.sops.secrets."forgejo/actionsRunnerToken".path;
       labels = [
         "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
@@ -44,8 +43,8 @@
     };
   };
 
-  services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
-    ${settings.git.domain} =
+  services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
+    ${config.settings.git.domain} =
       "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
   };
 }

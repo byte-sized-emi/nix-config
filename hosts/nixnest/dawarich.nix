@@ -1,15 +1,14 @@
 {
   config,
   lib,
-  settings,
   ...
 }:
-lib.mkIf settings.dawarich.enable (
+lib.mkIf config.settings.dawarich.enable (
   let
     port = "3000";
   in
   {
-    services.caddy.virtualHosts."location.${settings.services.domain}" = {
+    services.caddy.virtualHosts."location.${config.settings.services.domain}" = {
       extraConfig = ''
         reverse_proxy localhost:${port}
       '';
@@ -87,7 +86,7 @@ lib.mkIf settings.dawarich.enable (
               CACHE_DATABASE_PATH = "/dawarich_db_data/dawarich_development_cache.sqlite3";
               CABLE_DATABASE_PATH = "/dawarich_db_data/dawarich_development_cable.sqlite3";
               MIN_MINUTES_SPENT_IN_CITY = "60";
-              APPLICATION_HOSTS = "localhost,nixnest,location.${settings.services.domain}";
+              APPLICATION_HOSTS = "localhost,nixnest,location.${config.settings.services.domain}";
               TIME_ZONE = "Europe/Berlin";
               APPLICATION_PROTOCOL = "http";
               PROMETHEUS_EXPORTER_ENABLED = "false";

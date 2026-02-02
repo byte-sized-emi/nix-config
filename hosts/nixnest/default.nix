@@ -3,7 +3,9 @@
   imports = [
     ../common
     ../../modules/auto-update.nix
+    ../../modules/syncthing
     ./configuration.nix
+    ./settings.nix
     ./podman.nix
     ./hass.nix
     ./dawarich.nix

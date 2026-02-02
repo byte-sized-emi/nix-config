@@ -1,4 +1,4 @@
-{ config, settings, ... }:
+{ config, ... }:
 {
   # monitoring uses the 9000 range of ports
   # adapted from https://oblivion.keyruu.de/Homelab/Monitoring
@@ -97,7 +97,7 @@
     };
   };
 
-  services.caddy.virtualHosts."grafana.${settings.services.domain}" = {
+  services.caddy.virtualHosts."grafana.${config.settings.services.domain}" = {
     extraConfig = ''
       reverse_proxy localhost:${toString config.services.grafana.settings.server.http_port}
     '';

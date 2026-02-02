@@ -88,21 +88,6 @@
             system = "x86_64-linux";
             specialArgs = {
               inherit inputs;
-              settings = rec {
-                domain = "byte-sized.fyi";
-                home.domain = "home.${domain}";
-                sso.domain = "sso.${domain}";
-                meals.domain = "meals.${domain}";
-                services.domain = "service.${domain}";
-                git.domain = "git.${domain}";
-                immich.domain = "images.${domain}";
-                secrets.domain = "secrets.${domain}";
-                dawarich.enable = true;
-                ingress_tunnel = "a7cff2a8-b287-4edc-94fd-35527c3c3858";
-                backup.interval = "Mon,Fri 02:00";
-                backup.prepare.interval = "Mon,Fri 01:20";
-                backup.prepare.interval_cron = "20 1 * * 1,5";
-              };
             };
             modules = [
               ./hosts/nixnest

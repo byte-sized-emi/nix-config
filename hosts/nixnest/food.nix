@@ -1,12 +1,10 @@
 {
   config,
-  lib,
-  settings,
   ...
 }:
 let
   port = "9925";
-  hostname = "meals.${settings.services.domain}";
+  hostname = config.settings.meals.service_domain;
 in
 {
   # for local tailscale access
@@ -17,8 +15,8 @@ in
   };
 
   # for public access
-  services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
-    ${settings.meals.domain} = "http://localhost:${port}";
+  services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
+    ${config.settings.meals.domain} = "http://localhost:${port}";
   };
 
   virtualisation.quadlet =
@@ -40,7 +38,7 @@ in
             PUID = "1000";
             PGID = "1000";
             TZ = "Europe/Berlin";
-            BASE_URL = "https://${settings.meals.domain}";
+            BASE_URL = "https://${config.settings.meals.domain}";
             ALLOW_PASSWORD_LOGIN = "true";
             ALLOW_SIGNUP = "false";
             DB_ENGINE = "sqlite";

@@ -1,4 +1,4 @@
-{ config, settings, ... }:
+{ config, ... }:
 let
   UPLOAD_LOCATION = "/var/immich/upload_location";
   IMMICH_VERSION = "v2.2.3";
@@ -11,8 +11,8 @@ in
     "d /var/immich/upload_location 0770 root root"
   ];
 
-  services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
-    ${settings.immich.domain} = "http://localhost:2283";
+  services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
+    ${config.settings.immich.domain} = "http://localhost:2283";
   };
 
   virtualisation.quadlet =

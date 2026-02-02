@@ -1,6 +1,5 @@
 {
   config,
-  settings,
   pkgs,
   ...
 }:
@@ -43,10 +42,10 @@
   # systemd service name: cloudflared-tunnel-${settings.ingress_tunnel}
   services.cloudflared = {
     enable = true;
-    tunnels.${settings.ingress_tunnel} = {
+    tunnels.${config.settings.ingress_tunnel} = {
       credentialsFile = config.sops.secrets."cloudflared/tunnel".path;
       default = "http_status:404";
-      originRequest.originServerName = settings.sso.domain;
+      originRequest.originServerName = config.settings.sso.domain;
       ingress = { }; # defined in the individual services
     };
   };

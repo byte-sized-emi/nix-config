@@ -1,4 +1,7 @@
-{ settings, config, ... }:
+{ config, ... }:
+let
+  settings = config.settings;
+in
 {
   services.homepage-dashboard = {
     enable = true;
