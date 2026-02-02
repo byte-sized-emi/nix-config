@@ -73,7 +73,7 @@ in
       containers.whisper = {
         # volume
         containerConfig = {
-          image = "rhasspy/wyoming-whisper:2.4.0";
+          image = "rhasspy/wyoming-whisper:3.1.0";
           environments.TZ = "Europe/Berlin";
           publishPorts = [ "127.0.0.1:10300:10300" ];
           exec = "--model small-int8 --language de";
@@ -88,7 +88,7 @@ in
 
       containers.piper = {
         containerConfig = {
-          image = "rhasspy/wyoming-piper:1.5.0";
+          image = "rhasspy/wyoming-piper:2.2.1";
           environments.TZ = "Europe/Berlin";
           publishPorts = [ "127.0.0.1:10200:10200" ];
           exec = "--voice de_DE-ramona-low";
