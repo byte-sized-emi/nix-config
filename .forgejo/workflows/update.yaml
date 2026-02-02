@@ -1,4 +1,4 @@
-name: Check backend code
+name: Update hosts
 
 on:
   push:
