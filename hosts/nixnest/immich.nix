@@ -1,7 +1,7 @@
 { config, ... }:
 let
   UPLOAD_LOCATION = "/var/immich/upload_location";
-  IMMICH_VERSION = "v2.2.3";
+  IMMICH_VERSION = "v2.5.2";
   stackPath = "/etc/stacks/immich";
 in
 {
