@@ -14,7 +14,7 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       tree
-      kanidm_1_7
+      kanidm_1_8
       cloudflared
       bind
     ];
