@@ -32,7 +32,7 @@ in
 
       containers.mealie = {
         containerConfig = {
-          image = "hkotel/mealie:v3.3.1";
+          image = "hkotel/mealie:v3.9.2";
           publishPorts = [ "${port}:9000" ];
           environments = {
             PUID = "1000";
