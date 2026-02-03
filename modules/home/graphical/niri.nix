@@ -38,10 +38,12 @@
   # https://github.com/sodiboo/niri-flake/blob/main/docs.md
   programs.niri =
     let
+      loginctl = lib.getExe' pkgs.systemd "loginctl";
+      niri = lib.getExe config.programs.niri.package;
       noctalia-ipc-call =
         cmd:
         [
-          "noctalia-shell"
+          (lib.getExe config.programs.noctalia-shell.package)
           "ipc"
           "call"
         ]
@@ -195,7 +197,7 @@
           "Mod+H" = action "show-hotkey-overlay";
           # I have no idea why this workaround is necessary.
           "Mod+F" = action-with-arg "spawn" [
-            "niri"
+            niri
             "msg"
             "action"
             "maximize-window-to-edges"
@@ -206,7 +208,10 @@
             action.spawn-sh = "wl-mirror $(niri msg --json focused-output | jq -r .name)";
           };
           # "Mod+M" = action "maximize-column";
-          "Mod+L" = noctalia-action "sessionMenu lockAndSuspend";
+          "Mod+L" = action-with-arg "spawn" [
+            loginctl
+            "lock-session"
+          ];
           "Mod+V" = noctalia-action "launcher clipboard";
           "Mod+Shift+S" = action "screenshot";
           "Mod+Left" = action "focus-column-left";
