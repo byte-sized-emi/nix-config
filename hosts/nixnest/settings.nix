@@ -65,10 +65,11 @@ with lib;
 
   config.settings = rec {
     domain = "byte-sized.fyi";
+    services.domain = "service.${domain}";
     home.domain = "home.${domain}";
     sso.domain = "sso.${domain}";
     meals.domain = "meals.${domain}";
-    services.domain = "service.${domain}";
+    meals.service_domain = "meals.${services.domain}";
     git.domain = "git.${domain}";
     immich.domain = "images.${domain}";
     secrets.domain = "secrets.${domain}";
