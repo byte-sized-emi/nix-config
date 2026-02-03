@@ -63,7 +63,7 @@ with lib;
     };
   };
 
-  settings = rec {
+  config.settings = rec {
     domain = "byte-sized.fyi";
     home.domain = "home.${domain}";
     sso.domain = "sso.${domain}";
