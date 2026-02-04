@@ -208,10 +208,7 @@
             action.spawn-sh = "wl-mirror $(niri msg --json focused-output | jq -r .name)";
           };
           # "Mod+M" = action "maximize-column";
-          "Mod+L" = action-with-arg "spawn" [
-            loginctl
-            "lock-session"
-          ];
+          "Mod+L" = noctalia-action "sessionMenu lockAndSuspend";
           "Mod+V" = noctalia-action "launcher clipboard";
           "Mod+Shift+S" = action "screenshot";
           "Mod+Left" = action "focus-column-left";
