@@ -16,6 +16,7 @@
           "byte_sized"
           "github"
           "fachschaft"
+          "lrz_gitlab"
         ];
         generateSshConfig = name: {
           "ssh_keys/${name}/pub" = {

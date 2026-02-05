@@ -17,6 +17,18 @@
     libargon2
   ];
 
+  programs.ssh.matchBlocks = {
+    "git.byte-sized.fyi" = {
+      identityFile = "~/.ssh/id_byte_sized";
+    };
+    "github.com" = {
+      identityFile = "~/.ssh/id_github";
+    };
+    "gitlab.lrz.de" = {
+      identityFile = "~/.ssh/id_lrz_gitlab";
+    };
+  };
+
   programs.git = {
     package = pkgs.gitFull;
     enable = true;
@@ -35,6 +47,12 @@
         condition = "hasconfig:remote.*.url:git@github.com:*/**";
         contents = {
           user.signingKey = "~/.ssh/id_github";
+        };
+      }
+      {
+        condition = "hasconfig:remote.*.url:git@gitlab.lrz.de:*/**";
+        contents = {
+          user.signingkey = "~/.ssh/id_lrz_gitlab";
         };
       }
     ];

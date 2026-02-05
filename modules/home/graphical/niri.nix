@@ -38,8 +38,6 @@
   # https://github.com/sodiboo/niri-flake/blob/main/docs.md
   programs.niri =
     let
-      loginctl = lib.getExe' pkgs.systemd "loginctl";
-      niri = lib.getExe config.programs.niri.package;
       noctalia-ipc-call =
         cmd:
         [
@@ -47,7 +45,7 @@
           "ipc"
           "call"
         ]
-        ++ (pkgs.lib.splitString " " cmd);
+        ++ (lib.splitString " " cmd);
       noctalia-action = cmd: {
         action.spawn = noctalia-ipc-call cmd;
       };
@@ -197,7 +195,7 @@
           "Mod+H" = action "show-hotkey-overlay";
           # I have no idea why this workaround is necessary.
           "Mod+F" = action-with-arg "spawn" [
-            niri
+            "niri"
             "msg"
             "action"
             "maximize-window-to-edges"
