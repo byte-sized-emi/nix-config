@@ -8,9 +8,8 @@
   services.swayidle =
     let
       lockTimeout = 5 * 60; # 300 seconds
-      suspendTimeout = 15 * 60; # 900 seconds
+      suspendTimeout = 10 * 60; # 900 seconds
       noctalia-ipc = "${lib.getExe config.programs.noctalia-shell.package} ipc call";
-
       screenOn = "${lib.getExe config.programs.niri.package} msg action power-on-monitors";
     in
     {
