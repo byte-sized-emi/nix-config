@@ -1,11 +1,19 @@
-{ pkgs, lib, ... }:
 {
-  environment.systemPackages = [ pkgs.nix-update-server ];
+  pkgs,
+  lib,
+  perSystem,
+  ...
+}:
+let
+  nix-update-server = perSystem.self.nix-update-server;
+in
+{
+  environment.systemPackages = [ nix-update-server ];
   systemd.services.update-daemon = {
     description = "Socket activated daemon to update the NixOS system based on a git branch";
     restartIfChanged = false;
     serviceConfig = {
-      ExecStart = lib.getExe pkgs.nix-update-server;
+      ExecStart = lib.getExe nix-update-server;
       User = "root";
       WorkingDirectory = "/home/emilia/nix-config";
       AmbientCapabilities = "CAP_DAC_READ_SEARCH";

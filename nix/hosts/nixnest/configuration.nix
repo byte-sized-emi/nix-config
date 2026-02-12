@@ -2,10 +2,33 @@
   lib,
   pkgs,
   inputs,
+  flake,
   ...
 }:
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    flake.modules.nixos.default
+    flake.modules.nixos.syncthing
+    flake.modules.nixos.auto-update
+    ./settings.nix
+    ./podman.nix
+    ./hass.nix
+    ./dawarich.nix
+    ./sso.nix
+    ./networking.nix
+    ./monitoring.nix
+    ./git.nix
+    ./food.nix
+    ./immich.nix
+    ./backups.nix
+    ./secrets.nix
+    ./vaultwarden.nix
+    ./homepage.nix
+    ./beeper.nix
+    inputs.vscode-server.nixosModules.default
+    inputs.quadlet-nix.nixosModules.quadlet
+  ];
 
   nix.settings.experimental-features = [
     "nix-command"
@@ -35,6 +58,8 @@
     pciutils
     alsa-utils
   ];
+
+  services.vscode-server.enable = true;
 
   services.openssh = {
     enable = true;

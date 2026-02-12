@@ -10,8 +10,7 @@
     flake.modules.nixos.default
     flake.modules.nixos.graphical
     flake.modules.nixos.syncthing
-    # TODO: Add auto-update once the package is in blueprint
-    # flake.modules.nixos.auto-update
+    flake.modules.nixos.auto-update
   ];
 
   boot.loader.systemd-boot.enable = true;
