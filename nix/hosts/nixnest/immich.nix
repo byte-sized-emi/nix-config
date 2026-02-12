@@ -3,6 +3,7 @@ let
   UPLOAD_LOCATION = "/var/immich/upload_location";
   IMMICH_VERSION = "v2.5.2";
   stackPath = "/etc/stacks/immich";
+  port = "2283";
 in
 {
   systemd.tmpfiles.rules = [
@@ -12,7 +13,7 @@ in
   ];
 
   services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
-    ${config.settings.immich.domain} = "http://localhost:2283";
+    ${config.settings.immich.domain} = "http://localhost:${port}";
   };
 
   virtualisation.quadlet =
@@ -30,7 +31,7 @@ in
           containerConfig = {
             image = "ghcr.io/immich-app/immich-server:${IMMICH_VERSION}";
             publishPorts = [
-              "2283:2283"
+              "${port}:${port}"
             ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"

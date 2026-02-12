@@ -15,14 +15,6 @@
     inputs.slippi-launcher.nixosModules.default
   ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   networking.hostName = "nixlaptop";
 
   networking.networkmanager.enable = true;
@@ -95,9 +87,6 @@
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   virtualisation.docker.enable = true;
 
