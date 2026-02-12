@@ -1,6 +1,7 @@
 {
   flake,
   pkgs,
+  inputs,
   ...
 }:
 {
@@ -11,6 +12,7 @@
     flake.modules.nixos.graphical
     flake.modules.nixos.syncthing
     flake.modules.nixos.auto-update
+    inputs.slippi-launcher.nixosModules.default
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -81,11 +83,10 @@
     pulse.enable = true;
   };
 
-  # TODO: Add this again once I add the package to blueprint
-  # programs.slippi-launcher = {
-  #   enable = true;
-  #   enableAppImageSupport = true;
-  # };
+  programs.slippi-launcher = {
+    enable = true;
+    enableAppImageSupport = true;
+  };
 
   programs.thunderbird.enable = true;
 
