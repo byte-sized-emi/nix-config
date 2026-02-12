@@ -1,11 +1,16 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  pname,
+  ...
+}:
 let
   naersk' = pkgs.callPackage inputs.naersk { };
 in
 naersk'.buildPackage {
   src = ./.;
   meta = {
-    mainProgram = "nix-update-server";
+    mainProgram = pname;
   };
   nativeBuildInputs = with pkgs; [
     pkg-config
@@ -17,7 +22,7 @@ naersk'.buildPackage {
     nixos-rebuild
   ];
   postInstall = ''
-    wrapProgram $out/bin/nix-update-server --prefix PATH : ${
+    wrapProgram $out/bin/${pname} --prefix PATH : ${
       pkgs.lib.makeBinPath [
         pkgs.git
         pkgs.nixos-rebuild
