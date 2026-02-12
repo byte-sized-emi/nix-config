@@ -1,16 +1,17 @@
 {
-  pkgs,
-  pkgs-unstable,
   flake,
+  pkgs,
   ...
 }:
 {
   imports = [
     ./hardware-configuration.nix
-    ./desktop.nix
     ./librelane.nix
-    ../../modules/syncthing
-    ../../modules/auto-update.nix
+    flake.modules.nixos.default
+    flake.modules.nixos.graphical
+    flake.modules.nixos.syncthing
+    # TODO: Add auto-update once the package is in blueprint
+    # flake.modules.nixos.auto-update
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -81,34 +82,11 @@
     pulse.enable = true;
   };
 
-  users.users.emilia.packages =
-    let
-      normal-packages = with pkgs; [
-        kdePackages.kate
-        discord
-        obsidian
-        # spotify
-        signal-desktop
-        slack
-        todoist-electron
-        jetbrains.idea
-        xournalpp
-        wev
-        element-desktop
-        keepassxc
-      ];
-      unstable-packages = with pkgs-unstable; [
-        deezer-enhanced
-        mission-center
-        beeper
-      ];
-    in
-    normal-packages ++ unstable-packages;
-
-  programs.slippi-launcher = {
-    enable = true;
-    enableAppImageSupport = true;
-  };
+  # TODO: Add this again once I add the package to blueprint
+  # programs.slippi-launcher = {
+  #   enable = true;
+  #   enableAppImageSupport = true;
+  # };
 
   programs.thunderbird.enable = true;
 

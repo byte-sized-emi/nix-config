@@ -2,7 +2,6 @@
   description = "Top-Level configuration";
 
   inputs = {
-    # NixOS official package source, using the nixos-25.05 branch here
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-25.11";
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
@@ -34,119 +33,117 @@
       url = "github:byte-sized-emi/slippi-launcher-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    blueprint.url = "github:numtide/blueprint";
+    blueprint.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixpkgs-unstable,
-      home-manager,
-      slippi-launcher,
-      naersk,
-      flake-utils,
-      ...
-    }@inputs:
-    {
-      nixosConfigurations =
-        let
-          homeManagerConfig =
-            {
-              extraModules ? [ ],
-            }:
-            {
-              imports = [ home-manager.nixosModules.home-manager ];
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+    inputs:
+    inputs.blueprint {
+      inherit inputs;
+      prefix = "nix/";
+      nixpkgs.config.allowUnfree = true;
+    };
+  # {
+  #   nixosConfigurations =
+  #     let
+  #       homeManagerConfig =
+  #         {
+  #           extraModules ? [ ],
+  #         }:
+  #         {
+  #           imports = [ home-manager.nixosModules.home-manager ];
+  #           home-manager.useGlobalPkgs = true;
+  #           home-manager.useUserPackages = true;
+  #           home-manager.extraSpecialArgs = { inherit inputs; };
 
-              home-manager.users.emilia = {
-                imports = [ ./modules/home/common ] ++ extraModules;
-              };
-            };
-        in
-        {
-          nixlaptop = nixpkgs.lib.nixosSystem {
-            modules = [
-              ./hosts/nixlaptop
-              {
-                nixpkgs.overlays = [ self.overlays.x86_64-linux.default ];
-              }
-              (homeManagerConfig { extraModules = [ ./modules/home/graphical ]; })
-              slippi-launcher.nixosModules.default
-            ];
-            specialArgs = {
-              inherit inputs;
-              pkgs-unstable = import nixpkgs-unstable {
-                system = "x86_64-linux";
-                config.allowUnfree = true;
-              };
-            };
-          };
+  #           home-manager.users.emilia = {
+  #             imports = [ ./modules/home/common ] ++ extraModules;
+  #           };
+  #         };
+  #     in
+  #     {
+  #       nixlaptop = nixpkgs.lib.nixosSystem {
+  #         modules = [
+  #           ./hosts/nixlaptop
+  #           {
+  #             nixpkgs.overlays = [ self.overlays.x86_64-linux.default ];
+  #           }
+  #           (homeManagerConfig { extraModules = [ ./modules/home/graphical ]; })
+  #           slippi-launcher.nixosModules.default
+  #         ];
+  #         specialArgs = {
+  #           inherit inputs;
+  #           pkgs-unstable = import nixpkgs-unstable {
+  #             system = "x86_64-linux";
+  #             config.allowUnfree = true;
+  #           };
+  #         };
+  #       };
 
-          nixnest = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {
-              inherit inputs;
-            };
-            modules = [
-              ./hosts/nixnest
-              (homeManagerConfig { })
-              {
-                nixpkgs.overlays = [ self.overlays.x86_64-linux.default ];
-              }
-            ];
-          };
-        };
-    }
-    // (flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = (import nixpkgs) {
-          inherit system;
-        };
+  #       nixnest = nixpkgs.lib.nixosSystem {
+  #         system = "x86_64-linux";
+  #         specialArgs = {
+  #           inherit inputs;
+  #         };
+  #         modules = [
+  #           ./hosts/nixnest
+  #           (homeManagerConfig { })
+  #           {
+  #             nixpkgs.overlays = [ self.overlays.x86_64-linux.default ];
+  #           }
+  #         ];
+  #       };
+  #     };
+  # }
+  # // (flake-utils.lib.eachDefaultSystem (
+  #   system:
+  #   let
+  #     pkgs = (import nixpkgs) {
+  #       inherit system;
+  #     };
 
-        naersk' = pkgs.callPackage naersk { };
-      in
-      rec {
-        formatter = pkgs.nixfmt-tree;
-        packages.nix-update-server = naersk'.buildPackage {
-          src = ./packages/nix-update-server/.;
-          meta = {
-            mainProgram = "nix-update-server";
-          };
-          nativeBuildInputs = with pkgs; [
-            pkg-config
-            makeWrapper
-          ];
-          buildInputs = with pkgs; [
-            openssl
-            git
-            nixos-rebuild
-          ];
-          postInstall = ''
-            wrapProgram $out/bin/nix-update-server --prefix PATH : ${
-              pkgs.lib.makeBinPath [
-                pkgs.git
-                pkgs.nixos-rebuild
-              ]
-            }
-          '';
-        };
-        overlays.default = final: prev: {
-          nix-update-server = packages.nix-update-server;
-        };
-        devShells.default = pkgs.mkShell {
-          inputsFrom = [ packages.nix-update-server ];
-          buildInputs = with pkgs; [
-            bacon
-            rust-analyzer
-            rustfmt
-            rustc
-            clippy
-          ];
-        };
+  #     naersk' = pkgs.callPackage naersk { };
+  #   in
+  #   rec {
+  #     formatter = pkgs.nixfmt-tree;
+  #     packages.nix-update-server = naersk'.buildPackage {
+  #       src = ./packages/nix-update-server/.;
+  #       meta = {
+  #         mainProgram = "nix-update-server";
+  #       };
+  #       nativeBuildInputs = with pkgs; [
+  #         pkg-config
+  #         makeWrapper
+  #       ];
+  #       buildInputs = with pkgs; [
+  #         openssl
+  #         git
+  #         nixos-rebuild
+  #       ];
+  #       postInstall = ''
+  #         wrapProgram $out/bin/nix-update-server --prefix PATH : ${
+  #           pkgs.lib.makeBinPath [
+  #             pkgs.git
+  #             pkgs.nixos-rebuild
+  #           ]
+  #         }
+  #       '';
+  #     };
+  #     overlays.default = final: prev: {
+  #       nix-update-server = packages.nix-update-server;
+  #     };
+  #     devShells.default = pkgs.mkShell {
+  #       inputsFrom = [ packages.nix-update-server ];
+  #       buildInputs = with pkgs; [
+  #         bacon
+  #         rust-analyzer
+  #         rustfmt
+  #         rustc
+  #         clippy
+  #       ];
+  #     };
 
-      }
-    ));
+  #   }
+  # ));
 }
