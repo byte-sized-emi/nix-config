@@ -8,7 +8,7 @@
   services.swayidle =
     let
       lockTimeout = 5 * 60; # 300 seconds
-      suspendTimeout = 10 * 60; # 900 seconds
+      suspendTimeout = 7 * 60; # 420 seconds
       noctalia-ipc = "${lib.getExe config.programs.noctalia-shell.package} ipc call";
       screenOn = "${lib.getExe config.programs.niri.package} msg action power-on-monitors";
     in
@@ -17,7 +17,7 @@
       extraArgs = [ ];
       timeouts = [
         {
-          timeout = lockTimeout - 5;
+          timeout = lockTimeout - 15;
           command = "${lib.getExe pkgs.libnotify} -a 'swayidle' --urgency=critical --icon='system-lock-screen' 'Locking soon!'";
         }
         {

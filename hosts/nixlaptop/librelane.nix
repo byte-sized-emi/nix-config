@@ -8,9 +8,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    gnumake
-    iverilog
-    vscode
     xdot
+    vscode
   ];
 }
