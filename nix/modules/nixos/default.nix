@@ -1,3 +1,4 @@
+{ hostName, ... }:
 {
   imports = [
     ./boot.nix
@@ -6,4 +7,6 @@
     ./controller.nix
     ./secrets.nix
   ];
+
+  networking.hostName = hostName;
 }

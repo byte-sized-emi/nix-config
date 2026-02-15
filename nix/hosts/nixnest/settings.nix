@@ -38,6 +38,10 @@ with lib;
       type = types.str;
     };
 
+    cache.service_domain = mkOption {
+      type = types.str;
+    };
+
     dawarich.enable = mkOption {
       type = types.bool;
     };
@@ -70,6 +74,7 @@ with lib;
     sso.domain = "sso.${domain}";
     meals.domain = "meals.${domain}";
     meals.service_domain = "meals.${services.domain}";
+    cache.service_domain = "cache.${services.domain}";
     git.domain = "git.${domain}";
     immich.domain = "images.${domain}";
     secrets.domain = "secrets.${domain}";

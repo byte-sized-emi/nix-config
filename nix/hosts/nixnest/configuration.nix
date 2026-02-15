@@ -11,6 +11,7 @@
     flake.modules.nixos.default
     flake.modules.nixos.syncthing
     flake.modules.nixos.auto-update
+    # flake.modules.nixos.service
     ./settings.nix
     ./podman.nix
     ./hass.nix
@@ -26,6 +27,7 @@
     ./vaultwarden.nix
     ./homepage.nix
     ./beeper.nix
+    ./nix-serve.nix
     inputs.vscode-server.nixosModules.default
     inputs.quadlet-nix.nixosModules.quadlet
   ];
@@ -73,6 +75,7 @@
   users.users.emilia.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOkbGLfWyjFJQxJY8pDodBG4r567LoOT9gzPFnx5rBx8"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINVLqQSi5EhE8NPWcYjtolf4F6m/L/wjjmO2jf3W0ozL emilia@fedora-pc"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIopGi9F4+v4lckvFcEv5PmoxKknS3nESZ7jeKFkIoCq emilia@fedora-laptop"
   ];
 
   # Audio setup

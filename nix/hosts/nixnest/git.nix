@@ -43,6 +43,16 @@
     };
   };
 
+  # my.services.forgejo = {
+  #   enable = true;
+  #   port = config.services.forgejo.settings.server.HTTP_PORT;
+  #   description = "Self-hosted Git service";
+  #   external = {
+  #     enable = true;
+  #     domain = config.settings.git.domain;
+  #   };
+  # };
+
   services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
     ${config.settings.git.domain} =
       "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";

@@ -4,7 +4,6 @@
   ...
 }:
 {
-  networking.hostName = "nixnest";
   networking.nameservers = [
     "100.100.100.100"
     "8.8.8.8"

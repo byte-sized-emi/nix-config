@@ -15,8 +15,6 @@
     inputs.slippi-launcher.nixosModules.default
   ];
 
-  networking.hostName = "nixlaptop";
-
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Berlin";

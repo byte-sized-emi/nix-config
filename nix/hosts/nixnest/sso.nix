@@ -10,6 +10,7 @@
     group = "kanidm";
   };
 
+  # WARN: "https" only works here because the domain is configured for cloudflared
   services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
     ${config.settings.sso.domain} = "https://${config.services.kanidm.serverSettings.bindaddress}";
   };
