@@ -1,6 +1,14 @@
 {
   programs.zed-editor = {
     enable = true;
+    extensions = [
+      "git-firefly"
+      "github-actions"
+      "html"
+      "material-icon-theme"
+      "nix"
+      "toml"
+    ];
 
     userSettings = {
       autosave = "on_focus_change";

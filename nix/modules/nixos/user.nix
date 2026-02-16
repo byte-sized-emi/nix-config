@@ -20,6 +20,10 @@
     ];
   };
 
+  console.keyMap = "de";
+
+  time.timeZone = "Europe/Berlin";
+
   security.doas.enable = true;
   security.doas.extraRules = [
     {
@@ -30,4 +34,12 @@
   ];
 
   programs.zsh.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    wget
+    pulseaudio
+    pciutils
+    alsa-utils
+    nano
+  ];
 }
