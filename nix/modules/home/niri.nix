@@ -98,6 +98,7 @@
             sh = "signal-desktop --password-store=\"kwallet6\"";
           }
           { command = [ "beeper" ]; }
+          { command = [ "thunderbird" ]; }
         ];
         workspaces = {
           "1-browser".name = "browser";
@@ -143,6 +144,7 @@
               { app-id = "^discord$"; }
               { app-id = "^signal$"; }
               { app-id = "^BeeperTexts$"; }
+              { app-id = "^thunderbird$"; }
             ];
             open-on-workspace = "social";
             open-maximized = true;
