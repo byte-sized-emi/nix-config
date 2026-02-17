@@ -21,6 +21,7 @@ in
 
   xdg.desktopEntries.nix-config = {
     name = "Nix config (git.byte-sized.fyi)";
+    comment = "My nix/NixOS config";
     exec = "xdg-open https://git.byte-sized.fyi/emilia/nix-config";
     terminal = false;
     type = "Application";
@@ -28,9 +29,11 @@ in
     icon = "nix-snowflake";
   };
 
+  # so stealing stuff from lucas gets even easier
   xdg.desktopEntries.keyruu-shinyflakes = {
     name = "Keyruu shinyflakes nix config";
     exec = "xdg-open https://github.com/keyruu/shinyflakes";
+    comment = "Lucas / Keyruu shinyflakes repo";
     terminal = false;
     type = "Application";
     categories = [ "Network" ];
