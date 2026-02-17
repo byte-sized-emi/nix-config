@@ -19,6 +19,24 @@ in
     ./signal.nix
   ];
 
+  xdg.desktopEntries.nix-config = {
+    name = "Nix config (git.byte-sized.fyi)";
+    exec = "xdg-open https://git.byte-sized.fyi/emilia/nix-config";
+    terminal = false;
+    type = "Application";
+    categories = [ "Network" ];
+    icon = "nix-snowflake";
+  };
+
+  xdg.desktopEntries.keyruu-shinyflakes = {
+    name = "Keyruu shinyflakes nix config";
+    exec = "xdg-open https://github.com/keyruu/shinyflakes";
+    terminal = false;
+    type = "Application";
+    categories = [ "Network" ];
+    icon = "nix-snowflake";
+  };
+
   home.packages =
     let
       normal-packages = with pkgs; [
