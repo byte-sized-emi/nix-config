@@ -29,6 +29,12 @@
     };
     niri.url = "github:sodiboo/niri-flake";
     vicinae.url = "github:vicinaehq/vicinae";
+    vicinae-extensions = {
+      url = "github:vicinaehq/extensions";
+      inputs.vicinae.follows = "vicinae";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     slippi-launcher = {
       url = "github:byte-sized-emi/slippi-launcher-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

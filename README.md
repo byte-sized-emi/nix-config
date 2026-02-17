@@ -31,4 +31,6 @@ This is meant to be used either locally through the kanidm CLI, or through cloud
 - [x] stop server after successful update
 - [ ] automatic nix flake updates
 - [ ] don't update with local changes in the git repo
+- [ ] don't show a failed update as success in the CI/CD
 - [ ] show notification with cancel button before updating
+- [ ] make nix use my cache only when it makes sense

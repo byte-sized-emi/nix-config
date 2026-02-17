@@ -10,11 +10,13 @@ in
     ./browser.nix
     ./fachschaft.nix
     ./fonts.nix
-    ./launcher.nix
+    ./vicinae.nix
     ./niri.nix
     ./noctalia.nix
     ./swayidle.nix
     ./zed.nix
+    ./steam.nix
+    ./signal.nix
   ];
 
   home.packages =
