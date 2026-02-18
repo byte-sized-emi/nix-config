@@ -4,7 +4,6 @@
   ...
 }:
 {
-  # systemctl list-timers
   systemd.timers."prepare-backup" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {

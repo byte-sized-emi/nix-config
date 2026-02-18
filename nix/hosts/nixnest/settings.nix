@@ -69,15 +69,15 @@ with lib;
 
   config.settings = rec {
     domain = "byte-sized.fyi";
-    services.domain = "service.${domain}";
     home.domain = "home.${domain}";
     sso.domain = "sso.${domain}";
     meals.domain = "meals.${domain}";
-    meals.service_domain = "meals.${services.domain}";
-    cache.service_domain = "cache.${services.domain}";
     git.domain = "git.${domain}";
     immich.domain = "images.${domain}";
     secrets.domain = "secrets.${domain}";
+    services.domain = "service.${domain}";
+    meals.service_domain = "meals.${services.domain}";
+    cache.service_domain = "cache.${services.domain}";
     dawarich.enable = true;
     ingress_tunnel = "a7cff2a8-b287-4edc-94fd-35527c3c3858";
     backup.interval = "Mon,Fri 02:00";

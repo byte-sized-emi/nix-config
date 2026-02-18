@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   inputs,
   flake,
@@ -11,7 +10,7 @@
     flake.modules.nixos.default
     flake.modules.nixos.syncthing
     flake.modules.nixos.auto-update
-    # flake.modules.nixos.service
+    flake.modules.nixos.service
     ./settings.nix
     ./podman.nix
     ./hass.nix
