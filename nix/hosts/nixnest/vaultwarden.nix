@@ -1,8 +1,14 @@
 { config, ... }:
 {
-  services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
-    ${config.settings.secrets.domain} =
-      "http://localhost:${toString config.services.vaultwarden.config.ROCKET_PORT}";
+  my.services.vaultwarden = {
+    enable = true;
+    name = "Vaultwarden";
+    port = config.services.vaultwarden.config.ROCKET_PORT;
+    description = "Self-hosted password manager compatible with Bitwarden clients";
+    external = {
+      enable = true;
+      domain = config.settings.secrets.domain;
+    };
   };
 
   services.vaultwarden = {

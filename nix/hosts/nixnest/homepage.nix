@@ -3,6 +3,17 @@ let
   settings = config.settings;
 in
 {
+  my.services.homepage-dashboard = {
+    enable = true;
+    name = "Homepage Dashboard";
+    description = "Central hub for all my services";
+    port = config.services.homepage-dashboard.listenPort;
+    external = {
+      enable = true;
+      domain = settings.home.domain;
+    };
+  };
+
   services.homepage-dashboard = {
     enable = true;
     allowedHosts = "${settings.home.domain}";
@@ -68,10 +79,5 @@ in
       # https://gethomepage.dev/widgets/services/cloudflared/
       # TODO: Add intranet services here
     ];
-  };
-
-  services.cloudflared.tunnels.${settings.ingress_tunnel}.ingress = {
-    ${settings.home.domain} =
-      "http://localhost:${toString config.services.homepage-dashboard.listenPort}";
   };
 }

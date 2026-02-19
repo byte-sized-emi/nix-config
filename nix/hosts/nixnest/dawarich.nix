@@ -5,13 +5,18 @@
 }:
 lib.mkIf config.settings.dawarich.enable (
   let
-    port = "3000";
+    port = 3000;
   in
   {
-    services.caddy.virtualHosts."location.${config.settings.services.domain}" = {
-      extraConfig = ''
-        reverse_proxy localhost:${port}
-      '';
+    my.services.dawarich = {
+      enable = true;
+      name = "Dawarich";
+      inherit port;
+      description = "Location tracking service";
+      internal = {
+        enable = true;
+        domain = "location.${config.settings.services.domain}";
+      };
     };
 
     virtualisation.quadlet =
@@ -67,8 +72,8 @@ lib.mkIf config.settings.dawarich.enable (
         containers.dawarich-app = {
           containerConfig = {
             image = "freikin/dawarich:0.27.2";
-            exec = "web-entrypoint.sh bin/rails server -p ${port} -b ::";
-            publishPorts = [ "${port}:${port}" ];
+            exec = "web-entrypoint.sh bin/rails server -p ${toString port} -b ::";
+            publishPorts = [ "${toString port}:${toString port}" ];
             volumes = [
               "${volumes.dawarich-public.ref}:/var/app/public"
               "${volumes.dawarich-watched.ref}:/var/app/tmp/imports/watched"

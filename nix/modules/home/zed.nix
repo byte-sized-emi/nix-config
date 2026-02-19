@@ -34,7 +34,7 @@
           base_url = "https://git.byte-sized.fyi";
         }
       ];
-
+      calls.mute_on_join = true;
     };
 
     userKeymaps = [

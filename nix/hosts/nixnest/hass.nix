@@ -7,10 +7,15 @@ let
   port = 8123;
 in
 {
-  services.caddy.virtualHosts."homeassistant.${config.settings.services.domain}" = {
-    extraConfig = ''
-      reverse_proxy localhost:${toString port}
-    '';
+  my.services.homeAssistant = {
+    enable = true;
+    name = "Home Assistant";
+    inherit port;
+    description = "Home automation platform";
+    internal = {
+      enable = true;
+      domain = "homeassistant.${config.settings.services.domain}";
+    };
   };
 
   networking.firewall.allowedTCPPorts = [ port ];

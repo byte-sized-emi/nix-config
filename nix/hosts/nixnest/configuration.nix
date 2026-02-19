@@ -27,6 +27,7 @@
     ./homepage.nix
     ./beeper.nix
     ./nix-serve.nix
+    ./umami.nix
     inputs.vscode-server.nixosModules.default
     inputs.quadlet-nix.nixosModules.quadlet
   ];
@@ -45,6 +46,7 @@
     pulseaudio
     pciutils
     alsa-utils
+    speedtest-cli
   ];
 
   services.vscode-server.enable = true;

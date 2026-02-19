@@ -3,20 +3,22 @@
   ...
 }:
 let
-  port = "9925";
-  hostname = config.settings.meals.service_domain;
+  port = 9925;
 in
 {
-  # for local tailscale access
-  services.caddy.virtualHosts.${hostname} = {
-    extraConfig = ''
-      reverse_proxy localhost:${port}
-    '';
-  };
-
-  # for public access
-  services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
-    ${config.settings.meals.domain} = "http://localhost:${port}";
+  my.services.mealie = {
+    enable = true;
+    name = "Mealie";
+    inherit port;
+    description = "Recipe management and meal planning application";
+    internal = {
+      enable = true;
+      domain = config.settings.meals.service_domain;
+    };
+    external = {
+      enable = true;
+      domain = config.settings.meals.domain;
+    };
   };
 
   virtualisation.quadlet =
@@ -33,7 +35,7 @@ in
       containers.mealie = {
         containerConfig = {
           image = "hkotel/mealie:v3.9.2";
-          publishPorts = [ "${port}:9000" ];
+          publishPorts = [ "${toString port}:9000" ];
           environments = {
             PUID = "1000";
             PGID = "1000";

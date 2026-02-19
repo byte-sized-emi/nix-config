@@ -20,6 +20,9 @@
       rootSearch.searchFiles = false;
       closeOnFocusLoss = true;
       launcher_window.opacity = 0.9;
+      # fallbacks = [
+      #   "files:search"
+      # ];
     };
 
     # extension names: https://github.com/vicinaehq/extensions/tree/main/extensions

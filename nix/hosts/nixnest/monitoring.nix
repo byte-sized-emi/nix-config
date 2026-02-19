@@ -1,5 +1,16 @@
 { config, ... }:
 {
+  my.services.grafana = {
+    enable = true;
+    name = "Grafana";
+    port = config.services.grafana.settings.server.http_port;
+    description = "Monitoring and analytics platform";
+    external = {
+      enable = true;
+      domain = "grafana.${config.settings.services.domain}";
+    };
+  };
+
   # monitoring uses the 9000 range of ports
   # adapted from https://oblivion.keyruu.de/Homelab/Monitoring
   services.cadvisor = {
@@ -95,11 +106,5 @@
         }
       ];
     };
-  };
-
-  services.caddy.virtualHosts."grafana.${config.settings.services.domain}" = {
-    extraConfig = ''
-      reverse_proxy localhost:${toString config.services.grafana.settings.server.http_port}
-    '';
   };
 }
