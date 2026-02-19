@@ -15,7 +15,7 @@
         owner = users.forgejo.name;
         group = groups.forgejo.name;
       };
-      "immich/envFile".owner = "root";
+      "immich/dbPassword".owner = "root";
       "kanidm/tlsChain".owner = users.kanidm.name;
       "kanidm/tlsKey".owner = users.kanidm.name;
       "kanidm/tailscaleOauthSecret".owner = users.kanidm.name;
@@ -25,5 +25,26 @@
       "kanidm/mealieOauthSecretEnv".owner = "root";
       "vaultwarden/env".owner = users.vaultwarden.name;
       "beeper_bridge_manager/config" = { };
+      "umami/dbPassword" = { };
+      "umami/appSecret" = { };
     };
+
+  sops.templates = {
+    "immich/envFile" = {
+      content = ''
+        DB_PASSWORD=${config.sops.placeholder."immich/dbPassword"}
+        DB_USERNAME=postgres
+        DB_DATABASE_NAME=immich
+      '';
+      owner = "root";
+    };
+    "umami/postgresEnvFile" = {
+      content = ''
+        POSTGRES_PASSWORD=${config.sops.placeholder."umami/dbPassword"}
+      '';
+    };
+    "umami/dbUrl".content = "postgresql://postgres:${
+      config.sops.placeholder."umami/dbPassword"
+    }@localhost:5444/umami";
+  };
 }

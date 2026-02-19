@@ -13,7 +13,7 @@ jobs:
         host:
           - nixnest.bushbaby-chimera.ts.net
           - nixlaptop.bushbaby-chimera.ts.net
-          - nixda.bushbaby-chimera.ts.net
+          # - nixda.bushbaby-chimera.ts.net # update this manually
 
     steps:
       - uses: actions/setup-node@v6

@@ -43,7 +43,7 @@ in
               "/etc/localtime:/etc/localtime:ro"
               "${UPLOAD_LOCATION}:/data"
             ];
-            environmentFiles = [ config.sops.secrets."immich/envFile".path ];
+            environmentFiles = [ config.sops.templates."immich/envFile".path ];
             networks = [ networks.immich.ref ];
           };
           serviceConfig = {
@@ -67,7 +67,7 @@ in
             volumes = [
               "${stackPath}/model-cache:/cache"
             ];
-            environmentFiles = [ config.sops.secrets."immich/envFile".path ];
+            environmentFiles = [ config.sops.templates."immich/envFile".path ];
             networks = [ networks.immich.ref ];
           };
           serviceConfig = {
@@ -96,7 +96,7 @@ in
         immich-database = {
           containerConfig = {
             image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
-            environmentFiles = [ config.sops.secrets."immich/envFile".path ];
+            environmentFiles = [ config.sops.templates."immich/envFile".path ];
             environments = {
               POSTGRES_INITDB_ARGS = "--data-checksums";
             };
