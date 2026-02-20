@@ -7,7 +7,7 @@ in
 {
   my.services.linktree = {
     enable = true;
-    port = 80;
+    port = 443;
     external = {
       enable = true;
       https = true;
