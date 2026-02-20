@@ -18,6 +18,14 @@ with lib;
       type = types.str;
     };
 
+    secrets.domain = mkOption {
+      type = types.str;
+    };
+
+    linktree.domain = mkOption {
+      type = types.str;
+    };
+
     meals.service_domain = mkOption {
       type = types.str;
     };
@@ -31,10 +39,6 @@ with lib;
     };
 
     immich.domain = mkOption {
-      type = types.str;
-    };
-
-    secrets.domain = mkOption {
       type = types.str;
     };
 
@@ -75,6 +79,7 @@ with lib;
     git.domain = "git.${domain}";
     immich.domain = "images.${domain}";
     secrets.domain = "secrets.${domain}";
+    linktree.domain = "links.${domain}";
     services.domain = "service.${domain}";
     meals.service_domain = "meals.${services.domain}";
     cache.service_domain = "cache.${services.domain}";

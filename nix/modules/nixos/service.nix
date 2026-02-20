@@ -53,6 +53,10 @@ with lib;
                 type = types.str;
                 default = "${name}.${config.settings.domain}";
               };
+              https = mkOption {
+                type = types.bool;
+                default = false;
+              };
             };
 
             backups = {
@@ -142,7 +146,11 @@ with lib;
     mapAttrsToList (
       _name: serviceCfg:
       mkIf (serviceCfg.enable && serviceCfg.external.enable) {
-        ${serviceCfg.external.domain} = "http://localhost:${toString serviceCfg.port}";
+        ${serviceCfg.external.domain} =
+          if serviceCfg.external.https then
+            "https://localhost:${toString serviceCfg.port}"
+          else
+            "http://localhost:${toString serviceCfg.port}";
       }
     ) config.my.services
   );

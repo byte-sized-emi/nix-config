@@ -7,27 +7,17 @@ let
   port = 8443;
 in
 {
-  users.groups.kanidm = { };
-  users.users.kanidm = {
-    isSystemUser = true;
-    group = "kanidm";
-  };
-
   my.services.kanidm = {
     enable = true;
     name = "Kanidm";
     inherit port;
+    createSystemUser = true;
     description = "Identity management service";
-    # Enable this when we have https support
-    # external = {
-    #   enable = true;
-    #   domain = config.settings.sso.domain;
-    # };
-  };
-
-  # WARN: "https" only works here because the domain is configured for cloudflared
-  services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = {
-    ${config.settings.sso.domain} = "https://${config.services.kanidm.serverSettings.bindaddress}";
+    external = {
+      enable = true;
+      https = true;
+      domain = config.settings.sso.domain;
+    };
   };
 
   # NOTE: cloudflare is setup to redirect requests from
