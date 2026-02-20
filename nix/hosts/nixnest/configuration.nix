@@ -28,6 +28,7 @@
     ./beeper.nix
     ./nix-serve.nix
     ./umami.nix
+    ./linktree.nix
     inputs.vscode-server.nixosModules.default
     inputs.quadlet-nix.nixosModules.quadlet
   ];

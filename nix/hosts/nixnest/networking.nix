@@ -73,11 +73,15 @@
     globalConfig = ''
       acme_dns cloudflare {env.CF_API_TOKEN}
       dns cloudflare {env.CF_API_TOKEN}
+      servers {
+        trusted_proxies static 127.0.0.1/8
+      }
     '';
     # abuse the virtualHosts config to define a template - hey, if it works.
+    # client_ip uses either the IP of the remote directly, or the one passed by cloudflared
     virtualHosts."(abort_external)" = {
       extraConfig = ''
-        @external not remote_ip private_ranges 100.64.0.0/10 fd7a:115c:a1e0::/48
+        @external not client_ip private_ranges 100.64.0.0/10 fd7a:115c:a1e0::/48
         abort @external
       '';
       logFormat = null;
