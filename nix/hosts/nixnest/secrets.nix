@@ -43,8 +43,9 @@
         POSTGRES_PASSWORD=${config.sops.placeholder."umami/dbPassword"}
       '';
     };
-    "umami/dbUrl".content = "postgresql://postgres:${
-      config.sops.placeholder."umami/dbPassword"
-    }@localhost:5444/umami";
+    "umami/envFile".content = ''
+      DATABASE_URL=postgresql://postgres:${config.sops.placeholder."umami/dbPassword"}@umami-db:5432/umami
+      APP_SECRET=${config.sops.placeholder."umami/appSecret"}
+    '';
   };
 }

@@ -1,39 +1,65 @@
 { config, ... }:
+let
+  port = 3243;
+in
 {
   my.services.umami = {
     enable = true;
     name = "Umami";
-    port = config.services.umami.settings.PORT;
+    inherit port;
     description = "Self-hosted web analytics service";
     external = {
-      enable = false;
+      enable = true;
       domain = "analytics.${config.settings.domain}";
     };
     internal = {
-      enable = true;
+      enable = false;
       domain = "analytics.${config.settings.services.domain}";
     };
   };
 
-  services.umami = {
-    enable = true;
-    createPostgresqlDatabase = false;
-    settings = {
-      PORT = 3243;
-      HOSTNAME = "127.0.0.1";
-      APP_SECRET_FILE = config.sops.secrets."umami/appSecret".path;
-      DATABASE_URL_FILE = config.sops.templates."umami/dbUrl".path;
-    };
-  };
+  # services.umami = {
+  #   enable = true;
+  #   createPostgresqlDatabase = false;
+  #   settings = {
+  #     PORT = 3243;
+  #     HOSTNAME = "127.0.0.1";
+  #     APP_SECRET_FILE = config.sops.secrets."umami/appSecret".path;
+  #     DATABASE_URL_FILE = config.sops.templates."umami/dbUrl".path;
+  #   };
+  # };
 
   virtualisation.quadlet =
     let
-      inherit (config.virtualisation.quadlet) volumes;
+      inherit (config.virtualisation.quadlet) volumes networks;
     in
     {
       volumes = {
-        umami-db-data = {
-          volumeConfig = { };
+        umami-db-data.volumeConfig = { };
+      };
+
+      networks = {
+        umami.networkConfig = {
+          driver = "bridge";
+          podmanArgs = [ "--interface-name=umami" ];
+        };
+      };
+
+      containers.umami = {
+        containerConfig = {
+          image = "ghcr.io/umami-software/umami:3.0.3";
+          publishPorts = [
+            "${toString port}:3000"
+          ];
+          environmentFiles = [ config.sops.templates."umami/envFile".path ];
+          networks = [ networks.umami.ref ];
+        };
+        serviceConfig = {
+          Restart = "always";
+        };
+        unitConfig = {
+          After = [ "umami-db.service" ];
+          Requires = [ "umami-db.service" ];
         };
       };
 
@@ -41,9 +67,6 @@
       containers.umami-db = {
         containerConfig = {
           image = "postgres:18-alpine";
-          publishPorts = [
-            "5444:5432"
-          ];
           environmentFiles = [ config.sops.templates."umami/postgresEnvFile".path ];
           environments = {
             POSTGRES_USER = "postgres";
@@ -52,8 +75,8 @@
           volumes = [
             "${volumes.umami-db-data.ref}:/var/lib/postgresql/data"
           ];
+          networks = [ networks.umami.ref ];
         };
-
         serviceConfig = {
           Restart = "always";
         };
