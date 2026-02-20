@@ -74,5 +74,9 @@
       acme_dns cloudflare {env.CF_API_TOKEN}
       dns cloudflare {env.CF_API_TOKEN}
     '';
+    virtualHosts."(deny_external)".extraConfig = ''
+      @external not remote_ip private_ranges 100.64.0/10 fd7a:115c:a1e0::/48
+      deny @external
+    '';
   };
 }

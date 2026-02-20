@@ -160,18 +160,12 @@ with lib;
     ) config.my.services
   );
 
-  config.services.caddy.extraConfig = ''
-    @external {
-      not remote_ip private_ranges 100.64.0/10 fd7a:115c:a1e0::/48
-    }
-  '';
-
   config.services.caddy.virtualHosts = mkMerge (
     mapAttrsToList (
       _name: serviceCfg:
       mkIf (serviceCfg.enable && serviceCfg.internal.enable) {
         ${serviceCfg.internal.domain}.extraConfig = ''
-          abort @external
+          import deny_external
           reverse_proxy localhost:${toString serviceCfg.port}
         '';
       }
