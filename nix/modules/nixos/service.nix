@@ -165,7 +165,7 @@ with lib;
       _name: serviceCfg:
       mkIf (serviceCfg.enable && serviceCfg.internal.enable) {
         ${serviceCfg.internal.domain}.extraConfig = ''
-          import deny_external
+          import abort_external
           reverse_proxy localhost:${toString serviceCfg.port}
         '';
       }
