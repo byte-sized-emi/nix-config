@@ -13,10 +13,7 @@
 
   # mDNS setup
 
-  services.resolved = {
-    enable = true;
-    extraConfig = "MulticastDNS=yes";
-  };
+  services.resolved.enable = true;
 
   services.avahi = {
     enable = true;
