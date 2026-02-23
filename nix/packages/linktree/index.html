@@ -15,8 +15,12 @@
             as="font"
             href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap"
         />
+        <script
+            defer
+            src="https://analytics.byte-sized.fyi/script.js"
+            data-website-id="c5d478b6-af25-4b56-ad07-d94910340fd8"
+        ></script>
     </head>
-
     <body>
         <section class="animated-background">
             <div id="stars1"></div>
@@ -73,5 +77,19 @@
         </div>
 
         <div id="hashtag">#TransRights 🏳️‍⚧️</div>
+        <script type="text/javascript">
+            (() => {
+                const name = "outbound-link-click";
+                document.querySelectorAll("a").forEach((a) => {
+                    if (
+                        a.host !== window.location.host &&
+                        !a.getAttribute("data-umami-event")
+                    ) {
+                        a.setAttribute("data-umami-event", name);
+                        a.setAttribute("data-umami-event-url", a.href);
+                    }
+                });
+            })();
+        </script>
     </body>
 </html>

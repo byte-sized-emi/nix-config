@@ -18,17 +18,6 @@ in
     };
   };
 
-  # services.umami = {
-  #   enable = true;
-  #   createPostgresqlDatabase = false;
-  #   settings = {
-  #     PORT = 3243;
-  #     HOSTNAME = "127.0.0.1";
-  #     APP_SECRET_FILE = config.sops.secrets."umami/appSecret".path;
-  #     DATABASE_URL_FILE = config.sops.templates."umami/dbUrl".path;
-  #   };
-  # };
-
   virtualisation.quadlet =
     let
       inherit (config.virtualisation.quadlet) volumes networks;
