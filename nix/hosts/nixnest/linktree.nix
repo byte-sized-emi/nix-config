@@ -16,9 +16,12 @@ in
   };
 
   services.caddy.virtualHosts."${config.settings.linktree.domain}".extraConfig = ''
-    tls ${cert} ${key}
-    encode
-    root * ${perSystem.self.linktree}
-    file_server
+        header {
+    		  -Last-Modified
+    		}
+        tls ${cert} ${key}
+        encode
+        root * ${perSystem.self.linktree}
+        file_server
   '';
 }
