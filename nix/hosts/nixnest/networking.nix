@@ -1,9 +1,13 @@
 {
   config,
   pkgs,
+  flake,
   ...
 }:
 {
+  imports = [
+    flake.modules.nixos.my-cloudflared
+  ];
   networking.nameservers = [
     "100.100.100.100"
     "8.8.8.8"
@@ -36,7 +40,8 @@
   # $ cloudflared tunnel login
   # $ cloudflared tunnel create <tunnel-name>
   # systemd service name: cloudflared-tunnel-${settings.ingress_tunnel}
-  services.cloudflared = {
+  # services.cloudflared = {
+  services.my-cloudflared = {
     enable = true;
     tunnels.${config.settings.ingress_tunnel} = {
       credentialsFile = config.sops.secrets."cloudflared/tunnel".path;

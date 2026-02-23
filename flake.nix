@@ -2,8 +2,7 @@
   description = "Top-Level configuration";
 
   inputs = {
-    nixpkgs.url = "git+https://github.com/byte-sized-emi/nixpkgs?shallow=1&ref=update-cloudflared-options";
-    # nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-25.11";
+    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-25.11";
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";

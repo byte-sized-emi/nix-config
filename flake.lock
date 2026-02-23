@@ -242,19 +242,19 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1771761366,
-        "narHash": "sha256-izc7vSQu+6+zjY1CFninbZ5H3q0SQHgnOdzOWrzrz7Q=",
-        "ref": "update-cloudflared-options",
-        "rev": "019b2b31119744439990176a6457cb5301d0cefd",
+        "lastModified": 1771714954,
+        "narHash": "sha256-nhZJPnBavtu40/L2aqpljrfUNb2rxmWTmSjK2c9UKds=",
+        "ref": "nixos-25.11",
+        "rev": "afbbf774e2087c3d734266c22f96fca2e78d3620",
         "shallow": true,
         "type": "git",
-        "url": "https://github.com/byte-sized-emi/nixpkgs"
+        "url": "https://github.com/NixOS/nixpkgs"
       },
       "original": {
-        "ref": "update-cloudflared-options",
+        "ref": "nixos-25.11",
         "shallow": true,
         "type": "git",
-        "url": "https://github.com/byte-sized-emi/nixpkgs"
+        "url": "https://github.com/NixOS/nixpkgs"
       }
     },
     "nixpkgs_4": {

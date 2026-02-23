@@ -4,6 +4,7 @@
 
   nix = {
     settings = {
+      download-buffer-size = 524288000; # 500 MiB
       substituters = [
         "https://vicinae.cachix.org"
         "https://hyprland.cachix.org"
