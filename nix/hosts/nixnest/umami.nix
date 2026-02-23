@@ -62,7 +62,7 @@ in
             POSTGRES_DB = "umami";
           };
           volumes = [
-            "${volumes.umami-db-data.ref}:/var/lib/postgresql/data"
+            "${volumes.umami-db-data.ref}:/var/lib/postgresql/"
           ];
           networks = [ networks.umami.ref ];
         };
