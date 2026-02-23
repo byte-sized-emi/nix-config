@@ -1,7 +1,7 @@
 { pkgs, ... }:
 pkgs.stdenvNoCC.mkDerivation {
   pname = "linktree";
-  version = "0.1.3";
+  version = "0.1.4";
 
   src = ./.;
 
