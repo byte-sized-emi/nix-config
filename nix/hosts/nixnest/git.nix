@@ -4,6 +4,14 @@
   ...
 }:
 {
+  systemd.tmpfiles.rules =
+    let
+      header-template = ./forgejo/header.tmpl;
+    in
+    [
+      "L+ ${config.services.forgejo.customDir}/templates/custom/header.tmpl - - - - ${header-template}"
+    ];
+
   services.forgejo = {
     enable = true;
     package = pkgs.forgejo-lts;
