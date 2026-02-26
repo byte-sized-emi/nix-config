@@ -27,7 +27,7 @@ in
 
   services.kanidm = {
     enableServer = true;
-    package = pkgs.kanidmWithSecretProvisioning_1_8;
+    package = pkgs.kanidmWithSecretProvisioning_1_9;
     serverSettings = {
       origin = "https://${config.settings.sso.domain}";
       domain = config.settings.sso.domain;
