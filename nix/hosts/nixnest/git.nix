@@ -6,10 +6,13 @@
 {
   systemd.tmpfiles.rules =
     let
+      inherit (config.services.forgejo) customDir user group;
       header-template = ./forgejo/header.tmpl;
     in
     [
-      "L+ ${config.services.forgejo.customDir}/templates/custom/header.tmpl - - - - ${header-template}"
+      "d '${customDir}/templates' 0750 ${user} ${group} - -"
+      "d '${customDir}/templates/custom' 0750 ${user} ${group} - -"
+      "L+ '${customDir}/templates/custom/header.tmpl' - - - - ${header-template}"
     ];
 
   services.forgejo = {
