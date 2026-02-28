@@ -39,8 +39,11 @@
       url = "github:byte-sized-emi/slippi-launcher-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    blueprint.url = "github:numtide/blueprint";
-    blueprint.inputs.nixpkgs.follows = "nixpkgs";
+    blueprint = {
+      url = "github:numtide/blueprint";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   };
 
   outputs =
