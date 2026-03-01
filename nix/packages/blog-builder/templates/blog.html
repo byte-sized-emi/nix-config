@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block title %}{{ title }} - Blog{% endblock %} {%
+block extra_styles %}
+<style>
+    header {
+        text-align: left;
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 2px solid #ddd;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #222;
+    }
+
+    main {
+        line-height: 1.8;
+    }
+</style>
+{% endblock %} {% block content %}
+<header>
+    <h1>{{ title }}</h1>
+    <div class="post-meta">
+        <span class="post-date">{{ date.format("%B %d, %Y at %H:%M") }}</span>
+        {% if !authors.is_empty() %}
+        <div class="post-authors">
+            <span>By:</span>
+            {% for author in &authors %}
+            <span>{{ author }}</span>
+            {% if !loop.last %},{% endif %} {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% if !tags.is_empty() %}
+    <div class="post-tags">
+        {% for tag in &tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+</header>
+
+<main>{{ content|safe }}</main>
+
+<nav>
+    <a href="../index.html">Back to Blog</a>
+</nav>
+{% endblock %}

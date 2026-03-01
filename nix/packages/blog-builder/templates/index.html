@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block title %}Blog{% endblock %} {% block content
+%}
+<header>
+    <h1>{{ title }}</h1>
+</header>
+
+<main>
+    {% if posts.is_empty() %}
+    <div class="empty-message">
+        <p>No blog posts available yet.</p>
+    </div>
+    {% else %}
+    <div class="posts">
+        {% for post in posts %}
+        <a href="posts/{{ post.name }}.html">
+            <article class="post">
+                <h2>{{ post.front_matter.title }}</h2>
+                <div class="post-meta">
+                    <span class="post-date"
+                        >{{ post.front_matter.date.format("%B %d, %Y at %H:%M") }}</span
+                    >
+                    {% if !post.front_matter.authors.is_empty() %}
+                    <div class="post-authors">
+                        <span>By:</span>
+                        {% for author in &post.front_matter.authors %}
+                        <span>{{ author }}</span>
+                        {% if !loop.last %},{% endif %} {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% if !post.front_matter.tags.is_empty() %}
+                <div class="post-tags">
+                    {% for tag in &post.front_matter.tags %}
+                    <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </article>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+</main>
+{% endblock %}

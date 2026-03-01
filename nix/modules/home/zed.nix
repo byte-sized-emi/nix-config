@@ -12,6 +12,7 @@
 
     userSettings = {
       autosave = "on_focus_change";
+      icon_theme = "Material Icon Theme";
       features = {
         edit_prediction_provider = "copilot";
       };
@@ -35,6 +36,14 @@
         }
       ];
       calls.mute_on_join = true;
+      agent_servers = {
+        opencode = {
+          type = "custom";
+          command = "opencode";
+          args = [ "acp" ];
+          env = { };
+        };
+      };
     };
 
     userKeymaps = [
