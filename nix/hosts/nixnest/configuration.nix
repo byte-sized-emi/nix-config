@@ -29,6 +29,7 @@
     ./nix-serve.nix
     ./umami.nix
     ./linktree.nix
+    ./ntfy.nix
     inputs.vscode-server.nixosModules.default
     inputs.quadlet-nix.nixosModules.quadlet
   ];

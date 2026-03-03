@@ -42,6 +42,10 @@ with lib;
       type = types.str;
     };
 
+    ntfy.service_domain = mkOption {
+      type = types.str;
+    };
+
     cache.service_domain = mkOption {
       type = types.str;
     };
@@ -81,6 +85,7 @@ with lib;
     secrets.domain = "secrets.${domain}";
     linktree.domain = "links.${domain}";
     services.domain = "service.${domain}";
+    ntfy.service_domain = "ntfy.${services.domain}";
     meals.service_domain = "meals.${services.domain}";
     cache.service_domain = "cache.${services.domain}";
     dawarich.enable = true;
