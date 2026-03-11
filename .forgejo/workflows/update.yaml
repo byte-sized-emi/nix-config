@@ -4,6 +4,13 @@ on:
   push:
     branches: ["main"]
 
+env:
+  http_proxy: http://localhost:1055/
+  HTTP_PROXY: http://localhost:1055/
+  https_proxy: http://localhost:1055/
+  HTTPS_PROXY: http://localhost:1055/
+  ALL_PROXY: socks5://localhost:1055/
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -33,19 +40,15 @@ jobs:
           tailscale ip
 
       - name: Install nix
-        uses: https://github.com/DeterminateSystems/nix-installer-action@v21
+        uses: https://github.com/cachix/install-nix-action@v31.10.1
+        env:
+
         with:
-          # proxy: http://localhost:1055/
           extra-conf: |
             accept-flake-config = true
 
       - name: try to reach https://cache.service.byte-sized.fyi/
-        run: |
-          export http_proxy=http://localhost:1055/
-          export ALL_PROXY=socks5://localhost:1055/
-          export HTTP_PROXY=http://localhost:1055/
-
-          curl https://cache.service.byte-sized.fyi/nix-cache-info
+        run: curl https://cache.service.byte-sized.fyi/nix-cache-info
 
       - uses: actions/checkout@v6
       - run: nix flake metadata
@@ -88,9 +91,4 @@ jobs:
           tailscale ip
 
       - name: Updating host
-        run: |
-          export http_proxy=http://localhost:1055/
-          export ALL_PROXY=socks5://localhost:1055/
-          export HTTP_PROXY=http://localhost:1055/
-
-          curl -X POST -sS --no-buffer --connect-timeout 20 http://${{ matrix.host }}:36196/update
+        run: curl -X POST -sS --no-buffer --connect-timeout 20 http://${{ matrix.host }}:36196/update
