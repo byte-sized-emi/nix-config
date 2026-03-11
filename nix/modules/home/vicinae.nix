@@ -28,7 +28,7 @@
     # extension names: https://github.com/vicinaehq/extensions/tree/main/extensions
     # raycast extensions come from https://github.com/raycast/extensions.git
     extensions = with perSystem.vicinae-extensions; [
-      bluetooth
+      # bluetooth
       nix
       wifi-commander
       (perSystem.vicinae.mkRayCastExtension {
