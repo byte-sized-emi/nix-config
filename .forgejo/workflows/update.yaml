@@ -36,6 +36,7 @@ jobs:
         uses: https://github.com/DeterminateSystems/nix-installer-action@v21
         with:
           proxy: http://localhost:1055/
+          determinate: false
           extra-conf: |
             accept-flake-config = true
 
