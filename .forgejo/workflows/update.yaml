@@ -38,8 +38,8 @@ jobs:
           ALL_PROXY: socks5://localhost:1055/
           HTTP_PROXY: http://localhost:1055/
         run: |
-          curl https://cache.service.byte-sized.fyi/nix-cache-info
-          curl https://google.com/
+          curl -q https://cache.service.byte-sized.fyi/nix-cache-info
+          curl -q https://google.com/
 
       - name: Install nix
         uses: https://github.com/cachix/install-nix-action@v31.10.1
@@ -49,12 +49,15 @@ jobs:
           ALL_PROXY: socks5://localhost:1055/
           HTTP_PROXY: http://localhost:1055/
         with:
-          extra-conf: |
+          extra_nix_config: |
             accept-flake-config = true
+            trusted-substituters = https://cache.service.byte-sized.fyi
+            substituters = https://vicinae.cachix.org https://hyprland.cachix.org https://niri.cachix.org
+            trusted-public-keys = vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc=hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964=
 
       - uses: actions/checkout@v6
       - run: nix flake metadata
-      - run: nix flake show
+      - run: nix flake show --json --quiet
       # - run: nix flake check --no-build
 
   update-hosts:

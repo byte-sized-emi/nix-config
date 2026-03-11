@@ -2,6 +2,7 @@
 {
   nixpkgs.config.allowUnfree = true;
 
+  # if you add a cache here, also add it to the update.yaml forgejo action
   nix = {
     settings = {
       download-buffer-size = 524288000; # 500 MiB
