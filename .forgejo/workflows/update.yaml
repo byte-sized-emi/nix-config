@@ -12,10 +12,10 @@ jobs:
       - name: Install nix
         uses: https://github.com/cachix/install-nix-action@v31.10.1
         timeout-minutes: 2
-        env:
-          http_proxy: http://localhost:1055/
-          ALL_PROXY: socks5://localhost:1055/
-          HTTP_PROXY: http://localhost:1055/
+        # env:
+        #   http_proxy: http://localhost:1055/
+        #   ALL_PROXY: socks5://localhost:1055/
+        #   HTTP_PROXY: http://localhost:1055/
         with:
           extra-conf: |
             accept-flake-config = true
