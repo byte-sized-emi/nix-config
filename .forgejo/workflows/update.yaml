@@ -5,8 +5,44 @@ on:
     branches: ["main"]
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Tailscale join
+        uses: https://github.com/tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:cicd
+          version: latest
+          tailscaled-args: --verbose 2 --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
+          ping: ${{ matrix.host }}
+
+      - name: Test connectivity
+        run: |
+          # Test that we can reach the Tailscale network
+          tailscale status
+
+          # Show our IP address
+          tailscale ip
+
+      - name: Install nix
+        uses: https://github.com/DeterminateSystems/determinate-nix-action@main
+        with:
+          proxy: http://localhost:1055/
+
+      - uses: actions/checkout@v6
+      - run: nix flake metadata
+      - run: nix flake show
+
   update-hosts:
     runs-on: ubuntu-latest
+    needs: check
 
     strategy:
       matrix:
@@ -27,11 +63,9 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:cicd
           version: latest
-          use-cache: "false"
           tailscaled-args: --verbose 2 --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
           ping: ${{ matrix.host }}
 
-      # - run: cat ~/tailscaled.log
       - name: Test connectivity
         run: |
           # Test that we can reach the Tailscale network
