@@ -33,7 +33,7 @@ jobs:
           tailscale ip
 
       - name: Install nix
-        uses: https://github.com/DeterminateSystems/determinate-nix-action@v3.17.0
+        uses: https://github.com/DeterminateSystems/nix-installer-action@v21
         with:
           proxy: http://localhost:1055/
           extra-conf: |
