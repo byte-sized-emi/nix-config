@@ -20,6 +20,7 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:cicd
           version: latest
+          use-cache: "false"
           tailscaled-args: --verbose 2 --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
           ping: ${{ matrix.host }}
 
@@ -32,13 +33,16 @@ jobs:
           tailscale ip
 
       - name: Install nix
-        uses: https://github.com/DeterminateSystems/determinate-nix-action@main
+        uses: https://github.com/DeterminateSystems/determinate-nix-action@v3.17.0
         with:
           proxy: http://localhost:1055/
+          extra-conf: |
+            accept-flake-config = true
 
       - uses: actions/checkout@v6
       - run: nix flake metadata
       - run: nix flake show
+      # - run: nix flake check --no-build
 
   update-hosts:
     runs-on: ubuntu-latest
@@ -63,6 +67,7 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:cicd
           version: latest
+          use-cache: "false"
           tailscaled-args: --verbose 2 --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
           ping: ${{ matrix.host }}
 
