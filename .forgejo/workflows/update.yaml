@@ -52,11 +52,9 @@ jobs:
             accept-flake-config = true
             trusted-substituters = https://cache.service.byte-sized.fyi?priority=10
             substituters = https://vicinae.cachix.org https://hyprland.cachix.org https://niri.cachix.org https://cache.nixos.org
-            trusted-public-keys = vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc=hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+            trusted-public-keys = vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc= hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc= niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
 
       - uses: actions/checkout@v6
-      - run: nix flake prefetch-inputs
-      - run: nix flake show --log-format raw
       - run: nix flake check
 
   # TODO: Remove this job and just update the hosts in the above action.
