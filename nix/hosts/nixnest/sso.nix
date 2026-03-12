@@ -83,6 +83,14 @@ in
           ];
           groups = [ "mealie_users" ];
         };
+        danlp6 = {
+          displayName = "Dan";
+          mailAddresses = [
+            "danlp6@sso.byte-sized.fyi"
+            "danlp6@byte-sized.fyi"
+          ];
+          groups = [ "git" ];
+        };
       };
       systems.oauth2 = {
         tailscale = {
