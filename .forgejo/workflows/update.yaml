@@ -32,14 +32,13 @@ jobs:
           # Show our IP address
           tailscale ip
 
-      - name: try to reach https://cache.service.byte-sized.fyi/ and google.com
+      - name: try to reach https://cache.service.byte-sized.fyi/
         env:
           http_proxy: http://localhost:1055/
           ALL_PROXY: socks5://localhost:1055/
           HTTP_PROXY: http://localhost:1055/
         run: |
-          curl -q https://cache.service.byte-sized.fyi/nix-cache-info
-          curl -q https://google.com/
+          curl -q --no-progress-meter https://cache.service.byte-sized.fyi/nix-cache-info
 
       - name: Install nix
         uses: https://github.com/cachix/install-nix-action@v31.10.1
@@ -51,14 +50,14 @@ jobs:
         with:
           extra_nix_config: |
             accept-flake-config = true
-            trusted-substituters = https://cache.service.byte-sized.fyi
+            trusted-substituters = https://cache.service.byte-sized.fyi?priority=10
             substituters = https://vicinae.cachix.org https://hyprland.cachix.org https://niri.cachix.org
             trusted-public-keys = vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc=hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964=
 
       - uses: actions/checkout@v6
-      - run: nix flake metadata
+      - run: nix flake prefetch-inputs
       - run: nix flake show --log-format raw
-      - run: nix flake check --no-build
+      - run: nix flake check
 
   update-hosts:
     runs-on: ubuntu-latest
