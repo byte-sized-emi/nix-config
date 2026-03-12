@@ -46,7 +46,6 @@
     tunnels.${config.settings.ingress_tunnel} = {
       credentialsFile = config.sops.secrets."cloudflared/tunnel".path;
       default = "http_status:404";
-      # originRequest.originServerName = config.settings.sso.domain;
       originRequest = {
         matchSNItoHost = true;
         http2Origin = true;

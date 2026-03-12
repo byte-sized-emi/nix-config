@@ -58,8 +58,8 @@
     ];
     settings = {
       init.defaultBranch = "main";
-      user.name = "Emilia Jaser";
-      user.email = "vapor.schitcrafter@gmail.com";
+      user.name = "byte-sized-emi";
+      user.email = "emilia.git@byte-sized.fyi";
       push = {
         autoSetupRemote = true;
       };
