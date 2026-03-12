@@ -117,6 +117,7 @@ in
               "openid"
               "email"
               "profile"
+              "groups"
             ];
           };
         };

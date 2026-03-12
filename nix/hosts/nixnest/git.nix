@@ -29,6 +29,7 @@
       session.COOKIE_SECURE = true;
       service.DISABLE_REGISTRATION = true;
       openid.ENABLE_OPENID_SIGNUP = true;
+      oauth2_client.ENABLE_AUTO_REGISTRATION = true;
       # TODO: configure SSO here
     };
 
