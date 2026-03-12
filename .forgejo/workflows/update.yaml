@@ -42,7 +42,6 @@ jobs:
 
       - name: Install nix
         uses: https://github.com/cachix/install-nix-action@v31.10.1
-        timeout-minutes: 2
         env:
           http_proxy: http://localhost:1055/
           ALL_PROXY: socks5://localhost:1055/
@@ -55,7 +54,12 @@ jobs:
             trusted-public-keys = vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc= hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc= niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
 
       - uses: actions/checkout@v6
+      - run: ls -la /
       - run: nix flake check
+        env:
+          http_proxy: http://localhost:1055/
+          ALL_PROXY: socks5://localhost:1055/
+          HTTP_PROXY: http://localhost:1055/
 
   # TODO: Remove this job and just update the hosts in the above action.
   # That would significantly reduce the runtime of the workflow

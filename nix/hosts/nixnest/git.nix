@@ -51,6 +51,9 @@
         "ubuntu-24.04:docker://ghcr.io/catthehacker/ubuntu:rust-24.04"
         "ubuntu-js-latest:docker://ghcr.io/catthehacker/ubuntu:js-latest"
       ];
+      settings = {
+        cache.enabled = true;
+      };
     };
   };
 
