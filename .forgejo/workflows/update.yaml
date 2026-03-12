@@ -5,67 +5,77 @@ on:
     branches: ["main"]
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
+  # TODO: Fix me
+  # Current problems:
+  # - nix is installed in single-user mode which causes the build to fail
+  # - installling it with --daemon / multi-user mode isn't possible as the action currently runs as root,
+  #   which the install-nix-action cannot handle
+  # - self-hosted nix cache at cache.service.byte-sized.fyi is not preferred by nix of cache.nixos.org,
+  #   meaning everything has to be downloaded again from the internet, on every ci/cd run.
+  #
+  # Ideal fix for this is to just stop using github/forgejo actions. They are not easily usable on self-hosted runners.
+  # Best case I'd create my own docker image with all tools already installed, and then just provide the tailscale secrets as an env variable.
+  #
+  # check:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
+  #   steps:
+  #     - uses: actions/setup-node@v6
+  #       with:
+  #         node-version: 24
 
-      - name: Tailscale join
-        uses: https://github.com/tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:cicd
-          version: latest
-          use-cache: "false"
-          tailscaled-args: --verbose 2 --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
-          ping: ${{ matrix.host }}
+  #     - name: Tailscale join
+  #       uses: https://github.com/tailscale/github-action@v4
+  #       with:
+  #         oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+  #         oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+  #         tags: tag:cicd
+  #         version: latest
+  #         use-cache: "false"
+  #         tailscaled-args: --verbose 2 --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
+  #         ping: ${{ matrix.host }}
 
-      - name: Test connectivity
-        run: |
-          # Test that we can reach the Tailscale network
-          tailscale status
+  #     - name: Test connectivity
+  #       run: |
+  #         # Test that we can reach the Tailscale network
+  #         tailscale status
 
-          # Show our IP address
-          tailscale ip
+  #         # Show our IP address
+  #         tailscale ip
 
-      - name: try to reach https://cache.service.byte-sized.fyi/
-        env:
-          http_proxy: http://localhost:1055/
-          ALL_PROXY: socks5://localhost:1055/
-          HTTP_PROXY: http://localhost:1055/
-        run: |
-          curl -q --no-progress-meter https://cache.service.byte-sized.fyi/nix-cache-info
+  #     - name: try to reach https://cache.service.byte-sized.fyi/
+  #       env:
+  #         http_proxy: http://localhost:1055/
+  #         ALL_PROXY: socks5://localhost:1055/
+  #         HTTP_PROXY: http://localhost:1055/
+  #       run: |
+  #         curl -q --no-progress-meter https://cache.service.byte-sized.fyi/nix-cache-info
 
-      - name: Install nix
-        uses: https://github.com/cachix/install-nix-action@v31.10.1
-        env:
-          http_proxy: http://localhost:1055/
-          ALL_PROXY: socks5://localhost:1055/
-          HTTP_PROXY: http://localhost:1055/
-        with:
-          extra_nix_config: |
-            accept-flake-config = true
-            trusted-substituters = https://cache.service.byte-sized.fyi?priority=10
-            substituters = https://vicinae.cachix.org https://hyprland.cachix.org https://niri.cachix.org https://cache.nixos.org
-            trusted-public-keys = vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc= hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc= niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+  #     - name: Install nix
+  #       uses: https://github.com/cachix/install-nix-action@v31.10.1
+  #       env:
+  #         http_proxy: http://localhost:1055/
+  #         ALL_PROXY: socks5://localhost:1055/
+  #         HTTP_PROXY: http://localhost:1055/
+  #       with:
+  #         install_options: --daemon
+  #         extra_nix_config: |
+  #           accept-flake-config = true
+  #           trusted-substituters = https://cache.service.byte-sized.fyi?priority=10
+  #           substituters = https://vicinae.cachix.org https://hyprland.cachix.org https://niri.cachix.org https://cache.nixos.org
+  #           trusted-public-keys = vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc= hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc= niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
 
-      - uses: actions/checkout@v6
-      - run: ls -la /
-      - run: nix flake check
-        env:
-          http_proxy: http://localhost:1055/
-          ALL_PROXY: socks5://localhost:1055/
-          HTTP_PROXY: http://localhost:1055/
+  #     - uses: actions/checkout@v6
+  #     - run: ls -la /
+  #     - run: nix flake check
+  #       env:
+  #         http_proxy: http://localhost:1055/
+  #         ALL_PROXY: socks5://localhost:1055/
+  #         HTTP_PROXY: http://localhost:1055/
 
-  # TODO: Remove this job and just update the hosts in the above action.
-  # That would significantly reduce the runtime of the workflow
   update-hosts:
     runs-on: ubuntu-latest
-    needs: check
+    # needs: check
 
     strategy:
       matrix:
