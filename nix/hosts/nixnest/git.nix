@@ -27,7 +27,11 @@
       };
       repository.ENABLE_PUSH_CREATE_USER = true;
       session.COOKIE_SECURE = true;
-      service.DISABLE_REGISTRATION = true;
+      service = {
+        # DISABLE_REGISTRATION = true;
+        ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
+        # SHOW_REGISTRATION_BUTTON = false;
+      };
       openid.ENABLE_OPENID_SIGNUP = true;
       oauth2_client.ENABLE_AUTO_REGISTRATION = true;
       # TODO: configure SSO here
