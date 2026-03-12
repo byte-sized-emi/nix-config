@@ -17,7 +17,7 @@
 
   services.forgejo = {
     enable = true;
-    package = pkgs.forgejo-lts;
+    package = pkgs.forgejo;
     settings = {
       server = {
         DOMAIN = config.settings.git.domain;
