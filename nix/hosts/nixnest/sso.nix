@@ -91,14 +91,6 @@ in
           ];
           groups = [ "git" ];
         };
-        testemi = {
-          displayName = "Test Emi";
-          mailAddresses = [
-            "testemi@sso.byte-sized.fyi"
-            "testemi@byte-sized.fyi"
-          ];
-          groups = [ "git" ];
-        };
       };
       systems.oauth2 = {
         tailscale = {
