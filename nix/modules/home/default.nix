@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, perSystem, ... }:
 {
   home.username = "emilia";
   home.homeDirectory = "/home/emilia";
@@ -15,6 +15,7 @@
     nil
     usbutils
     libargon2
+    perSystem.isd.default
   ];
 
   programs.ssh.matchBlocks = {

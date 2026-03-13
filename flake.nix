@@ -44,6 +44,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    isd = {
+      url = "github:kainctl/isd";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
