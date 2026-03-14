@@ -4,12 +4,35 @@
     inputs.noctalia.homeModules.default
   ];
 
+  xdg.desktopEntries = {
+    caffeine = {
+      name = "Toggle idle / sleep inhibitor";
+      exec = "noctalia-shell ipc call idleInhibitor toggle";
+      terminal = false;
+      type = "Application";
+      categories = [ "Utility" ];
+      icon = "caffeine";
+    };
+
+    clear-notification = {
+      name = "Clear Notifications";
+      comment = "Clear all noctalia notifications";
+      exec = "noctalia-shell ipc call notifications clear";
+      terminal = false;
+      type = "Application";
+      categories = [ "Utility" ];
+      icon = "notification-disabled";
+    };
+  };
+
+  # to see the changes between current settings and nix settings:
+  # nix shell nixpkgs#json-diff -c bash -c "json-diff <(jq -S . ~/.config/noctalia/settings.json) <(noctalia-shell ipc call state all | jq -S .settings)"
+
   programs.noctalia-shell = {
     enable = true;
     settings = {
-      location = {
-        name = "Munich, Germany";
-      };
+      location.name = "Munich, Germany";
+      colorSchemes.predefinedScheme = "Rose Pine";
       appLauncher = {
         enableClipboardHistory = true;
         enableClipPreview = false;
@@ -27,6 +50,9 @@
         showCapsule = true;
         widgets = {
           left = [
+            {
+              id = "plugin:catwalk";
+            }
             {
               id = "SidePanelToggle";
               useDistroLogo = true;
@@ -62,10 +88,10 @@
               id = "MediaMini";
             }
             {
-              id = "WiFi";
+              id = "plugin:tailscale";
             }
             {
-              id = "VPN";
+              id = "Network";
             }
             {
               id = "Bluetooth";
@@ -84,6 +110,9 @@
               displayMode = "alwaysShow";
             }
             {
+              id = "KeepAwake";
+            }
+            {
               id = "Clock";
               formatHorizontal = "HH:mm d. MMM";
               formatVertical = "HH mm";
@@ -98,6 +127,42 @@
             }
           ];
         };
+      };
+    };
+    plugins = {
+      sources = [
+        {
+          enabled = true;
+          name = "Official Noctalia Plugins";
+          url = "https://github.com/noctalia-dev/noctalia-plugins";
+        }
+      ];
+      states = {
+        catwalk = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        tailscale = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        polkit-agent = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+      };
+      version = 2;
+    };
+
+    pluginSettings = {
+      catwalk = {
+        minimumThreshold = 25;
+        hideBackground = true;
+      };
+      tailscale = {
+        showIpAddress = false;
+        terminalCommand = "xdg-terminal";
+        defaultPeerAction = "ssh";
       };
     };
   };

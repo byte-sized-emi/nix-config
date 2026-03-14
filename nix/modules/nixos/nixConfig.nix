@@ -5,7 +5,11 @@
   # if you add a cache here, also add it to the update.yaml forgejo action
   nix = {
     settings = {
+      warn-dirty = false;
       download-buffer-size = 524288000; # 500 MiB
+      max-substitution-jobs = 128;
+      http-connections = 128;
+      max-jobs = "auto";
       substituters = [
         "https://vicinae.cachix.org"
         "https://hyprland.cachix.org"

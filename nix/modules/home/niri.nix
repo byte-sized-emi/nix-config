@@ -23,7 +23,7 @@
     # xdg-desktop-portal-gtk
     # xdg-desktop-portal-gnome
     # polkit-kde-agent
-    kdePackages.polkit-kde-agent-1
+    # kdePackages.polkit-kde-agent-1
     papirus-icon-theme
   ];
 

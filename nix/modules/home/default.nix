@@ -18,6 +18,18 @@
     perSystem.isd.default
   ];
 
+  home.file.".config/isd_tui/config.yaml" = {
+    text = ''
+      # yaml-language-server: $schema=schema.json
+
+      ## The systemctl startup mode (`user`/`system`).
+      ## By default loads the mode from the last session (`auto`).
+      startup_mode: "system"
+
+      theme: "rose-pine"
+    '';
+  };
+
   programs.ssh.matchBlocks = {
     "git.byte-sized.fyi" = {
       identityFile = "~/.ssh/id_byte_sized";
@@ -77,6 +89,10 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    initContent = ''
+      bindkey "^[[1;5C" forward-word
+      bindkey "^[[1;5D" backward-word
+    '';
     shellAliases = {
       update = "nixos-rebuild switch --sudo";
       update-test = "nixos-rebuild test --sudo";
@@ -90,6 +106,7 @@
       "...." = "cd ../../..";
       "....." = "cd ../../../..";
     };
+    history.append = true;
   };
 
   programs.direnv = {

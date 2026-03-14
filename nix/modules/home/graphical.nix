@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
   pkgs-unstable = import inputs.nixpkgs-unstable {
     inherit (pkgs.stdenv.hostPlatform) system;
@@ -18,6 +23,8 @@ in
     ./steam.nix
     ./signal.nix
   ];
+
+  programs.zsh.shellAliases.sudo = lib.mkForce "pkexec";
 
   xdg.desktopEntries.nix-config = {
     name = "Nix config (git.byte-sized.fyi)";

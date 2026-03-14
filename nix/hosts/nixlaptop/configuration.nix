@@ -14,7 +14,7 @@
     graphical
     syncthing
     auto-update
-    # cachyos-kernel
+    cachyos-kernel
   ]);
 
   services.xserver.videoDrivers = [ "modesetting" ];

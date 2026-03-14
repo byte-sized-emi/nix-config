@@ -29,6 +29,7 @@ This is meant to be used either locally through the kanidm CLI, or through cloud
 - [x] automatically update nixlaptop
 - [x] how to update nix-update-server with nix-update-server?
 - [x] stop server after successful update
+- [ ] make auto-update fail when the rebuild fails - output a recognisable string on success and failure, and check for it in the ci/cd using the test command
 - [ ] automatic nix flake updates
 - [ ] don't update with local changes in the git repo
 - [ ] don't show a failed update as success in the CI/CD
