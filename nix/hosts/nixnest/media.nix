@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ config, ... }:
 let
   stackPath = "/var/stacks/media";
   jellyfinPath = "${stackPath}/jellyfin";
@@ -6,10 +6,6 @@ let
   port = 8096;
 in
 {
-  imports = [
-    inputs.nixarr.nixosModules.default
-  ];
-
   systemd.tmpfiles.rules = [
     "d ${stackPath}             0770 root root"
     "d ${jellyfinPath}          0770 root root"
