@@ -11,25 +11,26 @@
     flake.modules.nixos.syncthing
     flake.modules.nixos.auto-update
     flake.modules.nixos.service
-    ./settings.nix
-    ./podman.nix
-    ./hass.nix
-    ./dawarich.nix
-    ./sso.nix
-    ./networking.nix
-    ./monitoring.nix
-    ./git.nix
-    ./food.nix
-    ./immich.nix
     ./backups.nix
-    ./secrets.nix
-    ./vaultwarden.nix
-    ./homepage.nix
     ./beeper.nix
-    ./nix-serve.nix
-    ./umami.nix
+    ./dawarich.nix
+    ./food.nix
+    ./git.nix
+    ./hass.nix
+    ./homepage.nix
+    ./immich.nix
     ./linktree.nix
+    ./media.nix
+    ./monitoring.nix
+    ./networking.nix
+    ./nix-serve.nix
     ./ntfy.nix
+    ./podman.nix
+    ./secrets.nix
+    ./settings.nix
+    ./sso.nix
+    ./umami.nix
+    ./vaultwarden.nix
     inputs.vscode-server.nixosModules.default
     inputs.quadlet-nix.nixosModules.quadlet
   ];
