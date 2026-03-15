@@ -88,9 +88,6 @@ in
     containers.qbittorrent = {
       containerConfig = {
         image = "lscr.io/linuxserver/qbittorrent:5.1.4";
-        publishPorts = [
-          "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
-        ];
         volumes = [
           "${qbittorrentPath}:/config"
           "${dataPath}/torrents:/data/torrents"
@@ -99,7 +96,7 @@ in
           PUID = "1000";
           PGID = "1000";
           TZ = "Etc/UTC";
-          WEBUI_PORT = "8080";
+          WEBUI_PORT = toString qbittorrentPort;
           TORRENTING_PORT = "6881";
         };
         networks = [
@@ -113,6 +110,9 @@ in
         image = "ghcr.io/qdm12/gluetun:v3.41.1";
         addCapabilities = [ "NET_ADMIN" ];
         devices = [ "/dev/net/tun:/dev/net/tun" ];
+        publishPorts = [
+          "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
+        ];
         environments = {
           VPN_SERVICE_PROVIDER = "surfshark";
           VPN_TYPE = "wireguard";
