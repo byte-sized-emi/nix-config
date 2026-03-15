@@ -81,7 +81,7 @@ in
           environments = {
             VPN_SERVICE_PROVIDER = "surfshark";
             VPN_TYPE = "wireguard";
-            WIREGUARD_ADDRESSES = "10.64.0.2/16";
+            WIREGUARD_ADDRESSES = "10.14.0.2/16";
             SERVER_COUNTRIES = "Germany";
           };
           environmentFiles = [ config.sops.templates.gluetunEnv.path ];
