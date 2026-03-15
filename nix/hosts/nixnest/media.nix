@@ -112,7 +112,7 @@ in
 
     containers.sonarr = {
       containerConfig = {
-        image = "lscr.io/linuxserver/sonarr:release-4.0.16.2944";
+        image = "lscr.io/linuxserver/sonarr:4.0.16.2944-ls304";
         volumes = [
           "${sonarrPath}:/config"
           "${dataPath}:/data"
