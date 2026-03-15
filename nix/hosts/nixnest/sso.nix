@@ -48,6 +48,7 @@ in
         mealie_users = { };
         mealie_admins = { };
         immich_users = { };
+        media = { };
       };
       # when adding a new user, run `sudo kanidmd recover-account <username>`
       # to generate a new temporary password
@@ -65,6 +66,7 @@ in
             "mealie_users"
             "mealie_admins"
             "immich_users"
+            "media"
           ];
         };
         mika = {
@@ -156,6 +158,23 @@ in
               "openid"
               "email"
               "profile"
+            ];
+          };
+        };
+        jellyfin = {
+          displayName = "JellyFin Media Server";
+          originUrl = [
+            "https://${config.settings.media.service_domain}/sso/OID/start/kanidm"
+            "https://${config.settings.media.service_domain}/sso/OID/redirect/kanidm"
+          ];
+          originLanding = "https://${config.settings.media.service_domain}/sso/OID/start/kanidm";
+          basicSecretFile = config.sops.secrets."kanidm/jellyfinOauthSecret".path;
+          scopeMaps = {
+            media = [
+              "openid"
+              "email"
+              "profile"
+              "groups"
             ];
           };
         };

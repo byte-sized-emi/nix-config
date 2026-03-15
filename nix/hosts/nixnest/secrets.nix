@@ -24,6 +24,7 @@
       "kanidm/forgejoOauthSecret".owner = users.kanidm.name;
       "kanidm/mealieOauthSecret".owner = users.kanidm.name;
       "kanidm/immichOauthSecret".owner = users.kanidm.name;
+      "kanidm/jellyfinOauthSecret".owner = users.kanidm.name;
       "kanidm/mealieOauthSecretEnv".owner = "root";
       "vaultwarden/env".owner = users.vaultwarden.name;
       "beeper_bridge_manager/config" = { };
