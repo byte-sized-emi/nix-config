@@ -77,7 +77,7 @@ in
     };
     seerr = {
       enable = true;
-      port = sonarrPort;
+      port = seerrPort;
       internal = {
         enable = true;
         domain = "seerr.${config.settings.services.domain}";
