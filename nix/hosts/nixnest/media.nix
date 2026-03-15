@@ -108,32 +108,42 @@ in
     };
 
     containers.seerr = {
-      image = "ghcr.io/seerr-team/seerr:v3.1.0";
-      publishPorts = [
-        "127.0.0.1:${toString seerrPort}:${toString seerrPort}"
-      ];
-      volumes = [
-        "${seerrPath}:/app/config"
-      ];
-      environments = {
-        PORT = toString seerrPort;
-        TZ = "Europe/Berlin";
+      containerConfig = {
+        image = "ghcr.io/seerr-team/seerr:v3.1.0";
+        publishPorts = [
+          "127.0.0.1:${toString seerrPort}:${toString seerrPort}"
+        ];
+        volumes = [
+          "${seerrPath}:/app/config"
+        ];
+        environments = {
+          PORT = toString seerrPort;
+          TZ = "Europe/Berlin";
+        };
+      };
+      serviceConfig = {
+        Restart = "always";
       };
     };
 
     containers.sonarr = {
-      image = "ghcr.io/hotio/sonarr:release-4.0.16.2944";
-      volumes = [
-        "${sonarrPath}:/config"
-        "${dataPath}:/data"
-      ];
-      environments = {
-        PUID = "1000";
-        PGID = "1000";
+      containerConfig = {
+        image = "ghcr.io/hotio/sonarr:release-4.0.16.2944";
+        volumes = [
+          "${sonarrPath}:/config"
+          "${dataPath}:/data"
+        ];
+        environments = {
+          PUID = "1000";
+          PGID = "1000";
+        };
+        networks = [
+          "gluetun.container"
+        ];
       };
-      networks = [
-        "gluetun.container"
-      ];
+      serviceConfig = {
+        Restart = "always";
+      };
     };
 
     containers.qbittorrent = {
