@@ -30,6 +30,8 @@
       "beeper_bridge_manager/config" = { };
       "umami/dbPassword" = { };
       "umami/appSecret" = { };
+      "wireguard/private_key" = { };
+      "wireguard/public_key" = { };
     };
 
   sops.templates = {
