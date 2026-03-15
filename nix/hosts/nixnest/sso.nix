@@ -174,9 +174,10 @@ in
               "openid"
               "email"
               "profile"
-              "groups"
+              "groups_name"
             ];
           };
+          preferShortUsername = true;
         };
       };
     };
