@@ -4,29 +4,40 @@ let
   jellyfinPath = "${stackPath}/jellyfin";
   sonarrPath = "${stackPath}/sonarr";
   qbittorrentPath = "${stackPath}/qbittorrent";
-  seerrPath = "${stackPath}/seerr";
   dataPath = "/data";
   jellyfinPort = 8096;
   qbittorrentPort = 8097;
   sonarrPort = 8989;
-  seerrPort = 8098;
+  inherit (config.users.users.media) uid;
+  inherit (config.users.groups.media) gid;
 in
 {
+  users.users.media = {
+    uid = 311;
+    group = "media";
+  };
+  users.groups.media = {
+    gid = 311;
+    members = [
+      "media"
+      "emilia"
+    ];
+  };
+
   systemd.tmpfiles.rules = [
-    "d ${stackPath}                 0770 root root"
-    "d ${sonarrPath}                0770 root root"
-    "d ${qbittorrentPath}           0770 root root"
-    "d ${seerrPath}                0770 root root"
-    "d ${jellyfinPath}/config       0770 root root"
-    "d ${jellyfinPath}/cache        0770 root root"
-    "d ${dataPath}/torrents/books   0770 root root"
-    "d ${dataPath}/torrents/movies  0770 root root"
-    "d ${dataPath}/torrents/music   0770 root root"
-    "d ${dataPath}/torrents/tv      0770 root root"
-    "d ${dataPath}/media/books      0770 root root"
-    "d ${dataPath}/media/movies     0770 root root"
-    "d ${dataPath}/media/music      0770 root root"
-    "d ${dataPath}/media/tv         0770 root root"
+    "d ${stackPath}                 0770 media media"
+    "d ${sonarrPath}                0770 media media"
+    "d ${qbittorrentPath}           0770 media media"
+    "d ${jellyfinPath}/config       0770 media media"
+    "d ${jellyfinPath}/cache        0770 media media"
+    "d ${dataPath}/torrents/books   0775 media media"
+    "d ${dataPath}/torrents/movies  0775 media media"
+    "d ${dataPath}/torrents/music   0775 media media"
+    "d ${dataPath}/torrents/tv      0775 media media"
+    "d ${dataPath}/media/books      0775 media media"
+    "d ${dataPath}/media/movies     0775 media media"
+    "d ${dataPath}/media/music      0775 media media"
+    "d ${dataPath}/media/tv         0775 media media"
   ];
 
   # TRaSH guides recommended folder structure:
@@ -75,14 +86,6 @@ in
         domain = "sonarr.${config.settings.services.domain}";
       };
     };
-    seerr = {
-      enable = true;
-      port = seerrPort;
-      internal = {
-        enable = true;
-        domain = "seerr.${config.settings.services.domain}";
-      };
-    };
   };
 
   virtualisation.quadlet = {
@@ -107,35 +110,16 @@ in
       };
     };
 
-    containers.seerr = {
-      containerConfig = {
-        image = "ghcr.io/seerr-team/seerr:v3.1.0";
-        publishPorts = [
-          "127.0.0.1:${toString seerrPort}:${toString seerrPort}"
-        ];
-        volumes = [
-          "${seerrPath}:/app/config"
-        ];
-        environments = {
-          PORT = toString seerrPort;
-          TZ = "Europe/Berlin";
-        };
-      };
-      serviceConfig = {
-        Restart = "always";
-      };
-    };
-
     containers.sonarr = {
       containerConfig = {
-        image = "ghcr.io/hotio/sonarr:release-4.0.16.2944";
+        image = "lscr.io/linuxserver/sonarr:release-4.0.16.2944";
         volumes = [
           "${sonarrPath}:/config"
           "${dataPath}:/data"
         ];
         environments = {
-          PUID = "1000";
-          PGID = "1000";
+          PUID = toString uid;
+          PGID = toString gid;
         };
         networks = [
           "gluetun.container"
@@ -154,8 +138,8 @@ in
           "${dataPath}/torrents:/data/torrents"
         ];
         environments = {
-          PUID = "1000";
-          PGID = "1000";
+          PUID = toString uid;
+          PGID = toString gid;
           TZ = "Europe/Berlin";
           WEBUI_PORT = toString qbittorrentPort;
           TORRENTING_PORT = "6881";
