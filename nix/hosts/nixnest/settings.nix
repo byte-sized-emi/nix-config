@@ -58,6 +58,10 @@ with lib;
       type = types.str;
     };
 
+    media.service_domain = mkOption {
+      type = types.str;
+    };
+
     backup = {
       interval = mkOption {
         type = types.str;
@@ -88,6 +92,7 @@ with lib;
     ntfy.service_domain = "ntfy.${services.domain}";
     meals.service_domain = "meals.${services.domain}";
     cache.service_domain = "cache.${services.domain}";
+    media.service_domain = "media.${services.domain}";
     dawarich.enable = true;
     ingress_tunnel = "a7cff2a8-b287-4edc-94fd-35527c3c3858";
     backup.interval = "Mon,Fri 02:00";

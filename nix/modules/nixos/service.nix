@@ -1,14 +1,8 @@
 { lib, config, ... }:
 with lib;
 {
-  # TODO: Implement a services module.
-  # Features:
+  # TODO:
   # - set backup path, with an optional feature for a preparation step
-  # - set a internal services domain with enable option
-  # - set a external domain with enable option
-  # - create a system user automatically
-  # - description for documentation
-  # - version?
 
   options.my.services = mkOption {
     type = types.attrsOf (
@@ -44,6 +38,11 @@ with lib;
               domain = mkOption {
                 type = types.str;
                 default = "${name}.${config.settings.services.domain}";
+              };
+              caddyExtraConfig = mkOption {
+                type = types.str;
+                description = "Caddy config inside the site block of this domain.";
+                default = "";
               };
             };
 
@@ -175,6 +174,7 @@ with lib;
       mkIf (serviceCfg.enable && serviceCfg.internal.enable) {
         ${serviceCfg.internal.domain}.extraConfig = ''
           import abort_external
+          ${serviceCfg.internal.caddyExtraConfig}
           reverse_proxy localhost:${toString serviceCfg.port}
         '';
       }
