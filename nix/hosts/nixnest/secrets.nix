@@ -30,8 +30,14 @@
       "beeper_bridge_manager/config" = { };
       "umami/dbPassword" = { };
       "umami/appSecret" = { };
-      "wireguard/private_key" = { };
-      "wireguard/public_key" = { };
+      "openvpn/client_key" = {
+        format = "binary";
+        sopsFile = ../../secrets/openvpn_client.key;
+      };
+      "openvpn/client_cert" = {
+        format = "binary";
+        sopsFile = ../../secrets/openvpn_client_cert.crt;
+      };
     };
 
   sops.templates = {

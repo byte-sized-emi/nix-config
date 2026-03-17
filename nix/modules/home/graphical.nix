@@ -26,6 +26,10 @@ in
 
   programs.zsh.shellAliases.sudo = lib.mkForce "pkexec";
 
+  # ls /run/current-system/sw/share/applications # for global packages
+  # ls /etc/profiles/per-user/$(id -n -u)/share/applications # for user packages
+  # ls ~/.nix-profile/share/applications # for home-manager packages
+
   xdg.desktopEntries.nix-config = {
     name = "Nix config (git.byte-sized.fyi)";
     comment = "My nix/NixOS config";
@@ -47,6 +51,22 @@ in
     icon = "nix-snowflake";
   };
 
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "text/html" = "firefox.desktop";
+      "application/pdf" = "com.github.xournalpp.xournalpp.desktop";
+      "application/x-xoj" = "com.github.xournalpp.xournalpp.desktop";
+      "application/x-xojpp" = "com.github.xournalpp.xournalpp.desktop";
+      "application/x-xopp" = "com.github.xournalpp.xournalpp.desktop";
+      "application/x-xopt" = "com.github.xournalpp.xournalpp.desktop";
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
+      "x-scheme-handler/about" = "firefox.desktop";
+      "x-scheme-handler/unknown" = "firefox.desktop";
+    };
+  };
+
   home.packages =
     let
       normal-packages = with pkgs; [
@@ -64,6 +84,7 @@ in
         keepassxc
         vlc
         libreoffice
+        file
       ];
       unstable-packages = with pkgs-unstable; [
         deezer-enhanced

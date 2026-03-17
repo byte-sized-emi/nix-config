@@ -155,23 +155,19 @@ in
         image = "ghcr.io/qdm12/gluetun:v3.41.1";
         addCapabilities = [ "NET_ADMIN" ];
         devices = [ "/dev/net/tun:/dev/net/tun" ];
+        volumes = [
+          "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
+          "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
+        ];
         publishPorts = [
           "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
           "127.0.0.1:${toString sonarrPort}:${toString sonarrPort}"
         ];
         environments = {
-          VPN_SERVICE_PROVIDER = "surfshark";
-          VPN_TYPE = "wireguard";
-          WIREGUARD_ADDRESSES = "10.14.0.2/16";
-          SERVER_COUNTRIES = "Germany";
+          VPN_SERVICE_PROVIDER = "airvpn";
+          FIREWALL_VPN_INPUT_PORTS = "41589,42850";
         };
-        environmentFiles = [ config.sops.templates.gluetunEnv.path ];
       };
     };
   };
-
-  sops.templates.gluetunEnv.content = ''
-    WIREGUARD_PRIVATE_KEY=${config.sops.placeholder."wireguard/private_key"}
-  '';
-
 }

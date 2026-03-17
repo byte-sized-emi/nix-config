@@ -23,6 +23,16 @@
       categories = [ "Utility" ];
       icon = "notification-disabled";
     };
+
+    toggle-notifications = {
+      name = "Toggle Notifications";
+      comment = "Toggles noctalia notifications / do not disturb mode";
+      exec = "noctalia-shell ipc call notifications toggleDND";
+      terminal = false;
+      type = "Application";
+      categories = [ "Utility" ];
+      icon = "notification";
+    };
   };
 
   # to see the changes between current settings and nix settings:
@@ -107,7 +117,9 @@
               id = "Battery";
               alwaysShowPercentage = true;
               warningThreshold = 30;
-              displayMode = "alwaysShow";
+              displayMode = "icon-always";
+              showNoctaliaPerformance = true;
+              showPowerProfiles = true;
             }
             {
               id = "KeepAwake";
