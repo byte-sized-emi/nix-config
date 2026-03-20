@@ -71,7 +71,7 @@
         debug.honor-xdg-activation-with-invalid-serial = [ ];
         spawn-at-startup = [
           {
-            sh = "QS_ICON_THEME=\"Adwaita\" ${lib.getExe config.programs.noctalia-shell.package}";
+            sh = "QS_ICON_THEME=\"Papirus\" QT_QPA_PLATFORMTHEME=gtk3 ${lib.getExe config.programs.noctalia-shell.package}";
           }
           {
             # to unblock bluetooth on startup - for some reason neither niri nor quickshell

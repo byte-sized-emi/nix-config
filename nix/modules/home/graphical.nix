@@ -24,7 +24,7 @@ in
     ./signal.nix
   ];
 
-  programs.zsh.shellAliases.sudo = lib.mkForce "pkexec";
+  programs.zsh.shellAliases.sudo = lib.mkForce "pkexec --keep-cwd";
 
   # ls /run/current-system/sw/share/applications # for global packages
   # ls /etc/profiles/per-user/$(id -n -u)/share/applications # for user packages
