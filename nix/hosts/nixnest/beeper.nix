@@ -31,5 +31,5 @@ let
     };
 in
 {
-  virtualisation.quadlet = bridge "sh-discord";
+  # virtualisation.quadlet = bridge "sh-discord";
 }
