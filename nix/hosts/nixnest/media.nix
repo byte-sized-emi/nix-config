@@ -182,7 +182,6 @@ in
           };
           networks = [
             "gluetun.container"
-            networks.media.ref
           ];
         };
       };
