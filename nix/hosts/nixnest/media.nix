@@ -9,7 +9,7 @@ let
   jellyfinPort = 8096;
   qbittorrentPort = 8097;
   sonarrPort = 8989;
-  prowlarrPort = 8990;
+  prowlarrPort = 9696;
   inherit (config.users.users.media) uid;
   inherit (config.users.groups.media) gid;
 in
@@ -138,6 +138,9 @@ in
     containers.prowlarr = {
       containerConfig = {
         image = "lscr.io/linuxserver/prowlarr:2.3.0.5236-ls139";
+        publishPorts = [
+          "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}"
+        ];
         volumes = [
           "${prowlarrPath}:/config"
         ];
@@ -145,9 +148,6 @@ in
           PUID = toString uid;
           PGID = toString gid;
         };
-        networks = [
-          "gluetun.container"
-        ];
       };
       serviceConfig = {
         Restart = "always";
@@ -186,7 +186,6 @@ in
         publishPorts = [
           "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
           "127.0.0.1:${toString sonarrPort}:${toString sonarrPort}"
-          "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}"
         ];
         environments = {
           VPN_SERVICE_PROVIDER = "airvpn";
