@@ -101,151 +101,121 @@ in
     };
   };
 
-  virtualisation.quadlet =
-    let
-      inherit (config.virtualisation.quadlet) networks;
-    in
-    {
-      networks.media.networkConfig = {
-        driver = "bridge";
-        podmanArgs = [ "--interface-name=media" ];
-      };
-
-      # networks.media-vpn.networkConfig = {
-      #   driver = "bridge";
-      #   podmanArgs = [ "--interface-name=media-vpn" ];
-      #   internal = true;
-      # };
-
-      containers.jellyfin = {
-        containerConfig = {
-          image = "jellyfin/jellyfin:10.11.6.20260119-010354";
-          publishPorts = [
-            "127.0.0.1:${toString jellyfinPort}:${toString jellyfinPort}/tcp"
-            "7359:7359/udp" # client discovery
-          ];
-          volumes = [
-            "${jellyfinPath}/config:/config"
-            "${jellyfinPath}/cache:/cache"
-            "${dataPath}/media:/media"
-          ];
-          environments = {
-            JELLYFIN_PublishedServerUrl = "https://${config.settings.media.service_domain}";
-          };
-          networks = [ networks.media.ref ];
-        };
-        serviceConfig = {
-          Restart = "always";
+  virtualisation.quadlet = {
+    containers.jellyfin = {
+      containerConfig = {
+        image = "jellyfin/jellyfin:10.11.6.20260119-010354";
+        publishPorts = [
+          "127.0.0.1:${toString jellyfinPort}:${toString jellyfinPort}/tcp"
+          "7359:7359/udp" # client discovery
+        ];
+        volumes = [
+          "${jellyfinPath}/config:/config"
+          "${jellyfinPath}/cache:/cache"
+          "${dataPath}/media:/media"
+        ];
+        environments = {
+          JELLYFIN_PublishedServerUrl = "https://${config.settings.media.service_domain}";
         };
       };
-
-      containers.sonarr = {
-        containerConfig = {
-          image = "lscr.io/linuxserver/sonarr:4.0.16.2944-ls304";
-          publishPorts = [
-            "127.0.0.1:${toString sonarrPort}:${toString sonarrPort}"
-          ];
-          volumes = [
-            "${sonarrPath}:/config"
-            "${dataPath}:/data"
-          ];
-          environments = {
-            PUID = toString uid;
-            PGID = toString gid;
-          };
-          networks = [ networks.media.ref ];
-        };
-        serviceConfig = {
-          Restart = "always";
-        };
+      serviceConfig = {
+        Restart = "always";
       };
+    };
 
-      containers.radarr = {
-        containerConfig = {
-          image = "lscr.io/linuxserver/radarr:6.0.4.10291-ls295";
-          publishPorts = [
-            "127.0.0.1:${toString radarrPort}:${toString radarrPort}"
-          ];
-          volumes = [
-            "${radarrPath}:/config"
-            "${dataPath}:/data"
-          ];
-          environments = {
-            PUID = toString uid;
-            PGID = toString gid;
-          };
-          networks = [ networks.media.ref ];
+    containers.sonarr = {
+      containerConfig = {
+        image = "lscr.io/linuxserver/sonarr:4.0.16.2944-ls304";
+        volumes = [
+          "${sonarrPath}:/config"
+          "${dataPath}:/data"
+        ];
+        environments = {
+          PUID = toString uid;
+          PGID = toString gid;
         };
-        serviceConfig = {
-          Restart = "always";
-        };
+        networks = [ "gluetun.container" ];
       };
-
-      containers.prowlarr = {
-        containerConfig = {
-          image = "lscr.io/linuxserver/prowlarr:2.3.0.5236-ls139";
-          publishPorts = [
-            "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}"
-          ];
-          volumes = [
-            "${prowlarrPath}:/config"
-          ];
-          environments = {
-            PUID = toString uid;
-            PGID = toString gid;
-          };
-          networks = [ networks.media.ref ];
-        };
-        serviceConfig = {
-          Restart = "always";
-        };
+      serviceConfig = {
+        Restart = "always";
       };
+    };
 
-      containers.qbittorrent = {
-        containerConfig = {
-          image = "lscr.io/linuxserver/qbittorrent:5.1.4";
-          name = "qbittorrent";
-          volumes = [
-            "${qbittorrentPath}:/config"
-            "${dataPath}/torrents:/data/torrents"
-          ];
-          environments = {
-            PUID = toString uid;
-            PGID = toString gid;
-            TZ = "Europe/Berlin";
-            WEBUI_PORT = toString qbittorrentPort;
-            TORRENTING_PORT = "6881";
-          };
-          networks = [
-            # it's bound to the tun0 interface in the config
-            "gluetun.container"
-            # networks.media-vpn.ref
-            # networks.media.ref
-          ];
+    containers.radarr = {
+      containerConfig = {
+        image = "lscr.io/linuxserver/radarr:6.0.4.10291-ls295";
+        volumes = [
+          "${radarrPath}:/config"
+          "${dataPath}:/data"
+        ];
+        environments = {
+          PUID = toString uid;
+          PGID = toString gid;
         };
+        networks = [ "gluetun.container" ];
       };
+      serviceConfig = {
+        Restart = "always";
+      };
+    };
 
-      containers.gluetun = {
-        containerConfig = {
-          image = "ghcr.io/qdm12/gluetun:v3.41.1";
-          name = "gluetun";
-          addCapabilities = [ "NET_ADMIN" ];
-          devices = [ "/dev/net/tun:/dev/net/tun" ];
-          volumes = [
-            "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
-            "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
-          ];
-          publishPorts = [
-            "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
-          ];
-          environments = {
-            VPN_SERVICE_PROVIDER = "airvpn";
-            FIREWALL_VPN_INPUT_PORTS = "41589,42850";
-          };
-          # networks = [
-          #   networks.media-vpn.ref
-          # ];
+    containers.prowlarr = {
+      containerConfig = {
+        image = "lscr.io/linuxserver/prowlarr:2.3.0.5236-ls139";
+        volumes = [
+          "${prowlarrPath}:/config"
+        ];
+        environments = {
+          PUID = toString uid;
+          PGID = toString gid;
+        };
+        networks = [ "gluetun.container" ];
+      };
+      serviceConfig = {
+        Restart = "always";
+      };
+    };
+
+    containers.qbittorrent = {
+      containerConfig = {
+        image = "lscr.io/linuxserver/qbittorrent:5.1.4";
+        name = "qbittorrent";
+        volumes = [
+          "${qbittorrentPath}:/config"
+          "${dataPath}/torrents:/data/torrents"
+        ];
+        environments = {
+          PUID = toString uid;
+          PGID = toString gid;
+          TZ = "Europe/Berlin";
+          WEBUI_PORT = toString qbittorrentPort;
+          TORRENTING_PORT = "6881";
+        };
+        networks = [ "gluetun.container" ];
+      };
+    };
+
+    containers.gluetun = {
+      containerConfig = {
+        image = "ghcr.io/qdm12/gluetun:v3.41.1";
+        name = "gluetun";
+        addCapabilities = [ "NET_ADMIN" ];
+        devices = [ "/dev/net/tun:/dev/net/tun" ];
+        volumes = [
+          "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
+          "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
+        ];
+        publishPorts = [
+          "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
+          "127.0.0.1:${toString sonarrPort}:${toString sonarrPort}"
+          "127.0.0.1:${toString radarrPort}:${toString radarrPort}"
+          "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}"
+        ];
+        environments = {
+          VPN_SERVICE_PROVIDER = "airvpn";
+          FIREWALL_VPN_INPUT_PORTS = "41589,42850";
         };
       };
     };
+  };
 }
