@@ -186,6 +186,7 @@ in
         publishPorts = [
           "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
           "127.0.0.1:${toString sonarrPort}:${toString sonarrPort}"
+          "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}"
         ];
         environments = {
           VPN_SERVICE_PROVIDER = "airvpn";
