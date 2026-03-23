@@ -11,6 +11,7 @@
     ];
 
     userSettings = {
+      colorize_brackets = true;
       autosave = "on_focus_change";
       icon_theme = "Material Icon Theme";
       features = {

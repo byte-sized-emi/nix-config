@@ -64,19 +64,22 @@
               id = "plugin:catwalk";
             }
             {
-              id = "SidePanelToggle";
-              useDistroLogo = true;
+              id = "MediaMini";
             }
             {
-              id = "ActiveWindow";
-              maxWidth = 600;
-              colorizeIcons = true;
+              id = "SidePanelToggle";
+              useDistroLogo = true;
             }
             {
               id = "LockKeys";
               showCapsLock = true;
               showNumLock = false;
               showScrollLock = false;
+            }
+            {
+              id = "ActiveWindow";
+              maxWidth = 300;
+              colorizeIcons = true;
             }
           ];
           center = [
@@ -95,13 +98,12 @@
               drawerEnabled = false;
             }
             {
-              id = "MediaMini";
-            }
-            {
               id = "plugin:tailscale";
             }
             {
               id = "Network";
+              iconColor = "primary";
+              textColor = "none";
             }
             {
               id = "Bluetooth";
@@ -173,6 +175,9 @@
       };
       tailscale = {
         showIpAddress = false;
+        compactMode = true;
+        pingCount = 3;
+        refreshInterval = 10000;
         terminalCommand = "xdg-terminal";
         defaultPeerAction = "ssh";
       };

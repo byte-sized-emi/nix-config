@@ -85,14 +85,6 @@ with lib;
 
   config.assertions =
     let
-      inherit (lib)
-        pipe
-        mapAttrsToList
-        groupBy
-        filterAttrs
-        concatStringsSep
-        concatMapStringsSep
-        ;
       duplicatePorts = pipe config.my.services [
         (filterAttrs (_name: svc: svc.enable))
         (mapAttrsToList (
@@ -104,10 +96,36 @@ with lib;
         (filterAttrs (_port: services: builtins.length services > 1))
       ];
 
-      formatDuplicates = concatStringsSep "\n" (
+      formatDuplicatePorts = concatStringsSep "\n" (
         mapAttrsToList (
           port: services: "  Port ${port}: ${concatMapStringsSep ", " (s: s.name) services}"
         ) duplicatePorts
+      );
+
+      duplicateDomains = pipe config.my.services [
+        (filterAttrs (_name: svc: svc.enable && (svc.external.enable || svc.internal.enable)))
+        (mapAttrsToList (
+          _name: svc: [
+            {
+              inherit (svc) name;
+              inherit (svc.internal) domain enable;
+            }
+            {
+              inherit (svc) name;
+              inherit (svc.external) domain enable;
+            }
+          ]
+        ))
+        flatten
+        (filter (svc: svc.enable))
+        (groupBy (svc: svc.domain))
+        (filterAttrs (_domain: services: builtins.length services > 1))
+      ];
+
+      formatDuplicateDomains = concatStringsSep "\n" (
+        mapAttrsToList (
+          domain: services: "  Domain ${domain}: ${concatMapStringsSep ", " (s: s.name) services}"
+        ) duplicateDomains
       );
 
       backupEnabledServices = pipe config.my.services [
@@ -125,7 +143,15 @@ with lib;
         message = ''
           Duplicate ports found in my.services configuration!
           The following ports are used by multiple services:
-          ${formatDuplicates}
+          ${formatDuplicatePorts}
+        '';
+      }
+      {
+        assertion = duplicateDomains == { };
+        message = ''
+          Duplicate domains found in my.services configuration!
+          The following domains are used by multiple services:
+          ${formatDuplicateDomains}
         '';
       }
       {

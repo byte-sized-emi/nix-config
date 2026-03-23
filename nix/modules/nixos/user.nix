@@ -20,7 +20,7 @@
     ];
   };
 
-  home-manager.backupFileExtension = ".bac";
+  home-manager.backupFileExtension = "bac";
 
   console.keyMap = "de";
 
