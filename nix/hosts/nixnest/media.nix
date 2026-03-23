@@ -111,6 +111,12 @@ in
         podmanArgs = [ "--interface-name=media" ];
       };
 
+      # networks.media-vpn.networkConfig = {
+      #   driver = "bridge";
+      #   podmanArgs = [ "--interface-name=media-vpn" ];
+      #   internal = true;
+      # };
+
       containers.jellyfin = {
         containerConfig = {
           image = "jellyfin/jellyfin:10.11.6.20260119-010354";
@@ -198,6 +204,7 @@ in
       containers.qbittorrent = {
         containerConfig = {
           image = "lscr.io/linuxserver/qbittorrent:5.1.4";
+          name = "qbittorrent";
           volumes = [
             "${qbittorrentPath}:/config"
             "${dataPath}/torrents:/data/torrents"
@@ -212,7 +219,8 @@ in
           networks = [
             # it's bound to the tun0 interface in the config
             "gluetun.container"
-            networks.media.ref
+            # networks.media-vpn.ref
+            # networks.media.ref
           ];
         };
       };
@@ -220,6 +228,7 @@ in
       containers.gluetun = {
         containerConfig = {
           image = "ghcr.io/qdm12/gluetun:v3.41.1";
+          name = "gluetun";
           addCapabilities = [ "NET_ADMIN" ];
           devices = [ "/dev/net/tun:/dev/net/tun" ];
           volumes = [
@@ -233,6 +242,9 @@ in
             VPN_SERVICE_PROVIDER = "airvpn";
             FIREWALL_VPN_INPUT_PORTS = "41589,42850";
           };
+          # networks = [
+          #   networks.media-vpn.ref
+          # ];
         };
       };
     };
