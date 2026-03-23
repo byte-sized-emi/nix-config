@@ -3,12 +3,14 @@ let
   stackPath = "/var/stacks/media";
   jellyfinPath = "${stackPath}/jellyfin";
   sonarrPath = "${stackPath}/sonarr";
+  radarrPath = "${stackPath}/radarr";
   prowlarrPath = "${stackPath}/prowlarr";
   qbittorrentPath = "${stackPath}/qbittorrent";
   dataPath = "/data";
   jellyfinPort = 8096;
   qbittorrentPort = 8097;
   sonarrPort = 8989;
+  radarrPort = 7878;
   prowlarrPort = 9696;
   inherit (config.users.users.media) uid;
   inherit (config.users.groups.media) gid;
@@ -29,6 +31,7 @@ in
   systemd.tmpfiles.rules = [
     "d ${stackPath}                 0770 media media"
     "d ${sonarrPath}                0770 media media"
+    "d ${radarrPath}                0770 media media"
     "d ${prowlarrPath}              0770 media media"
     "d ${qbittorrentPath}           0770 media media"
     "d ${jellyfinPath}/config       0770 media media"
@@ -84,6 +87,11 @@ in
     sonarr = {
       enable = true;
       port = sonarrPort;
+      internal.enable = true;
+    };
+    radarr = {
+      enable = true;
+      port = radarrPort;
       internal.enable = true;
     };
     prowlarr = {
@@ -146,6 +154,27 @@ in
         };
       };
 
+      containers.radarr = {
+        containerConfig = {
+          image = "lscr.io/linuxserver/radarr:6.0.4.10291-ls295";
+          publishPorts = [
+            "127.0.0.1:${toString radarrPort}:${toString radarrPort}"
+          ];
+          volumes = [
+            "${radarrPath}:/config"
+            "${dataPath}:/data"
+          ];
+          environments = {
+            PUID = toString uid;
+            PGID = toString gid;
+          };
+          networks = [ networks.media.ref ];
+        };
+        serviceConfig = {
+          Restart = "always";
+        };
+      };
+
       containers.prowlarr = {
         containerConfig = {
           image = "lscr.io/linuxserver/prowlarr:2.3.0.5236-ls139";
@@ -181,7 +210,9 @@ in
             TORRENTING_PORT = "6881";
           };
           networks = [
+            # it's bound to the tun0 interface in the config
             "gluetun.container"
+            networks.media.ref
           ];
         };
       };

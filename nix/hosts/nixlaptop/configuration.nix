@@ -1,5 +1,6 @@
 {
   flake,
+  pkgs,
   inputs,
   ...
 }:
@@ -16,6 +17,12 @@
     auto-update
     # cachyos-kernel
   ]);
+
+  environment.systemPackages = with pkgs; [
+    uv
+  ];
+
+  environment.localBinInPath = true;
 
   services.xserver.videoDrivers = [ "modesetting" ];
 
