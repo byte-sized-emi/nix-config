@@ -82,9 +82,8 @@
       user.name = "byte-sized-emi";
       user.email = "emilia.git@byte-sized.fyi";
       push.autoSetupRemote = true;
-      credential."https://git.byte-sized.fyi".helper = [
-        "cache --timeout ${6 * 60 * 60}" # six hours
-        (lib.getExe config.programs.git-credential-oauth.package)
+      credential.helper = lib.mkBefore [
+        "cache --timeout 21600"
       ];
     };
   };
