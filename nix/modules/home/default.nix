@@ -1,4 +1,10 @@
-{ pkgs, perSystem, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  perSystem,
+  ...
+}:
 {
   home.username = "emilia";
   home.homeDirectory = "/home/emilia";
@@ -45,10 +51,6 @@
   programs.git = {
     package = pkgs.gitFull;
     enable = true;
-    signing = {
-      signByDefault = true;
-      format = "ssh";
-    };
     includes = [
       {
         condition = "hasconfig:remote.*.url:https://git.byte-sized.fyi/**";
@@ -65,17 +67,25 @@
       {
         condition = "hasconfig:remote.*.url:git@gitlab.lrz.de:*/**";
         contents = {
+          user.name = "Emilia Jaser";
+          user.email = "emilia.jaser@hm.edu";
           user.signingkey = "~/.ssh/id_lrz_gitlab";
         };
       }
     ];
+    signing = {
+      signByDefault = true;
+      format = "ssh";
+    };
     settings = {
       init.defaultBranch = "main";
       user.name = "byte-sized-emi";
       user.email = "emilia.git@byte-sized.fyi";
-      push = {
-        autoSetupRemote = true;
-      };
+      push.autoSetupRemote = true;
+      credential."https://git.byte-sized.fyi".helper = [
+        "cache --timeout ${6 * 60 * 60}" # six hours
+        (lib.getExe config.programs.git-credential-oauth.package)
+      ];
     };
   };
 
