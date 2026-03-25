@@ -179,7 +179,6 @@ in
     containers.qbittorrent = {
       containerConfig = {
         image = "lscr.io/linuxserver/qbittorrent:5.1.4";
-        name = "qbittorrent";
         volumes = [
           "${qbittorrentPath}:/config"
           "${dataPath}/torrents:/data/torrents"
@@ -198,7 +197,6 @@ in
     containers.gluetun = {
       containerConfig = {
         image = "ghcr.io/qdm12/gluetun:v3.41.1";
-        name = "gluetun";
         addCapabilities = [ "NET_ADMIN" ];
         devices = [ "/dev/net/tun:/dev/net/tun" ];
         volumes = [
