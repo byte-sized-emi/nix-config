@@ -113,5 +113,31 @@ jobs:
           http_proxy: http://localhost:1055/
           ALL_PROXY: socks5://localhost:1055/
           HTTP_PROXY: http://localhost:1055/
+          NTFY_URL: https://ntfy.service.byte-sized.fyi/forgejo-cicd
         run: |
-          curl -X POST -sS --no-buffer --connect-timeout 20 http://${{ matrix.host }}:36196/update
+          TEMPFILE=$(mktemp)
+          trap 'rm -f "$TEMPFILE"' EXIT
+          stdbuf -oL curl -X POST -sS --no-buffer --connect-timeout 20 "http://${{ matrix.host }}:36196/update" 2>&1 | tee "$TEMPFILE"
+          LAST_LINES=$(tail -n 10 "$TEMPFILE")
+          CI_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs/$GITHUB_JOB_ID/attempt/$GITHUB_RUN_ATTEMPT"
+          echo "url of current run should be $CI_URL"
+          if grep -q "NIX_UPDATE_SERVER_SUCCESS_kjimqe0c" "$TEMPFILE"; then
+            curl -sS "$NTFY_URL" \
+              -H 'Title: Nix Update Succeeded - ${{ matrix.host }}' \
+              -H 'Tags: white_check_mark,green_circle,pass' \
+              -H "Click: $CI_URL" \
+              -d "Output:\n$LAST_LINES"
+          elif grep -q "NIX_UPDATE_SERVER_FAILED_kjimqe0c" "$TEMPFILE"; then
+            curl -sS "$NTFY_URL" \
+              -H 'Title: Nix Update Failed - ${{ matrix.host }}' \
+              -H 'Tags: warning,red_circle,fail' \
+              -H "Click: $CI_URL" \
+              -d "Output:\n$LAST_LINES"
+            exit 1
+          else
+            curl -sS "$NTFY_URL" \
+              -H 'Title: Nix Update Skipped - ${{ matrix.host }}' \
+              -H 'Tags: grey_question,warning' \
+              -H "Click: $CI_URL" \
+              -d "Output:\n$LAST_LINES"
+          fi

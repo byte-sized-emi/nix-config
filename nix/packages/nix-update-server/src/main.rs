@@ -162,7 +162,9 @@ async fn update_commands(
         if !status.success() {
             let msg = format!("Command `{full_command}` failed with status: {status}");
             let _ = tx.send(msg).await;
-            Err(())
+            let _ = tx.send("NIX_UPDATE_SERVER_FAILED_kjimqe0c\n".to_string()).await;
+            let _ = shutdown_tx.send(true);
+            return Err(());
         } else {
             let msg = format!(
                 "Command `{full_command}` succeeded with status {}",
@@ -185,8 +187,8 @@ async fn update_commands(
 
     run_command("nixos-rebuild", &["switch", "-L"]).await?;
 
-    let _ = tx.send("Done with all commands!".to_string()).await;
-    println!("Done with all commands!");
+    let _ = tx.send("NIX_UPDATE_SERVER_SUCCESS_kjimqe0c\n".to_string()).await;
+    println!("Update completed successfully");
     let _ = shutdown_tx.send(true);
 
     Ok(())
