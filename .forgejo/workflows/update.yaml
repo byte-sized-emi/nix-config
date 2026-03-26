@@ -124,6 +124,7 @@ jobs:
               -H 'Title: Nix Update Succeeded - ${{ matrix.host }}' \
               -H 'Tags: white_check_mark,green_circle,pass' \
               -H "Click: $CI_URL"
+              -d "Update succeeded"
           elif grep -q "NIX_UPDATE_SERVER_FAILED_kjimqe0c" "$TEMPFILE"; then
             LAST_LINES=$(tail -n 10 "$TEMPFILE")
             curl -sS "$NTFY_URL" \
@@ -137,4 +138,5 @@ jobs:
               -H 'Title: Nix Update Skipped - ${{ matrix.host }}' \
               -H 'Tags: grey_question,warning' \
               -H "Click: $CI_URL"
+              -d "Update skipped"
           fi
