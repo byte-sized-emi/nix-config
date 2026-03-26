@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  config,
   perSystem,
   ...
 }:
@@ -83,7 +82,7 @@
       user.email = "emilia.git@byte-sized.fyi";
       push.autoSetupRemote = true;
       credential.helper = lib.mkBefore [
-        "cache --timeout 21600"
+        "cache --timeout 172800"
       ];
     };
   };
