@@ -117,7 +117,7 @@ jobs:
         run: |
           TEMPFILE=$(mktemp)
           trap 'rm -f "$TEMPFILE"' EXIT
-          stdbuf -oL curl -X POST -sS --no-buffer --connect-timeout 20 "http://${{ matrix.host }}:36196/update" 2>&1 | tee "$TEMPFILE"
+          stdbuf -oL curl -X POST -sS --no-buffer --connect-timeout 20 "http://${{ matrix.host }}.bushbaby-chimera.ts.net:36196/update" 2>&1 | tee "$TEMPFILE"
           CI_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           if grep -q "NIX_UPDATE_SERVER_SUCCESS_kjimqe0c" "$TEMPFILE"; then
             curl -sS "$NTFY_URL" \
