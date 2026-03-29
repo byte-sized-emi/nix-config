@@ -52,8 +52,6 @@
     speedtest-cli
   ];
 
-  services.vscode-server.enable = true;
-
   services.openssh = {
     enable = true;
     ports = [ 2222 ];
@@ -89,21 +87,6 @@
   # `sudo nix-env -p /nix/var/nix/profiles/system --list-generations`
   # to list generations
 
-  # automatic upgrade
-  # Upgrade log can be seen using:
-  # `systemctl status nixos-upgrade.service`
-  system.autoUpgrade = {
-    enable = false;
-    flake = inputs.self.outPath;
-    flags = [
-      "--update-input"
-      "nixpkgs"
-      "-L" # print build logs
-    ];
-    dates = "Mon,Fri 10:00";
-    randomizedDelaySec = "45min";
-  };
-
   nix.optimise = {
     automatic = true;
     dates = [ "monthly" ];
@@ -113,7 +96,7 @@
     automatic = true;
     dates = "Fri 12:00";
     randomizedDelaySec = "15min";
-    options = "--delete-older-than 30d"; # Delete generations older than 30 days
+    options = "--delete-older-than 10d"; # Delete generations older than 10 days
   };
 
   system.stateVersion = "24.11"; # Did you read the comment?

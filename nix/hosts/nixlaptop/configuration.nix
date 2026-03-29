@@ -18,6 +18,8 @@
     # cachyos-kernel
   ]);
 
+  networking.networkmanager.wifi.powersave = true;
+
   environment.systemPackages = with pkgs; [
     uv
   ];

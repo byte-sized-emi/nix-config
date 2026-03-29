@@ -8,6 +8,7 @@
   imports = [
     flake.modules.nixos.my-cloudflared
   ];
+
   networking.nameservers = [
     "100.100.100.100"
     "8.8.8.8"

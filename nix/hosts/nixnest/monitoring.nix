@@ -5,7 +5,7 @@
     name = "Grafana";
     port = config.services.grafana.settings.server.http_port;
     description = "Monitoring and analytics platform";
-    external = {
+    internal = {
       enable = true;
       domain = "grafana.${config.settings.services.domain}";
     };
