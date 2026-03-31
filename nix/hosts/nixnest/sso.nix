@@ -95,6 +95,14 @@ in
           ];
           groups = [ "git" ];
         };
+        maja = {
+          displayName = "Maja";
+          mailAddresses = [
+            "maja@sso.byte-sized.fyi"
+            "maja@byte-sized.fyi"
+          ];
+          groups = [ "git" ];
+        };
       };
       systems.oauth2 = {
         tailscale = {

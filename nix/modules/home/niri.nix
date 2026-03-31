@@ -94,9 +94,9 @@
           { command = [ "todoist-electron" ]; }
           { command = [ "obsidian" ]; }
           { command = [ "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init" ]; }
-          {
-            sh = "signal-desktop --password-store=\"kwallet6\" --use-tray-icon";
-          }
+          # {
+          #   sh = "signal-desktop --password-store=\"kwallet6\" --use-tray-icon";
+          # }
           { command = [ "beeper" ]; }
           { command = [ "thunderbird" ]; }
         ];

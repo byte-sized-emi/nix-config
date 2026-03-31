@@ -41,11 +41,21 @@
   programs.noctalia-shell = {
     enable = true;
     settings = {
-      location.name = "Munich, Germany";
+      location = {
+        name = "Munich, Germany";
+        firstDayOfWeek = 0;
+      };
       colorSchemes.predefinedScheme = "Rose Pine";
       appLauncher = {
-        enableClipboardHistory = true;
+        enableClipboardHistory = false;
         enableClipPreview = false;
+      };
+      noctaliaPerformance = {
+        disableWallpaper = true;
+        disableDesktopWidgets = true;
+      };
+      sessionMenu = {
+        countdownDuration = 3000;
       };
       dock.enabled = false;
       notifications = {
@@ -53,6 +63,12 @@
         lowUrgencyDuration = 2;
         normalUrgencyDuration = 4;
         criticalUrgencyDuration = 10;
+        enableMarkdown = true;
+        saveToHistory = {
+          low = false;
+          normal = true;
+          critical = true;
+        };
       };
       bar = {
         density = "compact";
