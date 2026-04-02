@@ -31,7 +31,7 @@
       terminal = false;
       type = "Application";
       categories = [ "Utility" ];
-      icon = "notification";
+      icon = "bell";
     };
   };
 
