@@ -15,6 +15,7 @@
     auto-update
   ]);
 
+  boot.kernelModules = [ "ntsync" ];
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.open = false;
 

@@ -20,9 +20,7 @@
       alias gzip=${pkgs.gzip}/bin/gzip
 
       rm -rf /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/
-      mkdir /var/backup/mealie/
-      mkdir /var/backup/immich_db/
-      mkdir /var/backup/umami_db/
+      mkdir /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/
       podman volume export mealie-data | tar xf - -C /var/backup/mealie/
       podman exec -t immich-database pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/immich_db/dump.sql.gz"
       podman exec -t umami-db pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/umami_db/dump.sql.gz"

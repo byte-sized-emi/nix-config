@@ -1,15 +1,10 @@
 {
   lib,
   pkgs,
-  inputs,
+  pkgs-unstable,
+  flake,
   ...
 }:
-let
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    inherit (pkgs.stdenv.hostPlatform) system;
-    config.allowUnfree = true;
-  };
-in
 {
   imports = [
     ./browser.nix
@@ -22,6 +17,7 @@ in
     ./zed.nix
     ./steam.nix
     ./signal.nix
+    flake.modules.nixos.nixpkgs-unstable
   ];
 
   programs.zsh.shellAliases.sudo = lib.mkForce "pkexec --keep-cwd";
@@ -71,6 +67,7 @@ in
     let
       normal-packages = with pkgs; [
         kdePackages.kate
+        kdePackages.filelight
         discord
         obsidian
         # spotify

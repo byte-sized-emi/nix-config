@@ -1,13 +1,22 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  flake,
+  pkgs-unstable,
+  ...
+}:
 {
   imports = [
     ./steam.nix
     ./docker.nix
     ./audio.nix
+    flake.modules.nixos.nixpkgs-unstable
   ];
 
   programs.firefox.enable = true;
-  programs.thunderbird.enable = true;
+  programs.thunderbird = {
+    package = pkgs-unstable.thunderbird;
+    enable = true;
+  };
 
   programs.slippi-launcher = {
     enable = true;
