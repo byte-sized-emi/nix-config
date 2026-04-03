@@ -4,6 +4,9 @@
   ...
 }:
 {
+  # Backup pruning:
+  # borg prune ssh://d0804253@d0804253.repo.borgbase.com/./repo --dry-run --list -v --keep-weekly 5 --keep-monthly 5 --keep-13weekly 3 --keep-yearly 2
+
   systemd.timers."prepare-backup" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
@@ -60,7 +63,6 @@
       # NOTE: This stores both the images as well as automatic database dumps (inside ./backups).
       #   If these get too big, you can change the settings in the admin menu
       "/var/immich/upload_location"
-
     ];
     environment.BORG_RSH = "ssh -i /home/emilia/.ssh/id_borgbase";
     repo = "ssh://d0804253@d0804253.repo.borgbase.com/./repo";

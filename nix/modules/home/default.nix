@@ -21,6 +21,7 @@
     usbutils
     libargon2
     perSystem.isd.default
+    borgbackup
   ];
 
   home.file.".config/isd_tui/config.yaml" = {
@@ -44,6 +45,9 @@
     };
     "gitlab.lrz.de" = {
       identityFile = "~/.ssh/id_lrz_gitlab";
+    };
+    "d0804253.repo.borgbase.com" = {
+      identityFile = "~/.ssh/id_byte_sized";
     };
   };
 
