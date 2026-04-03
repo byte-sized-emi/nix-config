@@ -38,6 +38,8 @@
         format = "binary";
         sopsFile = ../../secrets/openvpn_client_cert.crt;
       };
+      "dawarich/databasePassword" = { };
+      "dawarich/secretKeyBase" = { };
     };
 
   sops.templates = {

@@ -8,6 +8,7 @@ lib.mkIf config.settings.dawarich.enable (
     port = 3000;
     domain = "location.${config.settings.services.domain}";
     version = "1.6.1";
+    inherit (config.virtualisation.quadlet) containers;
   in
   {
     my.services.dawarich = {
@@ -19,6 +20,21 @@ lib.mkIf config.settings.dawarich.enable (
         enable = true;
         inherit domain;
       };
+    };
+
+    sops.templates."dawarich.env" = {
+      restartUnits =
+        with containers;
+        map quadlet.service [
+          dawarich-app
+          dawarich-sidekiq
+          dawarich-db
+        ];
+      content = ''
+        POSTGRES_PASSWORD=${config.sops.placeholder."dawarich/databasePassword"}
+        DATABASE_PASSWORD=${config.sops.placeholder."dawarich/databasePassword"}
+        SECRET_KEY_BASE=${config.sops.placeholder."dawarich/secretKeyBase"}
+      '';
     };
 
     virtualisation.quadlet =
@@ -74,9 +90,9 @@ lib.mkIf config.settings.dawarich.enable (
             networkAliases = [ "dawarich_db" ];
             environments = {
               POSTGRES_USER = "postgres";
-              POSTGRES_PASSWORD = "password";
               POSTGRES_DB = "dawarich_development";
             };
+            environmentFiles = [ config.sops.templates."dawarich.env".path ];
             volumes = [
               "${volumes.dawarich-db-data.ref}:/var/lib/postgresql/data"
               "${volumes.dawarich-shared.ref}:/var/shared"
@@ -104,13 +120,13 @@ lib.mkIf config.settings.dawarich.enable (
               "${volumes.dawarich-storage.ref}:/var/app/storage"
               "${volumes.dawarich-db-data.ref}:/dawarich_db_data"
             ];
+            environmentFiles = [ config.sops.templates."dawarich.env".path ];
             environments = {
               RAILS_ENV = "production";
               REDIS_URL = "redis://dawarich_redis:6379";
               DATABASE_HOST = "dawarich_db";
               DATABASE_PORT = "5432";
               DATABASE_USERNAME = "postgres";
-              DATABASE_PASSWORD = "password";
               DATABASE_NAME = "dawarich_development";
               APPLICATION_HOSTS = "localhost,::1,127.0.0.1,nixnest,${domain}";
               TIME_ZONE = "Europe/Berlin";
@@ -149,13 +165,13 @@ lib.mkIf config.settings.dawarich.enable (
               "${volumes.dawarich-watched.ref}:/var/app/tmp/imports/watched"
               "${volumes.dawarich-storage.ref}:/var/app/storage"
             ];
+            environmentFiles = [ config.sops.templates."dawarich.env".path ];
             environments = {
               RAILS_ENV = "production";
               REDIS_URL = "redis://dawarich_redis:6379";
               DATABASE_HOST = "dawarich_db";
               DATABASE_PORT = "5432";
               DATABASE_USERNAME = "postgres";
-              DATABASE_PASSWORD = "password";
               DATABASE_NAME = "dawarich_development";
               APPLICATION_HOSTS = "localhost,::1,127.0.0.1,nixnest,${domain}";
               BACKGROUND_PROCESSING_CONCURRENCY = "5";
