@@ -8,7 +8,6 @@ lib.mkIf config.settings.dawarich.enable (
     port = 3000;
     domain = "location.${config.settings.services.domain}";
     version = "1.6.1";
-    inherit (config.virtualisation.quadlet) containers;
   in
   {
     my.services.dawarich = {
@@ -23,13 +22,6 @@ lib.mkIf config.settings.dawarich.enable (
     };
 
     sops.templates."dawarich.env" = {
-      restartUnits =
-        with containers;
-        map quadlet.service [
-          dawarich-app
-          dawarich-sidekiq
-          dawarich-db
-        ];
       content = ''
         POSTGRES_PASSWORD=${config.sops.placeholder."dawarich/databasePassword"}
         DATABASE_PASSWORD=${config.sops.placeholder."dawarich/databasePassword"}

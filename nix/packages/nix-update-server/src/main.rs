@@ -5,10 +5,12 @@ use serde::Deserialize;
 
 use futures::stream;
 use std::convert::Infallible;
+use std::time::Duration;
 use tokio::io::AsyncBufReadExt as _;
 use tokio::net::unix::pipe::{Sender, pipe};
 use tokio::signal;
 use tokio::sync::{mpsc, watch};
+use tokio::time::sleep;
 use tokio::{io::BufReader, process::Command};
 use tokio_listener::{Listener, ListenerAddress};
 
@@ -70,6 +72,8 @@ async fn main() {
             _ = terminate => {},
             _ = internal_shutdown_loop => {},
         }
+
+        sleep(Duration::from_millis(500)).await;
     };
 
     let app = Router::new()
@@ -160,11 +164,17 @@ async fn update_commands(
             .unwrap();
 
         if !status.success() {
-            let msg = format!("Command `{full_command}` failed with status: {status}");
+            let msg = format!(
+                "Command `{full_command}` failed with status {}\nNIX_UPDATE_SERVER_FAILED_kjimqe0c\n",
+                status
+                    .code()
+                    .map(|s| s.to_string())
+                    .unwrap_or("(no status)".to_string())
+            );
             let _ = tx.send(msg).await;
-            let _ = tx.send("NIX_UPDATE_SERVER_FAILED_kjimqe0c\n".to_string()).await;
+            sleep(Duration::from_millis(500)).await;
             let _ = shutdown_tx.send(true);
-            return Err(());
+            Err(())
         } else {
             let msg = format!(
                 "Command `{full_command}` succeeded with status {}",
@@ -187,8 +197,11 @@ async fn update_commands(
 
     run_command("nixos-rebuild", &["switch", "-L"]).await?;
 
-    let _ = tx.send("NIX_UPDATE_SERVER_SUCCESS_kjimqe0c\n".to_string()).await;
+    let _ = tx
+        .send("NIX_UPDATE_SERVER_SUCCESS_kjimqe0c\n".to_string())
+        .await;
     println!("Update completed successfully");
+    sleep(Duration::from_millis(500)).await;
     let _ = shutdown_tx.send(true);
 
     Ok(())
