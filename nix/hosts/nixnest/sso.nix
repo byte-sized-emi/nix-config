@@ -101,7 +101,10 @@ in
             "maja@sso.byte-sized.fyi"
             "maja@byte-sized.fyi"
           ];
-          groups = [ "git" ];
+          groups = [
+            "git"
+            "media"
+          ];
         };
       };
       systems.oauth2 = {
