@@ -204,7 +204,7 @@ in
         volumes = [
           "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
           "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
-          "${gluetunPath}:/gluetun"
+          "${gluetunPath}/servers.json:/gluetun/servers.json"
         ];
         publishPorts = [
           "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
@@ -218,6 +218,10 @@ in
           "net.ipv6.conf.default.disable_ipv6" = "1";
         };
         environments = {
+          PUID = toString uid;
+          PGID = toString gid;
+          TZ = "Europe/Berlin";
+          UPDATER_PERIOD = "24h";
           VPN_SERVICE_PROVIDER = "airvpn";
           SERVER_REGIONS = "Europe";
           FIREWALL_VPN_INPUT_PORTS = "41589,42850";
