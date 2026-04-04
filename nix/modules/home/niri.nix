@@ -69,6 +69,9 @@
         };
         prefer-no-csd = true;
         debug.honor-xdg-activation-with-invalid-serial = [ ];
+        layout = {
+          gaps = 8;
+        };
         spawn-at-startup = [
           {
             sh = "QS_ICON_THEME=\"Papirus\" QT_QPA_PLATFORMTHEME=gtk3 ${lib.getExe config.programs.noctalia-shell.package}";

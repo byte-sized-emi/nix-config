@@ -6,6 +6,7 @@ let
   radarrPath = "${stackPath}/radarr";
   prowlarrPath = "${stackPath}/prowlarr";
   qbittorrentPath = "${stackPath}/qbittorrent";
+  gluetunPath = "${stackPath}/gluetun";
   dataPath = "/data";
   jellyfinPort = 8096;
   qbittorrentPort = 8097;
@@ -34,6 +35,7 @@ in
     "d ${radarrPath}                0770 media media"
     "d ${prowlarrPath}              0770 media media"
     "d ${qbittorrentPath}           0770 media media"
+    "d ${gluetunPath}               0770 media media"
     "d ${jellyfinPath}/config       0770 media media"
     "d ${jellyfinPath}/cache        0770 media media"
     "d ${dataPath}/torrents/books   0775 media media"
@@ -202,6 +204,7 @@ in
         volumes = [
           "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
           "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
+          "${gluetunPath}:/gluetun"
         ];
         publishPorts = [
           "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
@@ -209,8 +212,14 @@ in
           "127.0.0.1:${toString radarrPort}:${toString radarrPort}"
           "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}"
         ];
+        # TODO: remove this once IPv6 works again
+        sysctl = {
+          "net.ipv6.conf.all.disable_ipv6" = "1";
+          "net.ipv6.conf.default.disable_ipv6" = "1";
+        };
         environments = {
           VPN_SERVICE_PROVIDER = "airvpn";
+          SERVER_REGIONS = "Europe";
           FIREWALL_VPN_INPUT_PORTS = "41589,42850";
         };
       };
