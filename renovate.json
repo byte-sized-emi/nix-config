@@ -20,5 +20,12 @@
         "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s*\\n\\s*\\w+\\s*=\\s*\"(?<currentValue>[^\"]+)\""
       ]
     }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "groupName": "Docker images",
+      "prPriority": 10
+    }
   ]
 }

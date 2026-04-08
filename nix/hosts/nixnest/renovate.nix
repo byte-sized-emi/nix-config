@@ -19,6 +19,9 @@
 
   services.renovate = {
     enable = true;
+    environment = {
+      LOG_LEVEL = "debug";
+    };
     credentials = {
       RENOVATE_TOKEN = config.sops.secrets."renovate/token".path;
       RENOVATE_GIT_PRIVATE_KEY = config.sops.secrets."renovate/private_key".path;
@@ -32,6 +35,7 @@
       openssh
       nodejs
       yarn
+      cargo
       config.nix.package
     ];
 
@@ -45,7 +49,7 @@
       nix.enabled = true;
       lockFileMaintenance = {
         enabled = true;
-        schedule = [ "after 4am and before 5am every day" ];
+        schedule = [ "after 4am and before 5am" ];
       };
 
       # Recommended defaults from https://github.com/NuschtOS/nixos-modules/blob/db6f2a33500dadb81020b6e5d4281b4820d1b862/modules/renovate.nix
