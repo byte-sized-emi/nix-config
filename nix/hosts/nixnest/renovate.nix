@@ -25,6 +25,16 @@
       RENOVATE_GITHUB_COM_TOKEN = config.sops.secrets."renovate/github_pat".path;
     };
     schedule = "hourly";
+
+    runtimePackages = with pkgs; [
+      bash
+      gnupg
+      openssh
+      nodejs
+      yarn
+      config.nix.package
+    ];
+
     settings = {
       endpoint = "https://git.byte-sized.fyi";
       gitAuthor = "Renovate bot <renovate@byte-sized.fyi>";
@@ -37,15 +47,6 @@
         enabled = true;
         schedule = [ "after 4am and before 5am every day" ];
       };
-
-      runtimePackages = with pkgs; [
-        bash
-        gnupg
-        openssh
-        nodejs
-        yarn
-        config.nix.package
-      ];
 
       # Recommended defaults from https://github.com/NuschtOS/nixos-modules/blob/db6f2a33500dadb81020b6e5d4281b4820d1b862/modules/renovate.nix
       cachePrivatePackages = true;
