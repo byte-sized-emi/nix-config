@@ -7,10 +7,10 @@
 {
   imports = [
     ./hardware-configuration.nix
-    flake.modules.nixos.default
-    flake.modules.nixos.syncthing
     flake.modules.nixos.auto-update
+    flake.modules.nixos.default
     flake.modules.nixos.service
+    flake.modules.nixos.syncthing
     ./backups.nix
     ./beeper.nix
     ./dawarich.nix
@@ -26,12 +26,12 @@
     ./nix-serve.nix
     ./ntfy.nix
     ./podman.nix
+    ./renovate.nix
     ./secrets.nix
     ./settings.nix
     ./sso.nix
     ./umami.nix
     ./vaultwarden.nix
-    inputs.vscode-server.nixosModules.default
     inputs.quadlet-nix.nixosModules.quadlet
   ];
 
