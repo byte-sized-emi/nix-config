@@ -32,6 +32,11 @@
 
   networking.networkmanager.wifi.powersave = true;
 
+  programs.ausweisapp = {
+    enable = true;
+    openFirewall = true;
+  };
+
   environment.systemPackages = with pkgs; [
     uv
     sbctl # secure boot
