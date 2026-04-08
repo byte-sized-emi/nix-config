@@ -24,11 +24,6 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": ["*"],
-      "commitMessageExtra": "from {{currentVersion}} to {{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
-      "commitMessageSuffix": "({{packageFile}})"
-    },
-    {
       "matchDatasources": ["docker"],
       "prPriority": 10
     },
