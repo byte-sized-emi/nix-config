@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   users = {
     groups.renovate.gid = 1005;
@@ -12,24 +12,17 @@
   };
 
   sops.secrets = {
-    "renovate/token" = {
-      owner = "renovate";
-    };
-    "renovate/private_key" = {
-      owner = "renovate";
-    };
+    "renovate/token".owner = "renovate";
+    "renovate/private_key".owner = "renovate";
+    "renovate/github_pat".owner = "renovate";
   };
-
-  nix.settings.trusted-users = [ "renovate" ];
 
   services.renovate = {
     enable = true;
-    environment = {
-      LOG_LEVEL = "debug";
-    };
     credentials = {
       RENOVATE_TOKEN = config.sops.secrets."renovate/token".path;
       RENOVATE_GIT_PRIVATE_KEY = config.sops.secrets."renovate/private_key".path;
+      RENOVATE_GITHUB_COM_TOKEN = config.sops.secrets."renovate/github_pat".path;
     };
     schedule = "hourly";
     settings = {
@@ -44,6 +37,15 @@
         enabled = true;
         schedule = [ "after 4am and before 5am every day" ];
       };
+
+      runtimePackages = with pkgs; [
+        bash
+        gnupg
+        openssh
+        nodejs
+        yarn
+        config.nix.package
+      ];
 
       # Recommended defaults from https://github.com/NuschtOS/nixos-modules/blob/db6f2a33500dadb81020b6e5d4281b4820d1b862/modules/renovate.nix
       cachePrivatePackages = true;
