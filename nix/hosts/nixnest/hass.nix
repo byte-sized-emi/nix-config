@@ -44,7 +44,7 @@ in
     {
       containers.home-assistant = {
         containerConfig = {
-          image = "ghcr.io/home-assistant/home-assistant:2026.1.3";
+          image = "ghcr.io/home-assistant/home-assistant:2026.4.1";
           environments.TZ = "Europe/Berlin";
           exposePorts = [ "${toString port}" ];
           addCapabilities = [ "CAP_NET_RAW" ];
@@ -93,7 +93,7 @@ in
 
       containers.piper = {
         containerConfig = {
-          image = "rhasspy/wyoming-piper:2.2.1";
+          image = "rhasspy/wyoming-piper:2.2.2";
           environments.TZ = "Europe/Berlin";
           publishPorts = [ "127.0.0.1:10200:10200" ];
           exec = "--voice de_DE-ramona-low";

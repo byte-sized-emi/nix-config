@@ -14,4 +14,4 @@ serde = { version = "1.0.228", features = ["derive"] }
 yaml_serde = "0.10.3"
 
 [dev-dependencies]
-similar-asserts = "1.7.0"
+similar-asserts = "2.0.0"

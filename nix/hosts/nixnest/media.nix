@@ -180,7 +180,7 @@ in
 
     containers.qbittorrent = {
       containerConfig = {
-        image = "lscr.io/linuxserver/qbittorrent:5.1.4";
+        image = "lscr.io/linuxserver/qbittorrent:5.1.4-r2-ls448";
         volumes = [
           "${qbittorrentPath}:/config"
           "${dataPath}/torrents:/data/torrents"

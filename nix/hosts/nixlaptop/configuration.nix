@@ -37,9 +37,18 @@
     openFirewall = true;
   };
 
+  services.gns3-server = {
+    enable = false;
+    vpcs.enable = true;
+    dynamips.enable = true;
+    ubridge.enable = true;
+  };
+
   environment.systemPackages = with pkgs; [
     uv
     sbctl # secure boot
+    gns3-gui
+    inetutils
   ];
 
   environment.localBinInPath = true;

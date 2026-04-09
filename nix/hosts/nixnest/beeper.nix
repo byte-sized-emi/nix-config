@@ -12,7 +12,7 @@ let
       volumes.${volumeName}.volumeConfig = { };
       containers."beeper-${name}" = {
         containerConfig = {
-          image = "ghcr.io/beeper/bridge-manager:latest@sha256:e8de9122cdf97bbfb9df177ce253b73a6b91431ccedf86ec1b211bb5d3325048";
+          image = "ghcr.io/beeper/bridge-manager:latest@sha256:b8b34254f6a0d99ddc3ac2e4952443dadb3c0fd82307a9a4e05898ee9b4adc7f";
           environments = {
             BRIDGE_NAME = name;
           };
@@ -31,5 +31,5 @@ let
     };
 in
 {
-  # virtualisation.quadlet = bridge "sh-discord";
+  virtualisation.quadlet = bridge "sh-discord";
 }

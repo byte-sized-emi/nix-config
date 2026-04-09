@@ -1,7 +1,8 @@
 { config, ... }:
 let
-  UPLOAD_LOCATION = "/var/immich/upload_location";
-  IMMICH_VERSION = "v2.5.2";
+  uploadLocation = "/var/immich/upload_location";
+  # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
+  immichVersion = "v2.7.2";
   stackPath = "/etc/stacks/immich";
   port = 2283;
 in
@@ -35,13 +36,13 @@ in
       containers = {
         immich-server = {
           containerConfig = {
-            image = "ghcr.io/immich-app/immich-server:${IMMICH_VERSION}";
+            image = "ghcr.io/immich-app/immich-server:${immichVersion}";
             publishPorts = [
               "${toString port}:${toString port}"
             ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
-              "${UPLOAD_LOCATION}:/data"
+              "${uploadLocation}:/data"
             ];
             environmentFiles = [ config.sops.templates."immich/envFile".path ];
             networks = [ networks.immich.ref ];
@@ -63,7 +64,7 @@ in
 
         immich-machine-learning = {
           containerConfig = {
-            image = "ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION}";
+            image = "ghcr.io/immich-app/immich-machine-learning:${immichVersion}";
             volumes = [
               "${stackPath}/model-cache:/cache"
             ];
@@ -81,7 +82,7 @@ in
 
         immich-redis = {
           containerConfig = {
-            image = "docker.io/library/redis:6.2-alpine@sha256:c5a607fb6e1bb15d32bbcf14db22787d19e428d59e31a5da67511b49bb0f1ccc";
+            image = "docker.io/library/redis:6.2-alpine@sha256:46884be93652d02a96a176ccf173d1040bef365c5706aa7b6a1931caec8bfeef";
             healthCmd = "redis-cli ping || exit 1";
             networks = [ networks.immich.ref ];
             networkAliases = [ "redis" ];
@@ -95,7 +96,7 @@ in
         # this is backed up in ./backups.nix
         immich-database = {
           containerConfig = {
-            image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
+            image = "ghcr.io/immich-app/postgres:18-vectorchord0.5.3-pgvectors0.8.1";
             environmentFiles = [ config.sops.templates."immich/envFile".path ];
             environments = {
               POSTGRES_INITDB_ARGS = "--data-checksums";
