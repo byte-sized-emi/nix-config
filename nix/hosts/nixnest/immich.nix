@@ -96,8 +96,8 @@ in
         # this is backed up in ./backups.nix
         immich-database = {
           containerConfig = {
-            # image = "ghcr.io/immich-app/postgres:18-vectorchord0.5.3-pgvector0.8.1";
-            image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
+            image = "ghcr.io/immich-app/postgres:18-vectorchord0.5.3-pgvector0.8.1";
+            # image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
             environmentFiles = [ config.sops.templates."immich/envFile".path ];
             environments = {
               POSTGRES_INITDB_ARGS = "--data-checksums";
