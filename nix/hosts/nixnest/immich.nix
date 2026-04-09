@@ -82,7 +82,7 @@ in
 
         immich-redis = {
           containerConfig = {
-            image = "docker.io/library/redis:6.2-alpine@sha256:46884be93652d02a96a176ccf173d1040bef365c5706aa7b6a1931caec8bfeef";
+            image = "docker.io/valkey/valkey:9.0@sha256:3b55fbaa0cd93cf0d9d961f405e4dfcc70efe325e2d84da207a0a8e6d8fde4f9";
             healthCmd = "redis-cli ping || exit 1";
             networks = [ networks.immich.ref ];
             networkAliases = [ "redis" ];
@@ -97,7 +97,6 @@ in
         immich-database = {
           containerConfig = {
             image = "ghcr.io/immich-app/postgres:18-vectorchord0.5.3-pgvector0.8.1";
-            # image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
             environmentFiles = [ config.sops.templates."immich/envFile".path ];
             environments = {
               POSTGRES_INITDB_ARGS = "--data-checksums";
