@@ -103,7 +103,7 @@ in
             };
             securityLabelDisable = true;
             volumes = [
-              "${stackPath}/pgdata:/var/lib/postgresql/data:z"
+              "${stackPath}/pgdata:/var/lib/postgresql/:z"
             ];
             networks = [ networks.immich.ref ];
             networkAliases = [ "database" ];
