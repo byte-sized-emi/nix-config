@@ -2,7 +2,7 @@
 let
   uploadLocation = "/var/immich/upload_location";
   # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
-  immichVersion = "v2.7.2";
+  immichVersion = "v2.7.4";
   stackPath = "/etc/stacks/immich";
   port = 2283;
 in
