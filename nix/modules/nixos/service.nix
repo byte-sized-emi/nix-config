@@ -244,7 +244,7 @@ with lib;
                   ''
                     reverse_proxy https://localhost:${toString serviceCfg.port} {
                       transport http {
-                        tls_trust_pool ${serviceCfg.https.certificate}
+                        tls_trust_pool file ${serviceCfg.https.certificate}
                         tls_server_name ${serviceCfg.external.domain}
                       }
                     }
