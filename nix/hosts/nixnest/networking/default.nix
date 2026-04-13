@@ -56,7 +56,8 @@
         matchSNItoHost = true;
         http2Origin = true;
       };
-      ingress = { }; # defined in the individual services
+      # proxy everything to caddy (which will present a cloudflare origin cert for the external domains)
+      ingress."*.${config.settings.domain}" = "https://localhost:443";
     };
   };
 }

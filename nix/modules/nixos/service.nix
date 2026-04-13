@@ -206,18 +206,18 @@ with lib;
   );
 
   # config.services.cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = mkMerge (
-  config.services.my-cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = mkMerge (
-    mapAttrsToList (
-      _name: serviceCfg:
-      mkIf (serviceCfg.enable && serviceCfg.external.enable) {
-        ${serviceCfg.external.domain} =
-          if serviceCfg.https.enable then
-            "https://localhost:${toString serviceCfg.port}"
-          else
-            "http://localhost:${toString serviceCfg.port}";
-      }
-    ) config.my.services
-  );
+  # config.services.my-cloudflared.tunnels.${config.settings.ingress_tunnel}.ingress = mkMerge (
+  #   mapAttrsToList (
+  #     _name: serviceCfg:
+  #     mkIf (serviceCfg.enable && serviceCfg.external.enable) {
+  #       ${serviceCfg.external.domain} =
+  #         if serviceCfg.https.enable then
+  #           "https://localhost:${toString serviceCfg.port}"
+  #         else
+  #           "http://localhost:${toString serviceCfg.port}";
+  #     }
+  #   ) config.my.services
+  # );
 
   # TODO: Add "import waf" to all external requests
   config.services.caddy.virtualHosts =
