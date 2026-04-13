@@ -1,15 +1,24 @@
 {
   environment.etc = {
+    # generated using:
+    # openssl ecparam -name prime256v1 -genkey -noout -out private-key.pem
+    #
+    # openssl ec -in private-key.pem -pubout -out public-key.pem
+    #
+    # openssl req -new -x509 -key private-key.pem -out cert.pem -days 3650 -subj "/CN=byte-sized.fyi" -addext "subjectAltName=DNS:byte-sized.fyi,DNS:*.byte-sized.fyi"
+    #
     "certs/self_signed.pem".text = ''
       -----BEGIN CERTIFICATE-----
-      MIIBdTCCASegAwIBAgIUZYGC+2p7KquDB01WDWdKsc/YM5owBQYDK2VwMBkxFzAV
-      BgNVBAMMDmJ5dGUtc2l6ZWQuZnlpMB4XDTI2MDQxMzEzNTIwNFoXDTM2MDQxMDEz
-      NTIwNFowGTEXMBUGA1UEAwwOYnl0ZS1zaXplZC5meWkwKjAFBgMrZXADIQC9A2E0
-      hRvsIQShESzGzBvrLShxh988gLXkBvY8YTD326OBgDB+MB0GA1UdDgQWBBSlCRCO
-      IrIM9m0eu9tDBMXaTKQ0PzAfBgNVHSMEGDAWgBSlCRCOIrIM9m0eu9tDBMXaTKQ0
-      PzAPBgNVHRMBAf8EBTADAQH/MCsGA1UdEQQkMCKCDmJ5dGUtc2l6ZWQuZnlpghAq
-      LmJ5dGUtc2l6ZWQuZnlpMAUGAytlcANBADQmZXkcCdrC1C50BjbKRJ5PqlqeEfKW
-      uH8hegpD4IvaXEblPHyhEh8gqpchtD20cHhzWRzgkPtGgGx8vwx8xQk=
+      MIIBtTCCAVugAwIBAgIUYbFuiI5AbSLA120TH7YHD7SLPdYwCgYIKoZIzj0EAwIw
+      GTEXMBUGA1UEAwwOYnl0ZS1zaXplZC5meWkwHhcNMjYwNDEzMjExMTU0WhcNMzYw
+      NDEwMjExMTU0WjAZMRcwFQYDVQQDDA5ieXRlLXNpemVkLmZ5aTBZMBMGByqGSM49
+      AgEGCCqGSM49AwEHA0IABBJBKZV1lazVWYGIpiVE+Ax0czxfM86/zG1QBukuQNH5
+      OS6+Oeb/7GIIkeZP2BZzF2gDlVaYsr0cVXslMnDU0RmjgYAwfjAdBgNVHQ4EFgQU
+      uaEsTfzoJ/IpECZu/tQl+Pqs8wcwHwYDVR0jBBgwFoAUuaEsTfzoJ/IpECZu/tQl
+      +Pqs8wcwDwYDVR0TAQH/BAUwAwEB/zArBgNVHREEJDAigg5ieXRlLXNpemVkLmZ5
+      aYIQKi5ieXRlLXNpemVkLmZ5aTAKBggqhkjOPQQDAgNIADBFAiEA7sBaerEWrhHl
+      64SlWJALl9QBTqUglb1oHBec6CdjUO0CIC1IZ9R08cCE/UGaH0Juj3UhMLVe3yLp
+      +ngcHuRYtS+f
       -----END CERTIFICATE-----
     '';
     "certs/wildcard_origin_cert.pem".text = ''
