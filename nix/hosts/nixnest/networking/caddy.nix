@@ -4,10 +4,17 @@
   services.caddy = {
     enable = true;
     package = pkgs.caddy.withPlugins {
-      plugins = [
-        "github.com/caddy-dns/cloudflare@v0.2.2"
-        "github.com/corazawaf/coraza-caddy@v2.5.0"
-      ];
+      plugins =
+        let
+          # renovate: datasource=go depName=github.com/caddy-dns/cloudflare
+          cloudflareDnsVersion = "v0.2.2";
+          # renovate: datasource=go depName=github.com/corazawaf/coraza-caddy/v2
+          corazaVersion = "v2.5.0";
+        in
+        [
+          "github.com/caddy-dns/cloudflare@${cloudflareDnsVersion}"
+          "github.com/corazawaf/coraza-caddy/v2@${corazaVersion}"
+        ];
       hash = "sha256-2Gvk5COnVrjRL/VjQ9mmQcHT7CJQMlz8Slec9wX908Q=";
     };
     environmentFile = config.sops.secrets."caddy/secretsEnv".path;
