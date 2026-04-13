@@ -7,6 +7,7 @@ lib.mkIf config.settings.dawarich.enable (
   let
     port = 3000;
     domain = "location.${config.settings.services.domain}";
+    # renovate: datasource=docker depName=freikin/dawarich
     version = "1.6.1";
   in
   {

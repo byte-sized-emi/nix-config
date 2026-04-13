@@ -1,12 +1,13 @@
 {
   config,
-  pkgs,
   flake,
   ...
 }:
 {
   imports = [
     flake.modules.nixos.my-cloudflared
+    ./tailscale.nix
+    ./caddy.nix
   ];
 
   networking.nameservers = [
@@ -15,6 +16,10 @@
     "1.1.1.1"
   ];
   networking.search = [ "bushbaby-chimera.ts.net" ];
+
+  # https://forgejo.org/docs/latest/admin/actions/runner-installation/#nixos
+  # supposed to make cache actions work
+  networking.firewall.trustedInterfaces = [ "br-+" ];
 
   # mDNS setup
 
@@ -52,45 +57,6 @@
         http2Origin = true;
       };
       ingress = { }; # defined in the individual services
-    };
-  };
-
-  services.tailscale = {
-    enable = true;
-    extraUpFlags = [
-      "--ssh"
-      "--advertise-exit-node"
-    ];
-    authKeyFile = config.sops.secrets."tailscale/auth_key".path;
-    useRoutingFeatures = "server";
-    openFirewall = true;
-  };
-
-  # reverse proxy setup is done where it is needed
-  services.caddy = {
-    enable = true;
-    package = pkgs.caddy.withPlugins {
-      plugins = [
-        "github.com/caddy-dns/cloudflare@v0.2.2"
-      ];
-      hash = "sha256-zlBCmHJeeZsRR1OFyoayE/v1WH9n5SPy2JBJkgeHqdc=";
-    };
-    environmentFile = config.sops.secrets."caddy/secretsEnv".path;
-    globalConfig = ''
-      acme_dns cloudflare {env.CF_API_TOKEN}
-      dns cloudflare {env.CF_API_TOKEN}
-      servers {
-        trusted_proxies static 127.0.0.1/8
-      }
-    '';
-    # abuse the virtualHosts config to define a template - hey, if it works.
-    # client_ip uses either the IP of the remote directly, or the one passed by cloudflared
-    virtualHosts."(abort_external)" = {
-      extraConfig = ''
-        @external not client_ip private_ranges 100.64.0.0/10 fd7a:115c:a1e0::/48
-        abort @external
-      '';
-      logFormat = null;
     };
   };
 }

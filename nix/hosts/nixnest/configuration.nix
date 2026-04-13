@@ -13,6 +13,7 @@
     flake.modules.nixos.syncthing
     ./backups.nix
     ./beeper.nix
+    ./certs.nix
     ./dawarich.nix
     ./food.nix
     ./git.nix
@@ -22,7 +23,7 @@
     ./linktree.nix
     ./media.nix
     ./monitoring.nix
-    ./networking.nix
+    ./networking
     ./nix-serve.nix
     ./ntfy.nix
     ./podman.nix

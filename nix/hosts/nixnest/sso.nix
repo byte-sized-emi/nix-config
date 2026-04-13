@@ -13,9 +13,12 @@ in
     inherit port;
     createSystemUser = true;
     description = "Identity management service";
+    https = {
+      enable = true;
+      certificate = "/etc/certs/self_signed.pem";
+    };
     external = {
       enable = true;
-      https = true;
       domain = config.settings.sso.domain;
     };
   };
@@ -32,8 +35,8 @@ in
       origin = "https://${config.settings.sso.domain}";
       domain = config.settings.sso.domain;
       bindaddress = "127.0.0.1:${toString port}";
-      tls_chain = config.sops.secrets."kanidm/tlsChain".path;
-      tls_key = config.sops.secrets."kanidm/tlsKey".path;
+      tls_chain = "/etc/certs/self_signed.pem";
+      tls_key = config.sops.secrets."caddy/self_signed_cert/key.pem".path;
       online_backup = {
         path = "/var/backup/kanidm";
         schedule = config.settings.backup.prepare.interval_cron;
@@ -42,6 +45,7 @@ in
     };
     provision = {
       enable = true;
+      idmAdminPasswordFile = config.sops.secrets."kanidm/idmAdminPW".path;
       groups = {
         git = { };
         tailnet = { };

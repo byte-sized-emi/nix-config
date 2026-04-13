@@ -20,6 +20,8 @@
     ];
   };
 
+  environment.pathsToLink = [ "/share/zsh" ];
+
   home-manager.backupFileExtension = "bac";
 
   console.keyMap = "de";

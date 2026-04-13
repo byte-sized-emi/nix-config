@@ -1,21 +1,29 @@
-{ perSystem, config, ... }:
+{
+  perSystem,
+  config,
+  lib,
+  ...
+}:
 let
   # cloudflare origin certificates
-  cert = config.sops.secrets."caddy/links_byte_sized_fyi/cert.pem".path;
+  cert = "/etc/certs/links_byte_sized_fyi_origin_cert.pem";
   key = config.sops.secrets."caddy/links_byte_sized_fyi/key.pem".path;
 in
 {
   my.services.linktree = {
     enable = true;
     port = 443;
+    https = {
+      enable = true;
+      certificate = cert;
+    };
     external = {
       enable = true;
-      https = true;
-      domain = "${config.settings.linktree.domain}";
+      domain = config.settings.linktree.domain;
     };
   };
 
-  services.caddy.virtualHosts."${config.settings.linktree.domain}".extraConfig = ''
+  services.caddy.virtualHosts."${config.settings.linktree.domain}".extraConfig = lib.mkForce ''
     header {
       -Last-Modified
     }

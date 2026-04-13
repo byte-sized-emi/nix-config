@@ -13,6 +13,8 @@
       "caddy/secretsEnv".owner = users.caddy.name;
       "caddy/links_byte_sized_fyi/cert.pem".owner = users.caddy.name;
       "caddy/links_byte_sized_fyi/key.pem".owner = users.caddy.name;
+      "caddy/origincert_byte_sized_fyi/key.pem".owner = users.caddy.name;
+      "caddy/self_signed_cert/key.pem".owner = users.kanidm.name;
       "forgejo/actionsRunnerToken" = {
         owner = users.forgejo.name;
         group = groups.forgejo.name;
@@ -20,6 +22,7 @@
       "immich/dbPassword".owner = "root";
       "kanidm/tlsChain".owner = users.kanidm.name;
       "kanidm/tlsKey".owner = users.kanidm.name;
+      "kanidm/idmAdminPW".owner = users.kanidm.name;
       "kanidm/tailscaleOauthSecret".owner = users.kanidm.name;
       "kanidm/forgejoOauthSecret".owner = users.kanidm.name;
       "kanidm/mealieOauthSecret".owner = users.kanidm.name;
