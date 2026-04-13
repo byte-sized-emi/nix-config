@@ -70,6 +70,14 @@
 
               # content-type handling with rule 900220?
               # https://github.com/coreruleset/coreruleset/blob/f99c91e021ba84591dcee63542b97b6476471ffa/crs-setup.conf.example#L569
+              SecRuleRemoveById 900220
+              SecAction \
+                 "id:5002,\
+                 phase:1,\
+                 pass,\
+                 t:none,\
+                 nolog,\
+                 setvar:'tx.allowed_request_content_type=|application/x-www-form-urlencoded| |multipart/form-data| |text/xml| |application/xml| |application/soap+xml| |application/json| |application/proto|'"
 
               # turn off waf for the forgejo runner service as there are too many false positives
               SecRule &REQUEST_HEADERS:Host "@streq ${gitDomain}" \
@@ -77,6 +85,7 @@
                 phase:1,\
                 pass,\
                 nolog,\
+                t:none,\
                 ctl:ruleRemoveById=932140,\
                 ctl:ruleRemoveById=932230,\
                 ctl:ruleRemoveById=932235,\
@@ -86,7 +95,7 @@
                 ctl:ruleRemoveById=941180,\
                 ctl:ruleEngine=Off,\
                 chain"
-              SecRule REQUEST_URI "@beginsWith /api/actions/runner.v1.RunnerService/"
+                SecRule REQUEST_URI "@beginsWith /api/actions/runner.v1.RunnerService/"
 
               # disable rules for Git operations (.git/ paths)
               SecRule &REQUEST_HEADERS:Host "@streq ${gitDomain}" \
@@ -94,6 +103,8 @@
                 phase:1,\
                 pass,\
                 nolog,\
+                t:none,\
+                ctl:ruleRemoveById=930130,\
                 ctl:ruleRemoveById=932140,\
                 ctl:ruleRemoveById=932230,\
                 ctl:ruleRemoveById=932235,\
@@ -102,7 +113,7 @@
                 ctl:ruleRemoveById=941160,\
                 ctl:ruleRemoveById=941180,\
                 chain"
-              SecRule REQUEST_URI "@rx \.git/"
+                SecRule REQUEST_URI "@rx \.git/"
 
               # disable rules for Gitea/Forgejo API (issues, PRs, markdown bodies from Renovate)
               SecRule &REQUEST_HEADERS:Host "@streq ${gitDomain}" \
@@ -110,6 +121,7 @@
                 phase:1,\
                 pass,\
                 nolog,\
+                t:none,\
                 ctl:ruleRemoveById=932140,\
                 ctl:ruleRemoveById=932230,\
                 ctl:ruleRemoveById=932235,\
@@ -118,7 +130,7 @@
                 ctl:ruleRemoveById=941160,\
                 ctl:ruleRemoveById=941180,\
                 chain"
-              SecRule REQUEST_URI "@beginsWith /api/v1/"
+                SecRule REQUEST_URI "@beginsWith /api/v1/"
 
               # disable rules for issue content paths
               SecRule &REQUEST_HEADERS:Host "@streq ${gitDomain}" \
@@ -126,6 +138,7 @@
                 phase:1,\
                 pass,\
                 nolog,\
+                t:none,\
                 ctl:ruleRemoveById=932140,\
                 ctl:ruleRemoveById=932230,\
                 ctl:ruleRemoveById=932235,\
@@ -134,7 +147,7 @@
                 ctl:ruleRemoveById=941160,\
                 ctl:ruleRemoveById=941180,\
                 chain"
-              SecRule REQUEST_URI "@rx /.*/issues/.*/content"
+                SecRule REQUEST_URI "@rx /.*/issues/.*/content"
             `
            }
         '';
