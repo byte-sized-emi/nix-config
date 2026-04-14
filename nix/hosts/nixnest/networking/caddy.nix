@@ -85,6 +85,8 @@
                 ctl:ruleRemoveById=932250,\
                 ctl:ruleRemoveById=932260,\
                 ctl:ruleRemoveById=941160,\
+                ctl:ruleRemoveById=921150,\
+                ctl:ruleRemoveById=920420,\
                 ctl:ruleRemoveById=941180"
               SecRule REQUEST_URI "@rx \.git/"
 
