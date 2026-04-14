@@ -103,130 +103,138 @@ in
     };
   };
 
-  virtualisation.quadlet = {
-    containers.jellyfin = {
-      containerConfig = {
-        image = "jellyfin/jellyfin:10.11.6.20260119-010354";
-        publishPorts = [
-          "127.0.0.1:${toString jellyfinPort}:${toString jellyfinPort}/tcp"
-          "7359:7359/udp" # client discovery
-        ];
-        volumes = [
-          "${jellyfinPath}/config:/config"
-          "${jellyfinPath}/cache:/cache"
-          "${dataPath}/media:/media"
-        ];
-        environments = {
-          JELLYFIN_PublishedServerUrl = "https://${config.settings.media.service_domain}";
-        };
+  virtualisation.quadlet =
+    let
+      inherit (config.virtualisation.quadlet) networks;
+    in
+    {
+      networks.media.networkConfig = {
+        driver = "bridge";
+        podmanArgs = [ "--interface-name=media" ];
       };
-      serviceConfig = {
-        Restart = "always";
-      };
-    };
 
-    containers.sonarr = {
-      containerConfig = {
-        image = "lscr.io/linuxserver/sonarr:4.0.16.2944-ls304";
-        volumes = [
-          "${sonarrPath}:/config"
-          "${dataPath}:/data"
-        ];
-        environments = {
-          PUID = toString uid;
-          PGID = toString gid;
+      containers.jellyfin = {
+        containerConfig = {
+          image = "jellyfin/jellyfin:10.11.6.20260119-010354";
+          publishPorts = [
+            "127.0.0.1:${toString jellyfinPort}:${toString jellyfinPort}/tcp"
+            "7359:7359/udp" # client discovery
+          ];
+          volumes = [
+            "${jellyfinPath}/config:/config"
+            "${jellyfinPath}/cache:/cache"
+            "${dataPath}/media:/media"
+          ];
+          environments = {
+            JELLYFIN_PublishedServerUrl = "https://${config.settings.media.service_domain}";
+          };
+          networks = [ networks.media.ref ];
         };
-        networks = [ "gluetun.container" ];
+        serviceConfig = {
+          Restart = "always";
+        };
       };
-      serviceConfig = {
-        Restart = "always";
-      };
-    };
 
-    containers.radarr = {
-      containerConfig = {
-        image = "lscr.io/linuxserver/radarr:6.0.4.10291-ls295";
-        volumes = [
-          "${radarrPath}:/config"
-          "${dataPath}:/data"
-        ];
-        environments = {
-          PUID = toString uid;
-          PGID = toString gid;
+      containers.sonarr = {
+        containerConfig = {
+          image = "lscr.io/linuxserver/sonarr:4.0.16.2944-ls304";
+          volumes = [
+            "${sonarrPath}:/config"
+            "${dataPath}:/data"
+          ];
+          environments = {
+            PUID = toString uid;
+            PGID = toString gid;
+          };
+          networks = [ networks.media.ref ];
         };
-        networks = [ "gluetun.container" ];
+        serviceConfig = {
+          Restart = "always";
+        };
       };
-      serviceConfig = {
-        Restart = "always";
-      };
-    };
 
-    containers.prowlarr = {
-      containerConfig = {
-        image = "lscr.io/linuxserver/prowlarr:2.3.0.5236-ls139";
-        volumes = [
-          "${prowlarrPath}:/config"
-        ];
-        environments = {
-          PUID = toString uid;
-          PGID = toString gid;
+      containers.radarr = {
+        containerConfig = {
+          image = "lscr.io/linuxserver/radarr:6.0.4.10291-ls295";
+          volumes = [
+            "${radarrPath}:/config"
+            "${dataPath}:/data"
+          ];
+          environments = {
+            PUID = toString uid;
+            PGID = toString gid;
+          };
+          networks = [ networks.media.ref ];
         };
-        networks = [ "gluetun.container" ];
+        serviceConfig = {
+          Restart = "always";
+        };
       };
-      serviceConfig = {
-        Restart = "always";
-      };
-    };
 
-    containers.qbittorrent = {
-      containerConfig = {
-        image = "lscr.io/linuxserver/qbittorrent:5.1.4-r2-ls448";
-        volumes = [
-          "${qbittorrentPath}:/config"
-          "${dataPath}/torrents:/data/torrents"
-        ];
-        environments = {
-          PUID = toString uid;
-          PGID = toString gid;
-          TZ = "Europe/Berlin";
-          WEBUI_PORT = toString qbittorrentPort;
-          TORRENTING_PORT = "6881";
+      containers.prowlarr = {
+        containerConfig = {
+          image = "lscr.io/linuxserver/prowlarr:2.3.0.5236-ls139";
+          volumes = [
+            "${prowlarrPath}:/config"
+          ];
+          environments = {
+            PUID = toString uid;
+            PGID = toString gid;
+          };
+          networks = [ networks.media.ref ];
         };
-        networks = [ "gluetun.container" ];
+        serviceConfig = {
+          Restart = "always";
+        };
       };
-    };
 
-    containers.gluetun = {
-      containerConfig = {
-        image = "ghcr.io/qdm12/gluetun:v3.41.1";
-        addCapabilities = [ "NET_ADMIN" ];
-        devices = [ "/dev/net/tun:/dev/net/tun" ];
-        volumes = [
-          "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
-          "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
-          "${gluetunPath}/servers.json:/gluetun/servers.json"
-        ];
-        publishPorts = [
-          "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
-          "127.0.0.1:${toString sonarrPort}:${toString sonarrPort}"
-          "127.0.0.1:${toString radarrPort}:${toString radarrPort}"
-          "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}"
-        ];
-        # TODO: remove this once IPv6 works again
-        sysctl = {
-          "net.ipv6.conf.all.disable_ipv6" = "1";
-          "net.ipv6.conf.default.disable_ipv6" = "1";
+      containers.qbittorrent = {
+        containerConfig = {
+          image = "lscr.io/linuxserver/qbittorrent:5.1.4-r2-ls448";
+          volumes = [
+            "${qbittorrentPath}:/config"
+            "${dataPath}/torrents:/data/torrents"
+          ];
+          environments = {
+            PUID = toString uid;
+            PGID = toString gid;
+            TZ = "Europe/Berlin";
+            WEBUI_PORT = toString qbittorrentPort;
+            TORRENTING_PORT = "6881";
+          };
+          networks = [ "gluetun.container" ];
         };
-        environments = {
-          PUID = toString uid;
-          PGID = toString gid;
-          TZ = "Europe/Berlin";
-          UPDATER_PERIOD = "24h";
-          VPN_SERVICE_PROVIDER = "airvpn";
-          SERVER_REGIONS = "Europe";
-          FIREWALL_VPN_INPUT_PORTS = "41589,42850";
+      };
+
+      containers.gluetun = {
+        containerConfig = {
+          image = "ghcr.io/qdm12/gluetun:v3.41.1";
+          addCapabilities = [ "NET_ADMIN" ];
+          devices = [ "/dev/net/tun:/dev/net/tun" ];
+          volumes = [
+            "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
+            "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
+            "${gluetunPath}/servers.json:/gluetun/servers.json"
+          ];
+          publishPorts = [
+            "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
+          ];
+          networks = [ networks.media.ref ];
+          # TODO: remove this once IPv6 works again
+          sysctl = {
+            "net.ipv6.conf.all.disable_ipv6" = "1";
+            "net.ipv6.conf.default.disable_ipv6" = "1";
+          };
+          environments = {
+            PUID = toString uid;
+            PGID = toString gid;
+            TZ = "Europe/Berlin";
+            UPDATER_PERIOD = "24h";
+            VPN_SERVICE_PROVIDER = "airvpn";
+            SERVER_REGIONS = "Europe";
+            FIREWALL_VPN_INPUT_PORTS = "41589,42850";
+          };
         };
       };
     };
-  };
 }
