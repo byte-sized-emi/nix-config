@@ -51,13 +51,17 @@
             directives `
               # Custom rules BEFORE CRS loads - remove rules for specific paths
               # Only apply to git domain
-              SecRule REQUEST_HEADERS:Host "@streq ${gitDomain}" \
+
+              # SecRule REQUEST_HEADERS:Host "@streq ${gitDomain}" \
+              # chain,\
+
+              SecRule REQUEST_URI "@beginsWith /api/actions/runner.v1.RunnerService/" \
                 "id:1000,\
-                chain,\
                 phase:1,\
                 pass,\
                 nolog,\
                 t:none,\
+                ctl:ruleRemoveById=920420,\
                 ctl:ruleRemoveById=932140,\
                 ctl:ruleRemoveById=932230,\
                 ctl:ruleRemoveById=932235,\
@@ -66,7 +70,6 @@
                 ctl:ruleRemoveById=941160,\
                 ctl:ruleRemoveById=941180,\
                 ctl:ruleEngine=Off"
-              SecRule REQUEST_URI "@beginsWith /api/actions/runner.v1.RunnerService/"
 
               SecRule REQUEST_HEADERS:Host "@streq ${gitDomain}" \
                 "id:1001,\
