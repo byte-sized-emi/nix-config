@@ -87,8 +87,17 @@
                 ctl:ruleRemoveById=941160,\
                 ctl:ruleRemoveById=921150,\
                 ctl:ruleRemoveById=920420,\
+                ctl:ruleRemoveById=941100,\
                 ctl:ruleRemoveById=941180"
               SecRule REQUEST_URI "@rx \.git/"
+
+              SecRule REQUEST_URI "@beginsWith /login/oauth/authorize" \
+                "id:1102,\
+                phase:1,\
+                pass,\
+                nolog,\
+                t:none,\
+                ctl:ruleRemoveById=934110"
 
               SecRule REQUEST_HEADERS:Host "@streq ${gitDomain}" \
                 "id:1002,\
