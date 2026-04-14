@@ -142,6 +142,9 @@ in
             "${sonarrPath}:/config"
             "${dataPath}:/data"
           ];
+          publishPorts = [
+            "127.0.0.1:${toString sonarrPort}:${toString sonarrPort}/tcp"
+          ];
           environments = {
             PUID = toString uid;
             PGID = toString gid;
@@ -159,6 +162,9 @@ in
           volumes = [
             "${radarrPath}:/config"
             "${dataPath}:/data"
+          ];
+          publishPorts = [
+            "127.0.0.1:${toString radarrPort}:${toString radarrPort}/tcp"
           ];
           environments = {
             PUID = toString uid;
@@ -181,6 +187,9 @@ in
             PUID = toString uid;
             PGID = toString gid;
           };
+          publishPorts = [
+            "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}/tcp"
+          ];
           networks = [ networks.media.ref ];
         };
         serviceConfig = {
