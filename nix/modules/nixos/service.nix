@@ -252,9 +252,9 @@ with lib;
                 else
                   "reverse_proxy http://localhost:${toString serviceCfg.port}";
             in
-            # import waf
             ''
               tls ${originCert} ${originKey}
+              import waf
               ${serviceCfg.external.caddyExtraConfig}
               ${reverseProxyConfig}
             '';

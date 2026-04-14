@@ -49,40 +49,11 @@
           coraza_waf {
             load_owasp_crs
             directives `
-              Include @coraza.conf-recommended
-              Include @crs-setup.conf.example
-              Include @owasp_crs/*.conf
-              SecRuleEngine On
-
-              # SecRuleRemoveById 932370
-              SecRuleRemoveById 200002
-              SecRuleRemoveById 200003
-
-              # https://github.com/coreruleset/coreruleset/blob/f99c91e021ba84591dcee63542b97b6476471ffa/crs-setup.conf.example#L464
-              SecRuleRemoveById 900200
-              SecAction \
-                 "id:5001,\
-                 phase:1,\
-                 pass,\
-                 t:none,\
-                 nolog,\
-                 setvar:'tx.allowed_methods=GET HEAD POST PUT DELETE OPTIONS'"
-
-              # content-type handling with rule 900220?
-              # https://github.com/coreruleset/coreruleset/blob/f99c91e021ba84591dcee63542b97b6476471ffa/crs-setup.conf.example#L569
-              # SecRuleRemoveById 900220
-              # SecAction \
-              #    "id:5002,\
-              #    phase:1,\
-              #    pass,\
-              #    t:none,\
-              #    nolog,\
-              #    setvar:'tx.allowed_request_content_type=|application/x-www-form-urlencoded| |multipart/form-data| |text/xml| |application/xml| |application/soap+xml| |application/json| |application/proto|'"
-
-              # turn off waf for the forgejo runner service as there are too many false positives
-              # SecRule &REQUEST_HEADERS:Host "@streq ${gitDomain}" \
-              SecRule REQUEST_URI "@beginsWith /api/actions/runner.v1.RunnerService/" \
+              # Custom rules BEFORE CRS loads - remove rules for specific paths
+              # Only apply to git domain
+              SecRule REQUEST_HEADERS:Host "@streq ${gitDomain}" \
                 "id:1000,\
+                chain,\
                 phase:1,\
                 pass,\
                 nolog,\
@@ -94,14 +65,12 @@
                 ctl:ruleRemoveById=932260,\
                 ctl:ruleRemoveById=941160,\
                 ctl:ruleRemoveById=941180,\
-                ctl:ruleEngine=Off,\
-                chain"
-                # SecRule REQUEST_URI "@beginsWith /api/actions/runner.v1.RunnerService/"
+                ctl:ruleEngine=Off"
+              SecRule REQUEST_URI "@beginsWith /api/actions/runner.v1.RunnerService/"
 
-              # disable rules for Git operations (.git/ paths)
-              # SecRule &REQUEST_HEADERS:Host "@streq ${gitDomain}" \
-              SecRule REQUEST_URI "@rx \.git/" \
+              SecRule REQUEST_HEADERS:Host "@streq ${gitDomain}" \
                 "id:1001,\
+                chain,\
                 phase:1,\
                 pass,\
                 nolog,\
@@ -113,14 +82,12 @@
                 ctl:ruleRemoveById=932250,\
                 ctl:ruleRemoveById=932260,\
                 ctl:ruleRemoveById=941160,\
-                ctl:ruleRemoveById=941180,\
-                chain"
-                # SecRule REQUEST_URI "@rx \.git/"
+                ctl:ruleRemoveById=941180"
+              SecRule REQUEST_URI "@rx \.git/"
 
-              # disable rules for Gitea/Forgejo API (issues, PRs, markdown bodies from Renovate)
-              # SecRule &REQUEST_HEADERS:Host "@streq ${gitDomain}" \
-              SecRule REQUEST_URI "@beginsWith /api/v1/" \
+              SecRule REQUEST_HEADERS:Host "@streq ${gitDomain}" \
                 "id:1002,\
+                chain,\
                 phase:1,\
                 pass,\
                 nolog,\
@@ -131,14 +98,12 @@
                 ctl:ruleRemoveById=932250,\
                 ctl:ruleRemoveById=932260,\
                 ctl:ruleRemoveById=941160,\
-                ctl:ruleRemoveById=941180,\
-                chain"
-                # SecRule REQUEST_URI "@beginsWith /api/v1/"
+                ctl:ruleRemoveById=941180"
+              SecRule REQUEST_URI "@beginsWith /api/v1/"
 
-              # disable rules for issue content paths
-              # SecRule &REQUEST_HEADERS:Host "@streq ${gitDomain}" \
-              SecRule REQUEST_URI "@rx /.*/issues/.*/content" \
+              SecRule REQUEST_HEADERS:Host "@streq ${gitDomain}" \
                 "id:1003,\
+                chain,\
                 phase:1,\
                 pass,\
                 nolog,\
@@ -149,9 +114,26 @@
                 ctl:ruleRemoveById=932250,\
                 ctl:ruleRemoveById=932260,\
                 ctl:ruleRemoveById=941160,\
-                ctl:ruleRemoveById=941180,\
-                chain"
-                # SecRule REQUEST_URI "@rx /.*/issues/.*/content"
+                ctl:ruleRemoveById=941180"
+              SecRule REQUEST_URI "@rx /.*/issues/.*/content"
+
+              # Now load CRS
+              Include @coraza.conf-recommended
+              Include @crs-setup.conf.example
+              Include @owasp_crs/*.conf
+              SecRuleEngine On
+
+              SecRuleRemoveById 200002
+              SecRuleRemoveById 200003
+
+              SecRuleRemoveById 900200
+              SecAction \
+                 "id:5001,\
+                 phase:1,\
+                 pass,\
+                 t:none,\
+                 nolog,\
+                 setvar:'tx.allowed_methods=GET HEAD POST PUT DELETE OPTIONS'"
             `
            }
         '';
