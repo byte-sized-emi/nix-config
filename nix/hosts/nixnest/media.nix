@@ -13,6 +13,7 @@ let
   sonarrPort = 8989;
   radarrPort = 7878;
   prowlarrPort = 9696;
+  flareSolverrPort = 8191;
   inherit (config.users.users.media) uid;
   inherit (config.users.groups.media) gid;
 in
@@ -189,6 +190,22 @@ in
           };
           publishPorts = [
             "127.0.0.1:${toString prowlarrPort}:${toString prowlarrPort}/tcp"
+          ];
+          networks = [ networks.media.ref ];
+        };
+        serviceConfig = {
+          Restart = "always";
+        };
+      };
+
+      containers.flaresolverr = {
+        containerConfig = {
+          image = "ghcr.io/flaresolverr/flaresolverr:v3.4.6";
+          environments = {
+            LOG_LEVEL = "info";
+          };
+          publishPorts = [
+            "127.0.0.1:${toString flareSolverrPort}:${toString flareSolverrPort}/tcp"
           ];
           networks = [ networks.media.ref ];
         };
