@@ -39,14 +39,17 @@ in
     "d ${gluetunPath}               0770 media media"
     "d ${jellyfinPath}/config       0770 media media"
     "d ${jellyfinPath}/cache        0770 media media"
-    "d ${dataPath}/torrents/books   0775 media media"
-    "d ${dataPath}/torrents/movies  0775 media media"
-    "d ${dataPath}/torrents/music   0775 media media"
-    "d ${dataPath}/torrents/tv      0775 media media"
-    "d ${dataPath}/media/books      0775 media media"
-    "d ${dataPath}/media/movies     0775 media media"
-    "d ${dataPath}/media/music      0775 media media"
-    "d ${dataPath}/media/tv         0775 media media"
+
+    # dataPath is now mounted, which makes this scary
+    # - see nix/hosts/nixnest/hardware-configuration.nix for the mount
+    # "d ${dataPath}/torrents/books   0775 media media"
+    # "d ${dataPath}/torrents/movies  0775 media media"
+    # "d ${dataPath}/torrents/music   0775 media media"
+    # "d ${dataPath}/torrents/tv      0775 media media"
+    # "d ${dataPath}/media/books      0775 media media"
+    # "d ${dataPath}/media/movies     0775 media media"
+    # "d ${dataPath}/media/music      0775 media media"
+    # "d ${dataPath}/media/tv         0775 media media"
   ];
 
   # TRaSH guides recommended folder structure:
@@ -226,7 +229,7 @@ in
             PGID = toString gid;
             TZ = "Europe/Berlin";
             WEBUI_PORT = toString qbittorrentPort;
-            TORRENTING_PORT = "6881";
+            TORRENTING_PORT = "41589";
           };
           networks = [ "gluetun.container" ];
         };
@@ -258,7 +261,7 @@ in
             UPDATER_PERIOD = "24h";
             VPN_SERVICE_PROVIDER = "airvpn";
             SERVER_REGIONS = "Europe";
-            FIREWALL_VPN_INPUT_PORTS = "41589,42850";
+            FIREWALL_VPN_INPUT_PORTS = "41589";
           };
         };
       };
