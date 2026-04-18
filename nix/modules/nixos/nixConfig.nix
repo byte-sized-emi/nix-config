@@ -1,6 +1,4 @@
 {
-  nixpkgs.config.allowUnfree = true;
-
   # if you add a cache here, also add it to the update.yaml forgejo action
   nix = {
     settings = {

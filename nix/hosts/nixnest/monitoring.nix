@@ -103,6 +103,9 @@
           type = "prometheus";
           access = "proxy";
           url = "http://127.0.0.1:${toString config.services.prometheus.port}";
+          jsonData = {
+            timeInterval = "60s";
+          };
         }
       ];
     };

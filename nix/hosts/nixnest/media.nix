@@ -19,6 +19,7 @@ let
   openvpnCustomConfig = pkgs.writeText "gluetun-openvpn.conf" ''
     pull-filter ignore "route-ipv6"
     pull-filter ignore "ifconfig-ipv6"
+    explicit-exit-notify 5
   '';
 in
 {
