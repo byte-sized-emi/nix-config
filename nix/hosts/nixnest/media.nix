@@ -238,7 +238,10 @@ in
       containers.gluetun = {
         containerConfig = {
           image = "ghcr.io/qdm12/gluetun:v3.41.1";
-          addCapabilities = [ "NET_ADMIN" ];
+          addCapabilities = [
+            "NET_ADMIN"
+            "NET_RAW" # for ICMP listening
+          ];
           devices = [ "/dev/net/tun:/dev/net/tun" ];
           volumes = [
             "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
@@ -262,6 +265,7 @@ in
             VPN_SERVICE_PROVIDER = "airvpn";
             SERVER_REGIONS = "Europe";
             FIREWALL_VPN_INPUT_PORTS = "41589";
+            BORINGPOLL_GLUETUNCOM = "on";
           };
         };
       };
