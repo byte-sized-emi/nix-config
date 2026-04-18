@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 let
   stackPath = "/var/stacks/media";
   jellyfinPath = "${stackPath}/jellyfin";
@@ -16,6 +16,10 @@ let
   flareSolverrPort = 8191;
   inherit (config.users.users.media) uid;
   inherit (config.users.groups.media) gid;
+  openvpnCustomConfig = pkgs.writeText "gluetun-openvpn.conf" ''
+    pull-filter ignore "route-ipv6"
+    pull-filter ignore "ifconfig-ipv6"
+  '';
 in
 {
   users.users.media = {
@@ -244,6 +248,7 @@ in
           ];
           devices = [ "/dev/net/tun:/dev/net/tun" ];
           volumes = [
+            "${openvpnCustomConfig}:/gluetun/custom.conf"
             "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
             "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
             "${gluetunPath}/servers.json:/gluetun/servers.json"
@@ -266,6 +271,7 @@ in
             SERVER_REGIONS = "Europe";
             FIREWALL_VPN_INPUT_PORTS = "41589";
             BORINGPOLL_GLUETUNCOM = "on";
+            OPENVPN_CUSTOM_CONFIG = "/gluetun/custom.conf";
           };
         };
       };
