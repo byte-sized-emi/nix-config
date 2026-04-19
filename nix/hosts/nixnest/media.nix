@@ -134,6 +134,8 @@ in
             "${jellyfinPath}/cache:/cache"
             "${dataPath}/media:/media"
           ];
+          devices = [ "/dev/dri/renderD128:/dev/dri/renderD128" ];
+          addGroups = [ "render" ];
           environments = {
             JELLYFIN_PublishedServerUrl = "https://${config.settings.media.service_domain}";
           };

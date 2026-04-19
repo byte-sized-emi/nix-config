@@ -68,6 +68,19 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIopGi9F4+v4lckvFcEv5PmoxKknS3nESZ7jeKFkIoCq emilia@fedora-laptop"
   ];
 
+  services.xserver.videoDrivers = [ "modesetting" ];
+
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      vpl-gpu-rt # for newer GPUs on NixOS >24.05 or unstable
+    ];
+  };
+
+  # May help if FFmpeg/VAAPI/QSV init fails (esp. on Arc with i915):
+  # hardware.enableRedistributableFirmware = true;
+  # boot.kernelParams = [ "i915.enable_guc=3" ];
+
   # Audio setup
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
