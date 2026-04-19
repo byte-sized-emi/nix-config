@@ -1,4 +1,9 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   stackPath = "/var/stacks/media";
   jellyfinPath = "${stackPath}/jellyfin";
@@ -135,7 +140,9 @@ in
             "${dataPath}/media:/media"
           ];
           devices = [ "/dev/dri/renderD128:/dev/dri/renderD128" ];
-          addGroups = [ "render" ];
+          addGroups = [
+            (toString (lib.defaultTo 303 config.users.groups.render.gid))
+          ];
           environments = {
             JELLYFIN_PublishedServerUrl = "https://${config.settings.media.service_domain}";
           };
