@@ -87,7 +87,7 @@
           kvstore.store = "inmemory";
         };
         replication_factor = 1;
-        path_prefix = "/var/loki";
+        path_prefix = "/var/lib/loki";
       };
 
       schema_config.configs = [
@@ -103,11 +103,9 @@
         }
       ];
 
-      storage_config.filesystem.directory = "/var/loki/chunks";
+      storage_config.filesystem.directory = "/var/lib/loki/chunks";
     };
   };
-
-  systemd.services.loki.serviceConfig.ReadWritePaths = [ "/var/loki" ];
 
   # monitoring uses the 9000 range of ports
   # adapted from https://oblivion.keyruu.de/Homelab/Monitoring
