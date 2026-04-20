@@ -43,6 +43,29 @@
           #   tag = "internal.logs";
           # }
         ];
+        filters = [
+          {
+            name = "record_modifier";
+            match = "systemd.*";
+            allowlist_key = [
+              "systemd_unit"
+              "message"
+              "container_id"
+              "container_id_full"
+              "container_name"
+              "hostname"
+              "machine_id"
+              "gid"
+              "pid"
+              "exe"
+              "service_name"
+              "boot_id"
+              "detected_level"
+              "priority"
+              "cmdline"
+            ];
+          }
+        ];
         outputs = [
           {
             name = "loki";
