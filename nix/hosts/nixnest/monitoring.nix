@@ -28,7 +28,6 @@
             read_from_tail = true;
             strip_underscores = true;
             lowercase = true;
-            systemd_filter = "_SYSTEMD_UNIT=forgejo.service";
             # systemd_filter =
             #   let
             #     services = [
