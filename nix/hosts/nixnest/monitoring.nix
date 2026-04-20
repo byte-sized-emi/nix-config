@@ -11,6 +11,103 @@
     };
   };
 
+  # TODO: plan for upgrading this:
+  # - switch everything (logs and metrics) to fluent-bit
+  # - put logs into loki
+  # - maybe put logs into an influxdb instead of the prometheus.
+  #   if we don't really use prometheus it doesn't make sense to keep it around
+
+  services.fluent-bit = {
+    enable = true;
+    settings = {
+      pipeline = {
+        inputs = [
+          {
+            name = "systemd";
+            tag = "systemd.*";
+            read_from_tail = true;
+            strip_underscores = true;
+            lowercase = true;
+            systemd_filter = "_SYSTEMD_UNIT=forgejo.service";
+            # systemd_filter =
+            #   let
+            #     services = [
+            #       "forgejo"
+            #       "update-daemon"
+            #       "gitea-runner-default"
+            #     ];
+            #   in
+            #   map (service: "_SYSTEMD_UNIT=${service}.service") services;
+          }
+          {
+            name = "fluentbit_logs";
+            tag = "internal.logs";
+          }
+        ];
+        outputs = [
+          {
+            file = "fluent-bit.out";
+            name = "file";
+            match = "internal.logs";
+            path = "/var/log/fluent-bit";
+          }
+          {
+            name = "loki";
+            port = config.services.loki.configuration.server.http_listen_port;
+            match = "systemd.*";
+            labels = "job=systemd,systemd_unit=$systemd_unit";
+          }
+          {
+            name = "loki";
+            port = config.services.loki.configuration.server.http_listen_port;
+            match = "internal.logs";
+            labels = "job=fluentbit-internal";
+          }
+        ];
+      };
+      service = {
+        grace = 30;
+      };
+
+    };
+  };
+
+  services.loki = {
+    enable = true;
+    configuration = {
+      server = {
+        http_listen_address = "127.0.0.1";
+        http_listen_port = 9094;
+      };
+      auth_enabled = false;
+
+      # from https://grafana.com/docs/loki/latest/configure/examples/configuration-examples/#1-local-configuration-exampleyaml
+      common = {
+        ring = {
+          instance_addr = "127.0.0.1";
+          kvstore.store = "inmemory";
+        };
+        replication_factor = 1;
+        path_prefix = "/var/loki";
+      };
+
+      schema_config.configs = [
+        {
+          from = "2020-05-15";
+          store = "tsdb";
+          object_store = "filesystem";
+          schema = "v13";
+          index = {
+            prefix = "index_";
+            period = "24h";
+          };
+        }
+      ];
+
+      storage_config.filesystem.directory = "/var/loki/chunks";
+    };
+  };
+
   # monitoring uses the 9000 range of ports
   # adapted from https://oblivion.keyruu.de/Homelab/Monitoring
   services.cadvisor = {
@@ -105,6 +202,16 @@
           url = "http://127.0.0.1:${toString config.services.prometheus.port}";
           jsonData = {
             timeInterval = "60s";
+          };
+        }
+        {
+          name = "Loki";
+          type = "loki";
+          access = "proxy";
+          url = "http://localhost:${toString config.services.loki.configuration.server.http_listen_port}";
+          jsonData = {
+            timeout = 60;
+            maxLines = 1000;
           };
         }
       ];

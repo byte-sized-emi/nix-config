@@ -49,6 +49,7 @@
     sbctl # secure boot
     gns3-gui
     inetutils
+    eduvpn-client
   ];
 
   environment.localBinInPath = true;
