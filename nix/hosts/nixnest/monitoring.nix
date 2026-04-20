@@ -39,38 +39,37 @@
             #   in
             #   map (service: "_SYSTEMD_UNIT=${service}.service") services;
           }
-          {
-            name = "fluentbit_logs";
-            tag = "internal.logs";
-          }
+          # {
+          #   name = "fluentbit_logs";
+          #   tag = "internal.logs";
+          # }
         ];
         outputs = [
-          {
-            file = "fluent-bit.out";
-            name = "file";
-            match = "internal.logs";
-            path = "/var/log/fluent-bit";
-          }
           {
             name = "loki";
             port = config.services.loki.configuration.server.http_listen_port;
             match = "systemd.*";
             labels = "job=systemd,systemd_unit=$systemd_unit";
           }
-          {
-            name = "loki";
-            port = config.services.loki.configuration.server.http_listen_port;
-            match = "internal.logs";
-            labels = "job=fluentbit-internal";
-          }
+          # {
+          #   file = "fluent-bit.out";
+          #   name = "file";
+          #   match = "internal.logs";
+          #   path = "/var/log/fluent-bit";
+          # }
+          # {
+          #   name = "loki";
+          #   port = config.services.loki.configuration.server.http_listen_port;
+          #   match = "internal.logs";
+          #   labels = "job=fluentbit-internal";
+          # }
         ];
       };
-      service = {
-        grace = 30;
-      };
-
+      service.grace = 30;
     };
   };
+
+  systemd.services.fluent-bit.serviceConfig.ReadWritePaths = [ "/var/log" ];
 
   services.loki = {
     enable = true;
@@ -107,6 +106,8 @@
       storage_config.filesystem.directory = "/var/loki/chunks";
     };
   };
+
+  systemd.services.loki.serviceConfig.ReadWritePaths = [ "/var/loki" ];
 
   # monitoring uses the 9000 range of ports
   # adapted from https://oblivion.keyruu.de/Homelab/Monitoring
