@@ -7,7 +7,7 @@
       plugins =
         let
           # renovate: datasource=go depName=github.com/caddy-dns/cloudflare
-          cloudflareDnsVersion = "v0.2.2";
+          cloudflareDnsVersion = "v0.2.4";
           # renovate: datasource=go depName=github.com/corazawaf/coraza-caddy/v2
           corazaVersion = "v2.5.0";
         in
