@@ -32,6 +32,7 @@ in
     uid = 311;
     group = "media";
   };
+
   users.groups.media = {
     gid = 311;
     members = [
