@@ -108,6 +108,17 @@ in
           groups = [
             "git"
             "media"
+            "mealie_users"
+          ];
+        };
+        sasha = {
+          displayName = "sasa";
+          mailAddresses = [
+            "sasha@sso.byte-sized.fyi"
+            "sasha@byte-sized.fyi"
+          ];
+          groups = [
+            "mealie_users"
           ];
         };
       };
