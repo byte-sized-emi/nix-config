@@ -43,11 +43,13 @@
       wifi-commander
       niri
       power-profile
+      # systemd # currently non-functional / removed in the vicinae extensions flake.nix
+      zed-recents
+      bluetooth
       (perSystem.vicinae.mkRayCastExtension {
         name = "gitmoji";
         sha256 = "sha256-xYrn+dnKaA0ghCR32zTSpj0aPWH2Xp8yc4NZMLqukUA=";
         rev = "265957a2237e8b424e9a8f2f4ed6e8efbce56f8e";
-        # rev = "2735ebd704f2bcd6fa043811c95009fc812f40f2";
       })
     ];
   };

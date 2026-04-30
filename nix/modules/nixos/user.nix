@@ -10,6 +10,7 @@
       "docker"
       "audio"
       "networkmanager"
+      "dialout"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [

@@ -52,6 +52,9 @@
       credential.helper = lib.mkBefore [
         "cache --timeout 172800"
       ];
+      url."ssh://git@gitlab.lrz.de/" = {
+        insteadOf = "https://gitlab.lrz.de/";
+      };
     };
   };
 

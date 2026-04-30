@@ -69,8 +69,22 @@
     };
   };
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # printing
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      cups-filters
+      cups-browsed
+    ];
+  };
+
+  services.ipp-usb.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {

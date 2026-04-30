@@ -35,6 +35,18 @@
     };
   };
 
+  # japanese input
+  # i18n.inputMethod = {
+  #   enable = true;
+  # TODO: turn me on
+  # type = "fcitx5";
+  # fcitx5.addons = with pkgs; [
+  #   # fcitx5-mozc
+  #   fcitx5-mozc-ut
+  #   fcitx5-gtk
+  # ];
+  # };
+
   # https://github.com/sodiboo/niri-flake/blob/main/docs.md
   programs.niri =
     let
@@ -92,6 +104,7 @@
             ];
           }
           { command = [ "discord" ]; }
+          { command = [ "anki" ]; }
           { command = [ "firefox" ]; }
           { command = [ "zeditor" ]; }
           { command = [ "todoist-electron" ]; }
@@ -130,6 +143,7 @@
           {
             matches = [
               { app-id = "^firefox$"; }
+              { app-id = "^anki$"; }
             ];
             open-on-workspace = "browser";
             open-maximized = true;
@@ -224,6 +238,17 @@
           "Mod+Ctrl+Right" = action "move-window-to-monitor-right";
           "Mod+Up" = action "focus-workspace-up";
           "Mod+Down" = action "focus-workspace-down";
+
+          # keypad bindings
+          "KP_Up" = action "focus-workspace-up";
+          "KP_Down" = action "focus-workspace-down";
+          "KP_Left" = action "focus-column-left";
+          "KP_Right" = action "focus-column-right";
+          "KP_Begin" = action "toggle-overview"; # under the 5 key
+          "KP_Add" = noctalia-action "notifications toggleHistory";
+          "KP_Subtract" = noctalia-action "notifications clear";
+          "KP_enter" = noctalia-action "notifications toggleDND";
+
           "Mod+1" = action-with-arg "focus-workspace" "browser";
           "Mod+2" = action-with-arg "focus-workspace" "social";
           "Mod+3" = action-with-arg "focus-workspace" "editor";
@@ -239,7 +264,8 @@
         input = {
           keyboard = {
             xkb = {
-              layout = "de";
+              layout = "de,jp";
+              options = "grp:win_space_toggle";
             };
           };
           touchpad = {
@@ -255,7 +281,7 @@
             max-scroll-amount = "10%";
           };
           warp-mouse-to-focus.enable = true;
-          workspace-auto-back-and-forth = false;
+          workspace-auto-back-and-forth = true;
         };
         switch-events = {
           lid-close = noctalia-action "sessionMenu lockAndSuspend";

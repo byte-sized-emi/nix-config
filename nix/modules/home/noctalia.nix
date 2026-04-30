@@ -58,6 +58,9 @@
         countdownDuration = 3000;
       };
       dock.enabled = false;
+      plugins = {
+        autoUpdate = true;
+      };
       notifications = {
         location = "bottom_right";
         lowUrgencyDuration = 2;
@@ -69,6 +72,20 @@
           normal = true;
           critical = true;
         };
+      };
+      idle = {
+        enabled = false;
+        screenOffTimeout = 600;
+        lockTimeout = 660;
+        suspendTimeout = 1800;
+        fadeDuration = 5;
+        screenOffCommand = "";
+        lockCommand = "";
+        suspendCommand = "";
+        resumeScreenOffCommand = "";
+        resumeLockCommand = "";
+        resumeSuspendCommand = "";
+        customCommands = "[]";
       };
       bar = {
         density = "compact";
@@ -85,6 +102,10 @@
             {
               id = "SidePanelToggle";
               useDistroLogo = true;
+            }
+            {
+              id = "KeyboardLayout";
+              displayMode = "forceOpen";
             }
             {
               id = "LockKeys";
@@ -115,6 +136,9 @@
             }
             {
               id = "plugin:tailscale";
+            }
+            {
+              id = "plugin:network-manager-vpn";
             }
             {
               id = "Network";
@@ -150,6 +174,9 @@
               usePrimaryColor = true;
             }
             {
+              id = "plugin:ntfy-notifications";
+            }
+            {
               id = "NotificationHistory";
             }
             {
@@ -168,6 +195,7 @@
         }
       ];
       states = {
+        # https://noctalia.dev/plugins/privacy-indicator
         catwalk = {
           enabled = true;
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
@@ -177,6 +205,14 @@
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
         };
         polkit-agent = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        ntfy-notifications = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        network-manager-vpn = {
           enabled = true;
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
         };
@@ -196,6 +232,10 @@
         refreshInterval = 10000;
         terminalCommand = "xdg-terminal";
         defaultPeerAction = "ssh";
+      };
+      ntfy-notifications = {
+        serverUrl = "https://ntfy.service.byte-sized.fyi";
+        topics = "forgejo-cicd";
       };
     };
   };
