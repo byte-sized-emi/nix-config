@@ -21,11 +21,11 @@ let
   flareSolverrPort = 8191;
   inherit (config.users.users.media) uid;
   inherit (config.users.groups.media) gid;
-  openvpnCustomConfig = pkgs.writeText "gluetun-openvpn.conf" ''
-    pull-filter ignore "route-ipv6"
-    pull-filter ignore "ifconfig-ipv6"
-    explicit-exit-notify 5
-  '';
+  # openvpnCustomConfig = pkgs.writeText "gluetun-openvpn.conf" ''
+  #   pull-filter ignore "route-ipv6"
+  #   pull-filter ignore "ifconfig-ipv6"
+  #   explicit-exit-notify 5
+  # '';
 in
 {
   users.users.media = {
@@ -259,10 +259,10 @@ in
           ];
           devices = [ "/dev/net/tun:/dev/net/tun" ];
           volumes = [
-            "${openvpnCustomConfig}:/gluetun/custom.conf"
-            "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
-            "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
-            "${gluetunPath}/servers.json:/gluetun/servers.json"
+            # "${openvpnCustomConfig}:/gluetun/custom.conf"
+            # "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
+            # "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
+            "${gluetunPath}:/gluetun"
           ];
           publishPorts = [
             "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
@@ -273,16 +273,15 @@ in
             "net.ipv6.conf.all.disable_ipv6" = "1";
             "net.ipv6.conf.default.disable_ipv6" = "1";
           };
+          environmentFiles = [ config.sops.secrets.gluetunEnv.path ];
           environments = {
-            PUID = toString uid;
-            PGID = toString gid;
             TZ = "Europe/Berlin";
             UPDATER_PERIOD = "24h";
-            VPN_SERVICE_PROVIDER = "airvpn";
+            VPN_TYPE = "wireguard";
             SERVER_REGIONS = "Europe";
             FIREWALL_VPN_INPUT_PORTS = "41589";
             BORINGPOLL_GLUETUNCOM = "on";
-            OPENVPN_CUSTOM_CONFIG = "/gluetun/custom.conf";
+            # OPENVPN_CUSTOM_CONFIG = "/gluetun/custom.conf";
           };
         };
       };

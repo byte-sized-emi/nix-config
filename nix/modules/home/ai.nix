@@ -1,6 +1,8 @@
 { pkgs, lib, ... }:
 {
   home.packages = [ pkgs.mcp-nixos ];
+  # TODO: Put the mcp servers here into programs.mcp.servers
+  # to use with programs.opencode.enableMcpIntegration
 
   programs.opencode = {
     enable = true;

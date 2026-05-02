@@ -11,6 +11,10 @@
     ];
 
     userSettings = {
+      indent_guides = {
+        enabled = true;
+        coloring = "indent_aware";
+      };
       colorize_brackets = true;
       autosave = "on_focus_change";
       icon_theme = "Material Icon Theme";

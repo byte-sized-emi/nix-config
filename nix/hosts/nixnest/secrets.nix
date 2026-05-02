@@ -32,14 +32,15 @@
       "beeper_bridge_manager/config" = { };
       "umami/dbPassword" = { };
       "umami/appSecret" = { };
-      "openvpn/client_key" = {
-        format = "binary";
-        sopsFile = ../../secrets/openvpn_client.key;
-      };
-      "openvpn/client_cert" = {
-        format = "binary";
-        sopsFile = ../../secrets/openvpn_client_cert.crt;
-      };
+      # "openvpn/client_key" = {
+      #   format = "binary";
+      #   sopsFile = ../../secrets/openvpn_client.key;
+      # };
+      # "openvpn/client_cert" = {
+      #   format = "binary";
+      #   sopsFile = ../../secrets/openvpn_client_cert.crt;
+      # };
+      gluetunEnv = { };
       "dawarich/databasePassword" = { };
       "dawarich/secretKeyBase" = { };
     };
