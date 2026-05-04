@@ -17,7 +17,6 @@
     graphical
     syncthing
     auto-update
-    # cachyos-kernel
   ]);
 
   # secure boot config
