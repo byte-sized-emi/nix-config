@@ -6,7 +6,6 @@
 {
   # Backup pruning:
   # borg prune ssh://d0804253@d0804253.repo.borgbase.com/./repo --dry-run --list -v --keep-weekly 5 --keep-monthly 5 --keep-13weekly 3 --keep-yearly 2
-
   systemd.timers."prepare-backup" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
@@ -16,12 +15,13 @@
   };
 
   systemd.services."prepare-backup" = {
-    script = ''
-      shopt -s expand_aliases
-      alias podman=${config.virtualisation.podman.package}/bin/podman
-      alias tar=${pkgs.gnutar}/bin/tar
-      alias gzip=${pkgs.gzip}/bin/gzip
+    path = [
+      config.virtualisation.podman.package
+      pkgs.gnutar
+      pkgs.gzip
+    ];
 
+    script = ''
       rm -rf /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/ /var/backup/dawarich_db/
       mkdir /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/ /var/backup/dawarich_db/
       podman volume export mealie-data | tar xf - -C /var/backup/mealie/
