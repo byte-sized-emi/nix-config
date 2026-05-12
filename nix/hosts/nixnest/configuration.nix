@@ -18,7 +18,6 @@
     ./food.nix
     ./git.nix
     ./hass.nix
-    ./homepage.nix
     ./immich.nix
     ./linktree.nix
     ./media.nix
