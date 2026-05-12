@@ -110,7 +110,7 @@
         retention_enabled = true;
         retention_delete_delay = "2h";
         retention_delete_worker_count = 10;
-        delete_request_store = "tsdb";
+        delete_request_store = "filesystem";
       };
       limits_config = {
         retention_period = "744h";
