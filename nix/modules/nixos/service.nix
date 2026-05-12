@@ -11,10 +11,6 @@ with lib;
         {
           options = {
             enable = mkEnableOption "Enable the service.";
-            version = mkOption {
-              type = types.nullOr types.str;
-              default = null;
-            };
             description = mkOption {
               type = types.nullOr types.str;
               default = null;
