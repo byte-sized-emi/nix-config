@@ -113,7 +113,7 @@
         delete_request_store = "filesystem";
       };
       limits_config = {
-        retention_period = "744h";
+        retention_period = "168h";
       };
     };
   };
