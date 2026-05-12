@@ -28,15 +28,6 @@
             read_from_tail = true;
             strip_underscores = true;
             lowercase = true;
-            # systemd_filter =
-            #   let
-            #     services = [
-            #       "forgejo"
-            #       "update-daemon"
-            #       "gitea-runner-default"
-            #     ];
-            #   in
-            #   map (service: "_SYSTEMD_UNIT=${service}.service") services;
           }
           # {
           #   name = "fluentbit_logs";
@@ -73,18 +64,6 @@
             match = "systemd.*";
             labels = "job=systemd,systemd_unit=$systemd_unit";
           }
-          # {
-          #   file = "fluent-bit.out";
-          #   name = "file";
-          #   match = "internal.logs";
-          #   path = "/var/log/fluent-bit";
-          # }
-          # {
-          #   name = "loki";
-          #   port = config.services.loki.configuration.server.http_listen_port;
-          #   match = "internal.logs";
-          #   labels = "job=fluentbit-internal";
-          # }
         ];
       };
       service.grace = 30;
@@ -126,6 +105,16 @@
       ];
 
       storage_config.filesystem.directory = "/var/lib/loki/chunks";
+      compactor = {
+        compaction_interval = "1h";
+        retention_enabled = true;
+        retention_delete_delay = "2h";
+        retention_delete_worker_count = 10;
+        delete_request_store = "tsdb";
+      };
+      limits_config = {
+        retention_period = "744h";
+      };
     };
   };
 
