@@ -8,7 +8,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./librelane.nix
     inputs.slippi-launcher.nixosModules.default
     inputs.lanzaboote.nixosModules.lanzaboote
   ]

@@ -72,13 +72,10 @@
         obsidian
         # spotify
         signal-desktop
-        slack
         todoist-electron
-        jetbrains.idea
         xournalpp
         wev
         element-desktop
-        keepassxc
         vlc
         libreoffice
         file

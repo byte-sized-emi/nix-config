@@ -15,7 +15,7 @@
           "github.com/caddy-dns/cloudflare@${cloudflareDnsVersion}"
           "github.com/corazawaf/coraza-caddy/v2@${corazaVersion}"
         ];
-      hash = "sha256-/2xETnW9+7W0HMMxqudJ6VY/18DFrnfLxcgvMpNbgQI=";
+      hash = "sha256-XhM3jqkz1vTjVbavq4W8Op0vKI5f1nAsck4fc5ID9sw=";
     };
     environmentFile = config.sops.secrets."caddy/secretsEnv".path;
     globalConfig = ''
