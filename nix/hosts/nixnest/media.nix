@@ -241,12 +241,13 @@ in
             TORRENTING_PORT = "41589";
           };
           networks = [ "gluetun.container" ];
+          memory = "2g";
         };
       };
 
       containers.gluetun = {
         containerConfig = {
-          image = "ghcr.io/qdm12/gluetun:v3.41.1";
+          image = "ghcr.io/qdm12/gluetun:v3.41.1@sha256:1a5bf4b4820a879cdf8d93d7ef0d2d963af56670c9ebff8981860b6804ebc8ab";
           addCapabilities = [
             "NET_ADMIN"
             "NET_RAW" # for ICMP listening

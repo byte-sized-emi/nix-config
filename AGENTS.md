@@ -19,7 +19,7 @@ nix/
 
 | Command | Description |
 |---------|-------------|
-| `nix flake check` | Validate entire flake |
+| `nix flake check` | Validate entire flake. Very expensive, only use if strictly asked for |
 | `nix build .#<package>` | Build a package |
 | `nixos-rebuild dry-build --flake .#<host>` | Test build (no switch) |
 | `nixos-rebuild build --flake .#<host>` | Build without switching |
