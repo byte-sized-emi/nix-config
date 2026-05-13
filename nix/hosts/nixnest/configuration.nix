@@ -17,7 +17,7 @@
     ./dawarich.nix
     ./food.nix
     ./git.nix
-    ./hass.nix
+    # ./hass.nix
     ./immich.nix
     ./linktree.nix
     ./media.nix

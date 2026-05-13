@@ -4,6 +4,7 @@
 }:
 let
   homeAssistantPath = "/etc/stacks/home-assistant";
+  threadInfraIfName = "eth0";
   port = 8123;
 in
 {
@@ -19,6 +20,13 @@ in
   };
 
   networking.firewall.allowedTCPPorts = [ port ];
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+    "net.ipv6.conf.${threadInfraIfName}.accept_ra" = 2;
+    "net.ipv6.conf.${threadInfraIfName}.accept_ra_rt_info_max_plen" = 64;
+  };
 
   environment.etc."stacks/home-assistant/config/configuration.yaml".text = # yaml
     ''
@@ -103,6 +111,40 @@ in
         };
         serviceConfig = {
           Restart = "always";
+        };
+      };
+
+      containers.openthread = {
+        containerConfig = {
+          image = "docker.io/openthread/border-router:latest@sha256:fd123415d97ac5e6ef5cb8e48632397edca40263afb5dbd1651685662b550b65";
+          environments = {
+            TZ = "Europe/Berlin";
+            OT_RCP_DEVICE = "spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800";
+            OT_INFRA_IF = threadInfraIfName;
+            OT_THREAD_IF = "wpan0";
+            OT_LOG_LEVEL = "7";
+            OT_REST_PORT = "8981";
+            OT_REST_LISTEN_PORT = "8981";
+            OT_FLOW_CONTROL = "0";
+            FLOW_CONTROL = "0";
+          };
+          devices = [
+            "/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_AC:EB:E6:C2:85:68-if00:/dev/ttyACM0"
+            "/dev/net/tun"
+          ];
+          exposePorts = [
+            "8981"
+          ];
+          addCapabilities = [
+            "NET_ADMIN"
+            "NET_RAW"
+          ];
+          volumes = [
+            "${homeAssistantPath}/data:/data"
+          ];
+          networks = [
+            "host"
+          ];
         };
       };
     };
