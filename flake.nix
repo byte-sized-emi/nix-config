@@ -19,7 +19,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-utils.url = "github:numtide/flake-utils";
     naersk.url = "github:nix-community/naersk";
 
     nixpkgs-unstable.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
@@ -34,12 +33,6 @@
     };
 
     niri.url = "github:sodiboo/niri-flake";
-    vicinae.url = "github:vicinaehq/vicinae";
-    vicinae-extensions = {
-      url = "github:vicinaehq/extensions";
-      inputs.vicinae.follows = "vicinae";
-      inputs.nixpkgs.follows = "vicinae/nixpkgs";
-    };
 
     slippi-launcher = {
       url = "github:byte-sized-emi/slippi-launcher-flake";
@@ -47,10 +40,6 @@
     };
     blueprint = {
       url = "github:numtide/blueprint";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    isd = {
-      url = "github:kainctl/isd";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

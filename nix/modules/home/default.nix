@@ -1,6 +1,5 @@
 {
   pkgs,
-  perSystem,
   ...
 }:
 {
@@ -24,7 +23,7 @@
     nil
     usbutils
     libargon2
-    perSystem.isd.default
+    isd
     borgbackup
     wl-clipboard-rs
   ];
@@ -37,7 +36,7 @@
       ## By default loads the mode from the last session (`auto`).
       startup_mode: "system"
 
-      theme: "rose-pine"
+      theme: "tokyo-night"
     '';
   };
 

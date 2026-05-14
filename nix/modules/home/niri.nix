@@ -281,7 +281,7 @@
             max-scroll-amount = "10%";
           };
           warp-mouse-to-focus.enable = true;
-          workspace-auto-back-and-forth = true;
+          workspace-auto-back-and-forth = false;
         };
         switch-events = {
           lid-close = noctalia-action "sessionMenu lockAndSuspend";

@@ -8,11 +8,9 @@
       http-connections = 128;
       max-jobs = "auto";
       substituters = [
-        "https://vicinae.cachix.org"
         "https://niri.cachix.org"
       ];
       trusted-public-keys = [
-        "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
         "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       ];
       experimental-features = [

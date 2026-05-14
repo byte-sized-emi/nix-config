@@ -79,6 +79,7 @@
         vlc
         libreoffice
         file
+        jellyfin-desktop
       ];
       unstable-packages = with pkgs-unstable; [
         deezer-enhanced
