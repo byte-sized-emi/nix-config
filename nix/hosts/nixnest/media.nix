@@ -11,6 +11,7 @@ let
   prowlarrPath = "${stackPath}/prowlarr";
   qbittorrentPath = "${stackPath}/qbittorrent";
   gluetunPath = "${stackPath}/gluetun";
+  quiPath = "${stackPath}/qui";
   dataPath = "/data";
   jellyfinPort = 8096;
   qbittorrentPort = 8097;
@@ -18,6 +19,7 @@ let
   radarrPort = 7878;
   prowlarrPort = 9696;
   flareSolverrPort = 8191;
+  quiPort = 7476;
   inherit (config.users.users.media) uid;
   inherit (config.users.groups.media) gid;
 in
@@ -94,6 +96,11 @@ in
         enable = true;
         domain = "torrent.${config.settings.services.domain}";
       };
+    };
+    qui = {
+      enable = true;
+      port = quiPort;
+      internal.enable = true;
     };
     sonarr = {
       enable = true;
@@ -223,6 +230,20 @@ in
         };
         serviceConfig = {
           Restart = "always";
+        };
+      };
+
+      containers.qui = {
+        containerConfig = {
+          image = "ghcr.io/autobrr/qui:v1.18.0@sha256:923d58cedf3d368fc1c6f56b2f0eb3a0dc53bc6d9e30c00085d56cf51c0e9e87";
+          publishPorts = [
+            "127.0.0.1:${toString quiPort}:${toString quiPort}/tcp"
+          ];
+          volumes = [
+            "${quiPath}:/config"
+            "${dataPath}/torrents:/data/torrents"
+          ];
+          networks = [ networks.media.ref ];
         };
       };
 
