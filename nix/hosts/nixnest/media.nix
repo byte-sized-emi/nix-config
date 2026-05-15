@@ -44,6 +44,7 @@ in
     "d ${prowlarrPath}              0770 media media"
     "d ${qbittorrentPath}           0770 media media"
     "d ${gluetunPath}               0770 media media"
+    "d ${quiPath}                   0770 media media"
     "d ${jellyfinPath}/config       0770 media media"
     "d ${jellyfinPath}/cache        0770 media media"
 
@@ -236,6 +237,7 @@ in
       containers.qui = {
         containerConfig = {
           image = "ghcr.io/autobrr/qui:v1.18.0@sha256:923d58cedf3d368fc1c6f56b2f0eb3a0dc53bc6d9e30c00085d56cf51c0e9e87";
+          user = "${toString uid}:${toString gid}";
           publishPorts = [
             "127.0.0.1:${toString quiPort}:${toString quiPort}/tcp"
           ];
