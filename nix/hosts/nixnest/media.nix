@@ -132,7 +132,7 @@ in
         }
       ];
       metrics_path = "/metrics";
-      scrape_interval = "30s";
+      scrape_interval = "60s";
     }
   ];
 
@@ -300,7 +300,11 @@ in
             "NET_RAW" # for ICMP listening
           ];
           devices = [ "/dev/net/tun:/dev/net/tun" ];
-          volumes = [ "${gluetunPath}:/gluetun" ];
+          volumes = [
+            "${gluetunPath}:/gluetun"
+            "${config.sops.secrets."openvpn/client_key".path}:/gluetun/client.key"
+            "${config.sops.secrets."openvpn/client_cert".path}:/gluetun/client.crt"
+          ];
           publishPorts = [
             "127.0.0.1:${toString qbittorrentPort}:${toString qbittorrentPort}"
           ];
@@ -314,7 +318,8 @@ in
           environments = {
             TZ = "Europe/Berlin";
             UPDATER_PERIOD = "24h";
-            VPN_TYPE = "wireguard";
+            VPN_TYPE = "openvpn";
+            OPENVPN_PROTOCOL = "tcp";
             SERVER_REGIONS = "Europe";
             FIREWALL_VPN_INPUT_PORTS = "41589";
             BORINGPOLL_GLUETUNCOM = "on";
