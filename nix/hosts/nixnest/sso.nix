@@ -30,7 +30,7 @@ in
 
   services.kanidm = {
     enableServer = true;
-    package = pkgs.kanidmWithSecretProvisioning_1_9; # also update modules/nixos/user.nix
+    package = pkgs.kanidmWithSecretProvisioning_1_10; # also update modules/nixos/user.nix
     serverSettings = {
       origin = "https://${config.settings.sso.domain}";
       domain = config.settings.sso.domain;

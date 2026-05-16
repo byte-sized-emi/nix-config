@@ -15,7 +15,7 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       tree
-      kanidm_1_9 # also update hosts/nixnest/sso.nix
+      kanidm_1_10 # also update hosts/nixnest/sso.nix
       cloudflared
       bind
     ];
