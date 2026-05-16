@@ -263,9 +263,9 @@ in
           environments = {
             QUI__PORT = toString quiPort;
             QUI__LOG_LEVEL = "info";
-            QUI__METRICS_ENABLED = true;
+            QUI__METRICS_ENABLED = "true";
             QUI__METRICS_HOST = "0.0.0.0";
-            QUI__METRICS_PORT = 9074;
+            QUI__METRICS_PORT = "9074";
           };
           networks = [ networks.media.ref ];
         };
