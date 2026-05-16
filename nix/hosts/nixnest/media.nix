@@ -120,6 +120,21 @@ in
     };
   };
 
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "qui";
+      static_configs = [
+        {
+          targets = [
+            "localhost:9074"
+          ];
+        }
+      ];
+      metrics_path = "/metrics";
+      scrape_interval = "30s";
+    }
+  ];
+
   virtualisation.quadlet =
     let
       inherit (config.virtualisation.quadlet) networks;
@@ -245,6 +260,13 @@ in
             "${quiPath}:/config"
             "${dataPath}/torrents:/data/torrents"
           ];
+          environments = {
+            QUI__PORT = toString quiPort;
+            QUI__LOG_LEVEL = "info";
+            QUI__METRICS_ENABLED = true;
+            QUI__METRICS_HOST = "0.0.0.0";
+            QUI__METRICS_PORT = 9074;
+          };
           networks = [ networks.media.ref ];
         };
       };
