@@ -20,6 +20,7 @@ let
   prowlarrPort = 9696;
   flareSolverrPort = 8191;
   quiPort = 7476;
+  quiMetricsPort = "9074";
   inherit (config.users.users.media) uid;
   inherit (config.users.groups.media) gid;
 in
@@ -126,7 +127,7 @@ in
       static_configs = [
         {
           targets = [
-            "localhost:9074"
+            "localhost:${quiMetricsPort}"
           ];
         }
       ];
@@ -255,6 +256,7 @@ in
           user = "${toString uid}:${toString gid}";
           publishPorts = [
             "127.0.0.1:${toString quiPort}:${toString quiPort}/tcp"
+            "127.0.0.1:${quiMetricsPort}:${quiMetricsPort}/tcp"
           ];
           volumes = [
             "${quiPath}:/config"
@@ -265,7 +267,7 @@ in
             QUI__LOG_LEVEL = "info";
             QUI__METRICS_ENABLED = "true";
             QUI__METRICS_HOST = "0.0.0.0";
-            QUI__METRICS_PORT = "9074";
+            QUI__METRICS_PORT = quiMetricsPort;
           };
           networks = [ networks.media.ref ];
         };
