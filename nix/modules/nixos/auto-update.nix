@@ -1,18 +1,13 @@
 {
-  pkgs-unstable,
+  pkgs,
   lib,
   perSystem,
-  flake,
   ...
 }:
 let
   nix-update-server = perSystem.self.nix-update-server;
 in
 {
-  imports = [
-    flake.modules.nixos.nixpkgs-unstable
-  ];
-
   environment.systemPackages = [ nix-update-server ];
   systemd.services.update-daemon = {
     description = "Socket activated daemon to update the NixOS system based on a git branch";
@@ -42,7 +37,7 @@ in
     listenStreams = [ "36196" ];
     socketConfig = {
       BindToDevice = "tailscale0";
-      ExecStartPre = "${lib.getExe pkgs-unstable.tailscale} wait --timeout=30s";
+      ExecStartPre = "${lib.getExe pkgs.unstable.tailscale} wait --timeout=30s";
     };
   };
 

@@ -1,7 +1,5 @@
 {
   pkgs,
-  flake,
-  pkgs-unstable,
   ...
 }:
 {
@@ -9,12 +7,11 @@
     ./steam.nix
     ./docker.nix
     ./audio.nix
-    flake.modules.nixos.nixpkgs-unstable
   ];
 
   programs.firefox.enable = true;
   programs.thunderbird = {
-    package = pkgs-unstable.thunderbird;
+    package = pkgs.unstable.thunderbird;
     enable = true;
   };
 

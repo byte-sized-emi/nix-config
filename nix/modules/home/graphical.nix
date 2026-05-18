@@ -1,8 +1,6 @@
 {
   lib,
   pkgs,
-  pkgs-unstable,
-  flake,
   ...
 }:
 {
@@ -17,7 +15,6 @@
     ./zed.nix
     ./steam.nix
     ./signal.nix
-    flake.modules.nixos.nixpkgs-unstable
   ];
 
   programs.zsh.shellAliases.sudo = lib.mkForce "pkexec --keep-cwd";
@@ -81,7 +78,7 @@
         file
         jellyfin-desktop
       ];
-      unstable-packages = with pkgs-unstable; [
+      unstable-packages = with pkgs.unstable; [
         deezer-enhanced
         mission-center
         beeper

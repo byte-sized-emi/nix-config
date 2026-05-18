@@ -55,5 +55,13 @@
       inherit inputs;
       prefix = "nix/";
       nixpkgs.config.allowUnfree = true;
+      nixpkgs.overlays = [
+        (final: prev: {
+          unstable = import inputs.nixpkgs-unstable {
+            inherit (final) config;
+            inherit (final.stdenv.hostPlatform) system;
+          };
+        })
+      ];
     };
 }

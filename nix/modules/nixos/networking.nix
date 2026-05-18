@@ -1,17 +1,12 @@
 {
   hostName,
-  flake,
-  pkgs-unstable,
+  pkgs,
   ...
 }:
 {
-  imports = [
-    flake.modules.nixos.nixpkgs-unstable
-  ];
-
   services.tailscale = {
     enable = true;
-    package = pkgs-unstable.tailscale;
+    package = pkgs.unstable.tailscale;
   };
 
   networking.networkmanager.enable = true;
