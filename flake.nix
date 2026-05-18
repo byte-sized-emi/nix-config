@@ -32,6 +32,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    isd = {
+      url = "github:kainctl/isd";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     niri.url = "github:sodiboo/niri-flake";
 
     slippi-launcher = {
