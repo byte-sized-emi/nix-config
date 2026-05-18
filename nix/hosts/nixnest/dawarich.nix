@@ -105,7 +105,7 @@ lib.mkIf config.settings.dawarich.enable (
           containerConfig = {
             image = "freikin/dawarich:${version}";
             exec = "web-entrypoint.sh bin/rails server -p ${toString port} -b ::";
-            publishPorts = [ "${toString port}:${toString port}" ];
+            publishPorts = [ "127.0.0.1:${toString port}:${toString port}" ];
             networks = [ networks.dawarich.ref ];
             volumes = [
               "${volumes.dawarich-public.ref}:/var/app/public"

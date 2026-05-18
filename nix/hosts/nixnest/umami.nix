@@ -38,7 +38,7 @@ in
         containerConfig = {
           image = "ghcr.io/umami-software/umami:3.1.0";
           publishPorts = [
-            "${toString port}:3000"
+            "127.0.0.1:${toString port}:3000"
           ];
           environmentFiles = [ config.sops.templates."umami/envFile".path ];
           networks = [ networks.umami.ref ];

@@ -38,7 +38,7 @@ in
           containerConfig = {
             image = "ghcr.io/immich-app/immich-server:${immichVersion}";
             publishPorts = [
-              "${toString port}:${toString port}"
+              "127.0.0.1:${toString port}:${toString port}"
             ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
