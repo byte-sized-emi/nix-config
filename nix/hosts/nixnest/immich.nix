@@ -7,6 +7,17 @@ let
   port = 2283;
 in
 {
+  sops.secrets."immich/dbPassword".owner = "root";
+
+  sops.templates."immich/envFile" = {
+    content = ''
+      DB_PASSWORD=${config.sops.placeholder."immich/dbPassword"}
+      DB_USERNAME=postgres
+      DB_DATABASE_NAME=immich
+    '';
+    owner = "root";
+  };
+
   systemd.tmpfiles.rules = [
     "d ${stackPath}/pgdata 0770 999 999"
     "d ${stackPath}/model-cache 0770 root root"

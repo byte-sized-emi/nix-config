@@ -1,5 +1,7 @@
 { config, ... }:
 {
+  sops.secrets."tailscale/auth_key" = { };
+
   services.tailscale = {
     enable = true;
     extraUpFlags = [

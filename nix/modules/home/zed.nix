@@ -1,5 +1,12 @@
+{ flake, pkgs-unstable, ... }:
 {
+  imports = [
+    # we can import a nixos module into this home-manager module since nixpkgs-unstable.nix doesn't actually need nixos
+    flake.modules.nixos.nixpkgs-unstable
+  ];
+
   programs.zed-editor = {
+    package = pkgs-unstable.zed-editor;
     enable = true;
     extensions = [
       "git-firefly"

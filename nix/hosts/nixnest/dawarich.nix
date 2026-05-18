@@ -11,6 +11,9 @@ lib.mkIf config.settings.dawarich.enable (
     version = "1.6.1";
   in
   {
+    sops.secrets."dawarich/databasePassword" = { };
+    sops.secrets."dawarich/secretKeyBase" = { };
+
     my.services.dawarich = {
       enable = true;
       name = "Dawarich";

@@ -6,6 +6,9 @@ let
   port = 9925;
 in
 {
+  sops.secrets."kanidm/mealieOauthSecret".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/mealieOauthSecretEnv".owner = "root";
+
   my.services.mealie = {
     enable = true;
     name = "Mealie";

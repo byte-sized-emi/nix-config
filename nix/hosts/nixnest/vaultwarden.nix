@@ -1,5 +1,7 @@
 { config, ... }:
 {
+  sops.secrets."vaultwarden/env".owner = config.users.users.vaultwarden.name;
+
   my.services.vaultwarden = {
     enable = true;
     name = "Vaultwarden";

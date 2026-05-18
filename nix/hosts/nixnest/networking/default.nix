@@ -4,6 +4,8 @@
   ...
 }:
 {
+  sops.secrets."cloudflared/tunnel".owner = config.users.users.cloudflared.name;
+
   imports = [
     flake.modules.nixos.my-cloudflared
     ./tailscale.nix

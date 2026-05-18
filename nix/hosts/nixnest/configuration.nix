@@ -15,8 +15,8 @@
     ./beeper.nix
     ./certs.nix
     ./dawarich.nix
-    ./food.nix
-    ./git.nix
+    ./mealie.nix
+    ./forgejo.nix
     # ./hass.nix
     ./immich.nix
     ./linktree.nix
@@ -27,7 +27,6 @@
     ./ntfy.nix
     ./podman.nix
     ./renovate.nix
-    ./secrets.nix
     ./settings.nix
     ./sso.nix
     ./umami.nix

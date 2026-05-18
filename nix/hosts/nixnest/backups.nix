@@ -4,6 +4,11 @@
   ...
 }:
 {
+  sops.secrets."borg/backupKey" = {
+    owner = config.users.users.borg.name;
+    group = config.users.groups.borg.name;
+  };
+
   # Backup pruning:
   # borg prune ssh://d0804253@d0804253.repo.borgbase.com/./repo --dry-run --list -v --keep-weekly 5 --keep-monthly 5 --keep-13weekly 3 --keep-yearly 2
   systemd.timers."prepare-backup" = {

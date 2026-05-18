@@ -3,6 +3,20 @@ let
   port = 3243;
 in
 {
+  sops.secrets."umami/dbPassword" = { };
+  sops.secrets."umami/appSecret" = { };
+
+  sops.templates."umami/postgresEnvFile" = {
+    content = ''
+      POSTGRES_PASSWORD=${config.sops.placeholder."umami/dbPassword"}
+    '';
+  };
+
+  sops.templates."umami/envFile".content = ''
+    DATABASE_URL=postgresql://postgres:${config.sops.placeholder."umami/dbPassword"}@umami-db:5432/umami
+    APP_SECRET=${config.sops.placeholder."umami/appSecret"}
+  '';
+
   my.services.umami = {
     enable = true;
     name = "Umami";

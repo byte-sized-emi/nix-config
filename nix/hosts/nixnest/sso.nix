@@ -7,6 +7,16 @@ let
   port = 8443;
 in
 {
+  sops.secrets."kanidm/tlsChain".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/tlsKey".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/idmAdminPW".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/tailscaleOauthSecret".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/forgejoOauthSecret".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/mealieOauthSecret".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/immichOauthSecret".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/jellyfinOauthSecret".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/mealieOauthSecretEnv".owner = "root";
+
   my.services.kanidm = {
     enable = true;
     name = "Kanidm";

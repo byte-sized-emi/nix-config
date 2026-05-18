@@ -25,6 +25,16 @@ let
   inherit (config.users.groups.media) gid;
 in
 {
+  sops.secrets."openvpn/client_key" = {
+    format = "binary";
+    sopsFile = ../../secrets/openvpn_client.key;
+  };
+  sops.secrets."openvpn/client_cert" = {
+    format = "binary";
+    sopsFile = ../../secrets/openvpn_client_cert.crt;
+  };
+  sops.secrets.gluetunEnv = { };
+
   users.users.media = {
     uid = 311;
     group = "media";

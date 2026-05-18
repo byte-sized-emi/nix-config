@@ -4,6 +4,11 @@
   ...
 }:
 {
+  sops.secrets."forgejo/actionsRunnerToken" = {
+    owner = config.users.users.forgejo.name;
+    group = config.users.groups.forgejo.name;
+  };
+
   systemd.tmpfiles.rules =
     let
       inherit (config.services.forgejo) customDir user group;

@@ -1,5 +1,10 @@
 { config, pkgs, ... }:
 {
+  sops.secrets."caddy/secretsEnv".owner = config.users.users.caddy.name;
+  sops.secrets."caddy/links_byte_sized_fyi/key.pem".owner = config.users.users.caddy.name;
+  sops.secrets."caddy/origincert_byte_sized_fyi/key.pem".owner = config.users.users.caddy.name;
+  sops.secrets."caddy/self_signed_cert/key.pem".owner = config.users.users.kanidm.name;
+
   # reverse proxy setup is done where it is needed
   services.caddy = {
     enable = true;
