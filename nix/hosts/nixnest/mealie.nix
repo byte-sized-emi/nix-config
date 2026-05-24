@@ -37,7 +37,7 @@ in
 
       containers.mealie = {
         containerConfig = {
-          image = "hkotel/mealie:v3.18.0";
+          image = "hkotel/mealie:v3.19.0";
           publishPorts = [ "127.0.0.1:${toString port}:9000" ];
           environments = {
             PUID = "1000";
