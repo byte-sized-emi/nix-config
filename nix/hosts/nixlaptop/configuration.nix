@@ -31,7 +31,7 @@
   networking.networkmanager.wifi.powersave = true;
 
   programs.ausweisapp = {
-    enable = true;
+    enable = false;
     openFirewall = true;
   };
 

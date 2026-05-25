@@ -5,17 +5,23 @@
 }:
 let
   port = 8443;
+  kanidmUser = config.users.users.kanidm.name;
 in
 {
-  sops.secrets."kanidm/tlsChain".owner = config.users.users.kanidm.name;
-  sops.secrets."kanidm/tlsKey".owner = config.users.users.kanidm.name;
-  sops.secrets."kanidm/idmAdminPW".owner = config.users.users.kanidm.name;
-  sops.secrets."kanidm/tailscaleOauthSecret".owner = config.users.users.kanidm.name;
-  sops.secrets."kanidm/forgejoOauthSecret".owner = config.users.users.kanidm.name;
-  sops.secrets."kanidm/mealieOauthSecret".owner = config.users.users.kanidm.name;
-  sops.secrets."kanidm/immichOauthSecret".owner = config.users.users.kanidm.name;
-  sops.secrets."kanidm/jellyfinOauthSecret".owner = config.users.users.kanidm.name;
+  sops.secrets."kanidm/tlsChain".owner = kanidmUser;
+  sops.secrets."kanidm/tlsKey".owner = kanidmUser;
+  sops.secrets."kanidm/idmAdminPW".owner = kanidmUser;
+  sops.secrets."kanidm/tailscaleOauthSecret".owner = kanidmUser;
+  sops.secrets."kanidm/forgejoOauthSecret".owner = kanidmUser;
+  sops.secrets."kanidm/mealieOauthSecret".owner = kanidmUser;
+  sops.secrets."kanidm/immichOauthSecret".owner = kanidmUser;
+  sops.secrets."kanidm/jellyfinOauthSecret".owner = kanidmUser;
   sops.secrets."kanidm/mealieOauthSecretEnv".owner = "root";
+  # sops.secrets."kanidm/grafanaOauthSecret".owner = kanidmUser;
+  # sops.secrets."grafana/OauthSecret" = {
+  #   key = "kanidm/grafanaOauthSecret";
+  #   owner = config.users.users.grafana.name;
+  # };
 
   my.services.kanidm = {
     enable = true;
@@ -223,6 +229,13 @@ in
           };
           preferShortUsername = true;
         };
+        # grafana = {
+        #   displayName = "grafana";
+        #   originUrl = "https://grafana.${config.settings.services.domain}/login/generic_oauth";
+        #   originLanding = "https://grafana.${config.settings.services.domain}/";
+        #   basicSecretFile = config.sops.secrets."kanidm/grafanaOauthSecret".path;
+        #   scopeMaps = { };
+        # };
       };
     };
   };

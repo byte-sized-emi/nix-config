@@ -194,6 +194,20 @@
         reporting_enabled = false;
         feedback_links_enabled = false;
       };
+
+      # auth.generic_oauth = {
+      #   enabled = true;
+      #   allow_sign_up = true;
+      #   auto_login = false;
+      #   name = "KaniDM SSO";
+      #   client_id = "grafana";
+      #   client_secret = "$__file{${config.sops.secrets."grafana/OauthSecret".path}}";
+      #   scopes = "openid profile email";
+      #   auth_url = "https://${config.settings.sso.domain}/oauth2/openid/grafana/authorize";
+      #   token_url = "https://${config.settings.sso.domain}/oauth2/openid/grafana/token";
+      #   api_url = "https://${config.settings.sso.domain}/oauth2/openid/grafana/userinfo";
+      #   use_pkce = true;
+      # };
     };
 
     provision = {

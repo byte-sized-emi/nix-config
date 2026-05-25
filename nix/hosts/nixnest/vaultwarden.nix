@@ -26,6 +26,8 @@
       ROCKET_PORT = 8222;
       ROCKET_LOG = "info";
 
+      IP_HEADER = "X-Forwarded-For";
+
       SMTP_HOST = "smtp.migadu.com";
       SMTP_PORT = 465;
       SMTP_SECURITY = "force_tls";

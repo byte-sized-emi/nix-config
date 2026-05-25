@@ -103,18 +103,10 @@
               "server"
             ];
           }
-          { command = [ "discord" ]; }
-          { command = [ "anki" ]; }
           { command = [ "firefox" ]; }
-          { command = [ "zeditor" ]; }
-          { command = [ "todoist-electron" ]; }
-          { command = [ "obsidian" ]; }
-          { command = [ "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init" ]; }
-          # {
-          #   sh = "signal-desktop --password-store=\"kwallet6\" --use-tray-icon";
-          # }
+          { command = [ "discord" ]; }
           { command = [ "beeper" ]; }
-          { command = [ "thunderbird" ]; }
+          { command = [ "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init" ]; }
         ];
         workspaces = {
           "1-browser".name = "browser";
