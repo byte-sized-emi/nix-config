@@ -246,7 +246,7 @@ in
 
       containers.flaresolverr = {
         containerConfig = {
-          image = "ghcr.io/flaresolverr/flaresolverr:v3.4.6";
+          image = "ghcr.io/flaresolverr/flaresolverr:v3.5.0";
           environments = {
             LOG_LEVEL = "info";
           };
