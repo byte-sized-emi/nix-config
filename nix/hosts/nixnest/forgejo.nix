@@ -44,7 +44,7 @@
         SSH_PORT = 2222;
       };
       repository.ENABLE_PUSH_CREATE_USER = true;
-      repository.signing = {
+      "repository.signing" = {
         FORMAT = "ssh";
         SIGNING_KEY = config.sops.secrets."forgejo/instanceKey.pub".path;
         SIGNING_NAME = "byte-sized.fyi Forgejo Instance";
