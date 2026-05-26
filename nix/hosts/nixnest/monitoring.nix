@@ -74,6 +74,7 @@
 
   services.loki = {
     enable = true;
+    extraFlags = [ "--target=all" ];
     configuration = {
       server = {
         http_listen_address = "127.0.0.1";
