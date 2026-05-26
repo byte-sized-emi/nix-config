@@ -4,10 +4,22 @@
   ...
 }:
 {
-  sops.secrets."forgejo/actionsRunnerToken" = {
-    owner = config.users.users.forgejo.name;
-    group = config.users.groups.forgejo.name;
-  };
+  sops.secrets =
+    let
+      owner = config.users.users.forgejo.name;
+      group = config.users.groups.forgejo.name;
+    in
+    {
+      "forgejo/actionsRunnerToken" = {
+        inherit owner group;
+      };
+      "forgejo/instanceKey.pub" = {
+        inherit owner group;
+      };
+      "forgejo/instanceKey" = {
+        inherit owner group;
+      };
+    };
 
   systemd.tmpfiles.rules =
     let
@@ -24,6 +36,7 @@
     enable = true;
     package = pkgs.forgejo;
     settings = {
+      APP_NAME = "byte-sized forgejo instance";
       server = {
         DOMAIN = config.settings.git.domain;
         ROOT_URL = "https://${config.settings.git.domain}";
@@ -31,6 +44,12 @@
         SSH_PORT = 2222;
       };
       repository.ENABLE_PUSH_CREATE_USER = true;
+      repository.signing = {
+        FORMAT = "ssh";
+        SIGNING_KEY = config.sops.secrets."forgejo/instanceKey.pub".path;
+        SIGNING_NAME = "byte-sized.fyi Forgejo Instance";
+        SIGNING_EMAIL = "forgejo@byte-sized.fyi";
+      };
       session.COOKIE_SECURE = true;
       service = {
         ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
@@ -39,6 +58,10 @@
       openid.ENABLE_OPENID_SIGNUP = true;
       oauth2_client.ENABLE_AUTO_REGISTRATION = true;
       # TODO: configure SSO here
+      cache = {
+        ADAPTER = "twoqueue";
+        HOST = "{\"size\":100, \"recent_ratio\":0.25, \"ghost_ratio\":0.5}";
+      };
     };
 
     dump = {
