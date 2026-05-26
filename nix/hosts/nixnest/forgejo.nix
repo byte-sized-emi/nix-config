@@ -36,7 +36,7 @@
     enable = true;
     package = pkgs.forgejo;
     settings = {
-      APP_NAME = "byte-sized forgejo instance";
+      DEFAULT.APP_NAME = "byte-sized forgejo instance";
       server = {
         DOMAIN = config.settings.git.domain;
         ROOT_URL = "https://${config.settings.git.domain}";
