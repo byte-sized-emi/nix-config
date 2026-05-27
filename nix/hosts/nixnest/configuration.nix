@@ -11,6 +11,7 @@
     flake.modules.nixos.default
     flake.modules.nixos.service
     flake.modules.nixos.syncthing
+    ./atuin.nix
     ./backups.nix
     ./beeper.nix
     ./certs.nix

@@ -1,27 +1,17 @@
 {
+  home.shell.enableZshIntegration = true;
 
+  # shell prompt
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
-    enableNushellIntegration = true;
     # presets = [ "bracketed-segments" ]; # enable on next home-manager version :(
   };
 
-  programs.nushell = {
-    enable = true;
-    settings = {
-      show_banner = false;
-      completions.external = {
-        enable = true;
-        max_results = 200;
-      };
-    };
-  };
-
+  # argument completion
   programs.carapace = {
     enable = true;
     enableZshIntegration = true;
-    enableNushellIntegration = true;
   };
 
   programs.zsh = {
@@ -57,17 +47,20 @@
     nix-direnv.enable = true;
   };
 
+  # ls replacement
   programs.eza = {
     enable = true;
     enableZshIntegration = true;
-    # enableNushellIntegration = true;
     git = true;
   };
 
-  programs.zoxide = {
+  programs.atuin = {
     enable = true;
-    enableZshIntegration = true;
-    enableNushellIntegration = true;
+    settings = {
+      auto_sync = true;
+      sync_frequency = "5m";
+      sync_address = "https://atuin.service.byte-sized.fyi";
+    };
   };
 
   programs.bat.enable = true;
