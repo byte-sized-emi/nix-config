@@ -1,6 +1,8 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   stackPath = "/var/stacks/atuin";
+  user = config.users.users.atuin.name;
+  group = config.users.groups.atuin.name;
 in
 {
   my.services.atuin = {
@@ -8,10 +10,11 @@ in
     port = config.services.atuin.port;
     description = "Shared shell history";
     internal.enable = true;
+    createSystemUser = true;
   };
 
   systemd.tmpfiles.rules = [
-    "d ${stackPath} 0770 root root"
+    "d ${stackPath} 0770 ${user} ${group}"
   ];
 
   services.atuin = {
@@ -23,5 +26,10 @@ in
     };
   };
 
-  systemd.services.atuin.serviceConfig.ReadWritePaths = [ stackPath ];
+  systemd.services.atuin.serviceConfig = {
+    ReadWritePaths = [ stackPath ];
+    DynamicUser = lib.mkForce false;
+    User = user;
+    Group = group;
+  };
 }
