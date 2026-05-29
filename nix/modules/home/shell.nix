@@ -23,6 +23,8 @@
     initContent = ''
       bindkey "^[[1;5C" forward-word
       bindkey "^[[1;5D" backward-word
+      bindkey '^[[3;5~' kill-word
+      bindkey '^H'      backward-kill-word
     '';
     shellAliases = {
       update = "nixos-rebuild switch --sudo";
@@ -56,12 +58,20 @@
 
   programs.atuin = {
     enable = true;
-    flags = [ "--disable-up-arrow" ];
+    flags = [
+      "--disable-up-arrow"
+      # "--disable-ai"
+    ];
     settings = {
       auto_sync = true;
       sync_frequency = "5m";
       sync_address = "https://atuin.service.byte-sized.fyi";
     };
+  };
+
+  programs.yazi = {
+    enable = true;
+    shellWrapperName = "z";
   };
 
   programs.bat.enable = true;

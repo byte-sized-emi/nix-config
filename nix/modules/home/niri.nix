@@ -11,7 +11,11 @@
     inputs.niri.homeModules.niri
   ];
 
-  programs.alacritty.enable = true;
+  programs.kitty = {
+    enable = true;
+    shellIntegration.enableZshIntegration = true;
+    themeFile = "adwaita_dark";
+  };
 
   home.packages = with pkgs; [
     xwayland-satellite
@@ -251,15 +255,9 @@
           "Mod+8" = action-with-arg "focus-workspace" 8;
           "Mod+9" = action-with-arg "focus-workspace" 9;
           "Alt+F4" = action "close-window";
-          "Ctrl+Alt+T" = action-with-arg "spawn" "alacritty";
+          "Ctrl+Alt+T" = action-with-arg "spawn" "kitty";
         };
         input = {
-          keyboard = {
-            xkb = {
-              layout = "de,jp";
-              options = "grp:win_space_toggle";
-            };
-          };
           touchpad = {
             tap = true;
             dwt = true;
