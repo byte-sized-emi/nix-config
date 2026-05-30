@@ -16,6 +16,7 @@
     graphical
     syncthing
     auto-update
+    vpn
   ]);
 
   # secure boot config

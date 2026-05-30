@@ -7,6 +7,7 @@
   imports = [
     ./git.nix
     ./shell.nix
+    ./secrets.nix
   ];
 
   home.username = "emilia";

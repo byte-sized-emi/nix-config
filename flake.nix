@@ -47,6 +47,7 @@
       url = "github:numtide/blueprint";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    secret-nix-config.url = "git+https://git.byte-sized.fyi/emilia/secret-nix-config?ref=main";
   };
 
   outputs =

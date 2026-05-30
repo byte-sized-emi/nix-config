@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 {
   users.groups.emilia = { };
+  users.groups.keys = { };
   users.users.emilia = {
     isNormalUser = true;
     group = config.users.groups.emilia.name;
@@ -11,6 +12,7 @@
       "audio"
       "networkmanager"
       "dialout"
+      "keys"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [

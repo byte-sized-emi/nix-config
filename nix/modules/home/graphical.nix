@@ -6,15 +6,16 @@
 {
   imports = [
     ./browser.nix
+    ./email.nix
     ./fachschaft.nix
     ./fonts.nix
-    ./vicinae.nix
     ./niri.nix
     ./noctalia.nix
-    ./swayidle.nix
-    ./zed.nix
-    ./steam.nix
     ./signal.nix
+    ./steam.nix
+    ./swayidle.nix
+    ./vicinae.nix
+    ./zed.nix
   ];
 
   programs.zsh.shellAliases.sudo = lib.mkForce "pkexec --keep-cwd";

@@ -468,6 +468,7 @@
         "noctalia": "noctalia",
         "noctalia-qs": "noctalia-qs",
         "quadlet-nix": "quadlet-nix",
+        "secret-nix-config": "secret-nix-config",
         "slippi-launcher": "slippi-launcher",
         "sops-nix": "sops-nix"
       }
@@ -508,6 +509,22 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
+      }
+    },
+    "secret-nix-config": {
+      "locked": {
+        "lastModified": 1780143006,
+        "narHash": "sha256-otZLntf3ql06ZmcJKfF7eSvNeov5m8VkMCtcaHSBbm8=",
+        "ref": "main",
+        "rev": "e380bbabec9a9b58ca006af8fa9c72bbe8ab8611",
+        "revCount": 2,
+        "type": "git",
+        "url": "https://git.byte-sized.fyi/emilia/secret-nix-config"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.byte-sized.fyi/emilia/secret-nix-config"
       }
     },
     "slippi-launcher": {

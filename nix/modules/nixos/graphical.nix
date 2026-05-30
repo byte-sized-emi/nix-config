@@ -10,10 +10,6 @@
   ];
 
   programs.firefox.enable = true;
-  programs.thunderbird = {
-    package = pkgs.unstable.thunderbird;
-    enable = true;
-  };
 
   programs.slippi-launcher = {
     enable = true;
