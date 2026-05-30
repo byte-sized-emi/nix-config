@@ -196,6 +196,8 @@
         feedback_links_enabled = false;
       };
 
+      security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
+
       # auth.generic_oauth = {
       #   enabled = true;
       #   allow_sign_up = true;
