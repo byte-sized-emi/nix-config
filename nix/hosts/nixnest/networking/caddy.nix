@@ -20,7 +20,7 @@
           "github.com/caddy-dns/cloudflare@${cloudflareDnsVersion}"
           "github.com/corazawaf/coraza-caddy/v2@${corazaVersion}"
         ];
-      hash = "sha256-a/3/zDef/uh1FgeHyk3RyUHxNbxtScoz6uyj9eE9tgI=";
+      hash = "sha256-qpLrJ4qwidQV3DHb1iRNXoUj9YzClT8wfd+NPxMMwzA=";
     };
     environmentFile = config.sops.secrets."caddy/secretsEnv".path;
     globalConfig = ''

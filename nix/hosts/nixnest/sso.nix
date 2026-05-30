@@ -45,18 +45,20 @@ in
   #  sso.byte-sized.fyi/oauth2/openid/tailscale/.well-known/webfinger
 
   services.kanidm = {
-    enableServer = true;
     package = pkgs.kanidmWithSecretProvisioning_1_10; # also update modules/nixos/user.nix
-    serverSettings = {
-      origin = "https://${config.settings.sso.domain}";
-      domain = config.settings.sso.domain;
-      bindaddress = "127.0.0.1:${toString port}";
-      tls_chain = "/etc/certs/self_signed.pem";
-      tls_key = config.sops.secrets."caddy/self_signed_cert/key.pem".path;
-      online_backup = {
-        path = "/var/backup/kanidm";
-        schedule = config.settings.backup.prepare.interval_cron;
-        versions = 7;
+    server = {
+      enable = true;
+      settings = {
+        origin = "https://${config.settings.sso.domain}";
+        domain = config.settings.sso.domain;
+        bindaddress = "127.0.0.1:${toString port}";
+        tls_chain = "/etc/certs/self_signed.pem";
+        tls_key = config.sops.secrets."caddy/self_signed_cert/key.pem".path;
+        online_backup = {
+          path = "/var/backup/kanidm";
+          schedule = config.settings.backup.prepare.interval_cron;
+          versions = 7;
+        };
       };
     };
     provision = {
