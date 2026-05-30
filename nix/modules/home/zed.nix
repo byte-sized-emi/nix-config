@@ -1,8 +1,9 @@
 { pkgs, ... }:
 {
   programs.zed-editor = {
-    package = pkgs.unstable.zed-editor;
+    package = pkgs.zed-editor;
     enable = true;
+    enableMcpIntegration = true;
     extensions = [
       "git-firefly"
       "github-actions"
@@ -20,9 +21,6 @@
       colorize_brackets = true;
       autosave = "on_focus_change";
       icon_theme = "Material Icon Theme";
-      features = {
-        edit_prediction_provider = "copilot";
-      };
       ui_font_size = 16;
       buffer_font_size = 15;
       theme = {

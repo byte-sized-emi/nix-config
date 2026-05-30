@@ -19,6 +19,7 @@
       };
       rootSearch.searchFiles = false;
       close_on_focus_loss = true;
+      launcher_window.layer_shell.layer = "overlay";
       launcher_window.opacity = 0.9;
       theme = {
         light = {

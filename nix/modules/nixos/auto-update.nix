@@ -27,7 +27,6 @@ in
 
   systemd.sockets.update-daemon = {
     wantedBy = [
-      "sockets.target"
       "multi-user.target"
     ];
     after = [
@@ -37,7 +36,7 @@ in
     listenStreams = [ "36196" ];
     socketConfig = {
       BindToDevice = "tailscale0";
-      ExecStartPre = "${lib.getExe pkgs.unstable.tailscale} wait --timeout=30s";
+      ExecStartPre = "${lib.getExe pkgs.tailscale} wait --timeout=30s";
     };
   };
 

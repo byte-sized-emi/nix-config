@@ -1,17 +1,17 @@
 { lib, pkgs, ... }:
 {
-  programs.ssh.matchBlocks = {
-    "git.byte-sized.fyi" = {
-      identityFile = "~/.ssh/id_byte_sized";
+  programs.ssh.settings = {
+    "Host git.byte-sized.fyi" = {
+      IdentityFile = "~/.ssh/id_byte_sized";
     };
-    "github.com" = {
-      identityFile = "~/.ssh/id_github";
+    "Host github.com" = {
+      IdentityFile = "~/.ssh/id_github";
     };
-    "gitlab.lrz.de" = {
-      identityFile = "~/.ssh/id_lrz_gitlab";
+    "Host gitlab.lrz.de" = {
+      IdentityFile = "~/.ssh/id_lrz_gitlab";
     };
-    "d0804253.repo.borgbase.com" = {
-      identityFile = "~/.ssh/id_byte_sized";
+    "Host d0804253.repo.borgbase.com" = {
+      IdentityFile = "~/.ssh/id_byte_sized";
     };
   };
 

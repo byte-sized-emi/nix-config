@@ -5,7 +5,7 @@
   ];
   programs.ssh.enable = true;
   programs.ssh.enableDefaultConfig = false;
-  programs.ssh.matchBlocks."*" = { };
+  programs.ssh.settings."*" = { };
   programs.ssh.extraConfig = ''
     Host fs-lab01
             HostName 10.19.5.111

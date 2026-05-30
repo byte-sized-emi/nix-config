@@ -1,11 +1,23 @@
 { pkgs, lib, ... }:
 {
   home.packages = [ pkgs.mcp-nixos ];
-  # TODO: Put the mcp servers here into programs.mcp.servers
-  # to use with programs.opencode.enableMcpIntegration
+
+  programs.mcp = {
+    enable = true;
+    servers = {
+      context7 = {
+        url = "https://mcp.context7.com/mcp";
+      };
+      nixos = {
+        command = lib.getExe pkgs.mcp-nixos;
+        args = [ ];
+      };
+    };
+  };
 
   programs.opencode = {
     enable = true;
+    enableMcpIntegration = true;
     settings = {
       permission = {
         edit = "allow";
@@ -14,20 +26,7 @@
         doom_loop = "ask";
         external_directory = "ask";
       };
-      mcp = {
-        context7 = {
-          enabled = true;
-          type = "remote";
-          url = "https://mcp.context7.com/mcp";
-        };
-        nixos = {
-          enabled = true;
-          type = "local";
-          command = [
-            (lib.getExe pkgs.mcp-nixos)
-          ];
-        };
-      };
     };
   };
+
 }

@@ -61,29 +61,23 @@
     };
   };
 
-  home.packages =
-    let
-      normal-packages = with pkgs; [
-        kdePackages.kate
-        kdePackages.filelight
-        discord
-        obsidian
-        # spotify
-        signal-desktop
-        todoist-electron
-        xournalpp
-        wev
-        element-desktop
-        vlc
-        libreoffice
-        file
-        jellyfin-desktop
-      ];
-      unstable-packages = with pkgs.unstable; [
-        deezer-enhanced
-        mission-center
-        beeper
-      ];
-    in
-    normal-packages ++ unstable-packages;
+  home.packages = with pkgs; [
+    kdePackages.kate
+    kdePackages.filelight
+    discord
+    obsidian
+    # spotify
+    signal-desktop
+    todoist-electron
+    xournalpp
+    wev
+    element-desktop
+    vlc
+    libreoffice
+    file
+    jellyfin-desktop
+    deezer-enhanced
+    mission-center
+    beeper
+  ];
 }

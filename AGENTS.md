@@ -13,6 +13,10 @@ nix/
 └── devshell.nix
 ```
 
+## mcp-nixos tool
+
+The MCP nixos tool can search for Home Manager and NixOS packages / options. Make sure that, when defining an option, that the specified values / format exactly matches what MCP nixos expects.
+
 ## Commands
 
 ### Nix
