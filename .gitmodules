@@ -1,0 +1,3 @@
+[submodule "secret-nix-config"]
+	path = secret-nix-config
+	url = https://git.byte-sized.fyi/emilia/secret-nix-config.git

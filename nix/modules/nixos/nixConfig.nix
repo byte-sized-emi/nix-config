@@ -1,13 +1,8 @@
-{ config, ... }:
 {
-  sops.secrets.nixAccessTokens = {
-    mode = "0440";
-    group = config.users.groups.keys.name;
-  };
-
   # if you add a cache here, also add it to the update.yaml forgejo action
   nix = {
     settings = {
+      auto-optimise-store = true;
       warn-dirty = false;
       download-buffer-size = 524288000; # 500 MiB
       max-substitution-jobs = 128;
@@ -24,7 +19,5 @@
         "flakes"
       ];
     };
-    # so nix can clone the secret-nix-config input without requiring interaction
-    extraOptions = "!include ${config.sops.secrets.nixAccessTokens.path}";
   };
 }
