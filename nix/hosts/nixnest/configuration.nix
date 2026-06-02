@@ -16,11 +16,11 @@
     ./beeper.nix
     ./certs.nix
     ./dawarich.nix
-    ./mealie.nix
     ./forgejo.nix
-    # ./hass.nix
+    # ./homeassistant.nix
     ./immich.nix
     ./linktree.nix
+    ./mealie.nix
     ./media.nix
     ./monitoring.nix
     ./networking
