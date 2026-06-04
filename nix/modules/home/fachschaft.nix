@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    kubectl
+    keepassxc
   ];
   programs.ssh.enable = true;
   programs.ssh.enableDefaultConfig = false;

@@ -83,6 +83,10 @@
         debug.honor-xdg-activation-with-invalid-serial = [ ];
         layout = {
           gaps = 8;
+          tab-indicator = {
+            place-within-column = true;
+            length.total-proportion = 0.8;
+          };
         };
         spawn-at-startup = [
           {
@@ -204,13 +208,15 @@
           "Mod+O" = action "toggle-overview";
           "Mod+Q" = action "close-window";
           "Mod+H" = action "show-hotkey-overlay";
-          # I have no idea why this workaround is necessary.
-          "Mod+F" = action-with-arg "spawn" [
-            "niri"
-            "msg"
-            "action"
-            "maximize-window-to-edges"
-          ];
+          "Mod+M" = action "maximize-column";
+
+          # https://github.com/sodiboo/niri-flake/pull/1382
+          # "Mod+F" = action-with-arg "spawn" [
+          #   "niri"
+          #   "msg"
+          #   "action"
+          #   "maximize-window-to-edges"
+          # ];
           "Mod+Shift+F" = action "fullscreen-window";
           "Mod+P" = {
             repeat = false;
@@ -220,20 +226,20 @@
           "Mod+L" = noctalia-action "sessionMenu lockAndSuspend";
           "Mod+V" = noctalia-action "launcher clipboard";
           "Mod+Shift+S" = action "screenshot";
-          "Mod+Left" = action "focus-column-left";
-          "Mod+Right" = action "focus-column-right";
+          "Mod+Left" = action "focus-column-or-monitor-left";
+          "Mod+Right" = action "focus-column-or-monitor-right";
           "Mod+Shift+Left" = action "move-column-left";
           "Mod+Shift+Right" = action "move-column-right";
-          "Mod+Shift+Up" = action "move-window-to-workspace-up";
-          "Mod+Shift+Down" = action "move-window-to-workspace-down";
-          "Mod+Ctrl+Left" = action "move-window-to-monitor-left";
-          "Mod+Ctrl+Right" = action "move-window-to-monitor-right";
-          "Mod+Up" = action "focus-workspace-up";
-          "Mod+Down" = action "focus-workspace-down";
+          "Mod+Shift+Up" = action "move-column-to-workspace-up";
+          "Mod+Shift+Down" = action "move-column-to-workspace-down";
+          "Mod+Ctrl+Left" = action "move-column-to-monitor-left";
+          "Mod+Ctrl+Right" = action "move-column-to-monitor-right";
+          "Mod+Up" = action "focus-window-or-workspace-up";
+          "Mod+Down" = action "focus-window-or-workspace-down";
 
           # keypad bindings
-          "KP_Up" = action "focus-workspace-up";
-          "KP_Down" = action "focus-workspace-down";
+          "KP_Up" = action "focus-window-or-workspace-up";
+          "KP_Down" = action "focus-window-or-workspace-down";
           "KP_Left" = action "focus-column-left";
           "KP_Right" = action "focus-column-right";
           "KP_Begin" = action "toggle-overview"; # under the 5 key
@@ -252,6 +258,18 @@
           "Mod+9" = action-with-arg "focus-workspace" 9;
           "Alt+F4" = action "close-window";
           "Ctrl+Alt+T" = action-with-arg "spawn" "alacritty";
+
+          "Mod+R" = action "switch-preset-column-width";
+          "Mod+Shift+R" = action "switch-preset-column-width-back";
+          "Mod+T" = action "toggle-column-tabbed-display";
+          # practically "Mod+BracketLeft"/"Mod+BracketRight" but for german keyboard
+          # "Mod+Shift+8" = action "consume-or-expel-window-left";
+          # "Mod+Shift+9" = action "consume-or-expel-window-right";
+          # these both go to the right!
+          "Mod+Comma" = action "consume-window-into-column";
+          "Mod+Shift+Comma" = action "expel-window-from-column";
+          "Mod+Minus" = action-with-arg "set-column-width" "-10%";
+          "Mod+Plus" = action-with-arg "set-column-width" "+10%";
         };
         input = {
           touchpad = {

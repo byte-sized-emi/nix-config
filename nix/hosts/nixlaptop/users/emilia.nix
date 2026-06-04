@@ -5,6 +5,7 @@
     graphical
     ai
     anki
+    fachschaft
   ];
 
   programs.niri.settings.spawn-at-startup = [

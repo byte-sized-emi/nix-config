@@ -7,7 +7,6 @@
   imports = [
     ./browser.nix
     ./email.nix
-    ./fachschaft.nix
     ./fonts.nix
     ./niri.nix
     ./noctalia.nix

@@ -60,7 +60,7 @@
     enable = true;
     flags = [
       "--disable-up-arrow"
-      # "--disable-ai"
+      "--disable-ai"
     ];
     settings = {
       auto_sync = true;

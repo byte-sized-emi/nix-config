@@ -104,10 +104,6 @@
               useDistroLogo = true;
             }
             {
-              id = "KeyboardLayout";
-              displayMode = "forceOpen";
-            }
-            {
               id = "LockKeys";
               showCapsLock = true;
               showNumLock = false;

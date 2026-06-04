@@ -44,6 +44,8 @@ in
   #  to
   #  sso.byte-sized.fyi/oauth2/openid/tailscale/.well-known/webfinger
 
+  systemd.services.kanidm.serviceConfig.Restart = "always";
+
   services.kanidm = {
     package = pkgs.kanidmWithSecretProvisioning_1_10; # also update modules/nixos/user.nix
     server = {
