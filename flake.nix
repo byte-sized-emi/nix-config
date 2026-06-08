@@ -2,7 +2,6 @@
   description = "Top-Level configuration";
 
   inputs = {
-    self.submodules = true;
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -48,7 +47,7 @@
       url = "github:numtide/blueprint";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    secret-nix-config.url = ./secret-nix-config;
+    secret-nix-config.url = "git+file:./secret-nix-config";
   };
 
   outputs =
