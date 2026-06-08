@@ -2,6 +2,7 @@
   description = "Top-Level configuration";
 
   inputs = {
+    self.submodules = true;
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -23,7 +24,7 @@
 
     nixpkgs-stable.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-25.11";
     noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
+      url = "github:noctalia-dev/noctalia-shell/legacy-v4";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.noctalia-qs.follows = "noctalia-qs";
     };
@@ -47,7 +48,7 @@
       url = "github:numtide/blueprint";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    secret-nix-config.url = "git+file:./secret-nix-config";
+    secret-nix-config.url = ./secret-nix-config;
   };
 
   outputs =

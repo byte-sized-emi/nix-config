@@ -9,7 +9,6 @@
   ];
 
   programs.niri.settings.spawn-at-startup = [
-    { command = [ "anki" ]; }
     { command = [ "zeditor" ]; }
     { command = [ "todoist-electron" ]; }
     { command = [ "obsidian" ]; }

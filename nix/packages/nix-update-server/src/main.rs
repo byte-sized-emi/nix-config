@@ -195,6 +195,8 @@ async fn update_commands(
     let msg = format!("Successfully pulled the '{branch}' branch\n");
     let _ = tx.send(msg).await;
 
+    run_command("git", &["submodule", "update", "--recursive"]).await?;
+
     run_command("nixos-rebuild", &["switch", "-L"]).await?;
 
     let _ = tx

@@ -45,7 +45,7 @@
         port = 993;
       };
       signature = {
-        # htmlFormat = true;
+        htmlFormat = true;
         showSignature = "append";
         text = ''
           <p>&nbsp;</p>

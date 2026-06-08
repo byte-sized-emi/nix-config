@@ -8,6 +8,7 @@
   "git-submodules": {
     "enabled": true
   },
+  "cloneSubmodules": true,
   "customManagers": [
     {
       "customType": "regex",
