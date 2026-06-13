@@ -6,7 +6,6 @@
   ...
 }:
 {
-  # import the home manager module
   imports = [
     inputs.niri.homeModules.niri
   ];

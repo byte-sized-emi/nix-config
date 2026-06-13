@@ -4,6 +4,9 @@
     "Host git.byte-sized.fyi" = {
       IdentityFile = "~/.ssh/id_byte_sized";
     };
+    "Host git.fs.cs.hm.edu" = {
+      IdentityFile = "~/.ssh/id_byte_sized";
+    };
     "Host github.com" = {
       IdentityFile = "~/.ssh/id_github";
     };
@@ -22,6 +25,22 @@
       {
         condition = "hasconfig:remote.*.url:https://git.byte-sized.fyi/**";
         contents = {
+          user.signingKey = "~/.ssh/id_byte_sized";
+        };
+      }
+      {
+        condition = "hasconfig:remote.*.url:https://git.fs.cs.hm.edu/**";
+        contents = {
+          user.name = "Emilia Jaser";
+          user.email = "ejaser@fs.cs.hm.edu";
+          user.signingKey = "~/.ssh/id_byte_sized";
+        };
+      }
+      {
+        condition = "hasconfig:remote.*.url:git@git.fs.cs.hm.edu:*/**";
+        contents = {
+          user.name = "Emilia Jaser";
+          user.email = "ejaser@fs.cs.hm.edu";
           user.signingKey = "~/.ssh/id_byte_sized";
         };
       }

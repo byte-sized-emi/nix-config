@@ -1,6 +1,7 @@
 { inputs, ... }:
 {
   imports = [ inputs.secret-nix-config.homeManagerModules.email ];
+
   programs.thunderbird = {
     enable = true;
     profiles.default = {
@@ -23,7 +24,6 @@
     };
     "emilia.jaser@hm.edu" = {
       enable = true;
-      primary = false;
       realName = "Emilia Jaser";
       address = "emilia.jaser@hm.edu";
       flavor = "outlook.office365.com-ews";

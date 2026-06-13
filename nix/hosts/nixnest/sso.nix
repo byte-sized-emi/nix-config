@@ -103,14 +103,6 @@ in
           ];
           groups = [ "mealie_users" ];
         };
-        calla = {
-          displayName = "Calla";
-          mailAddresses = [
-            "calla@sso.byte-sized.fyi"
-            "calla@byte-sized.fyi"
-          ];
-          groups = [ "mealie_users" ];
-        };
         danlp6 = {
           displayName = "Dan";
           mailAddresses = [
@@ -119,27 +111,13 @@ in
           ];
           groups = [ "git" ];
         };
-        maja = {
-          displayName = "Maja";
-          mailAddresses = [
-            "maja@sso.byte-sized.fyi"
-            "maja@byte-sized.fyi"
-          ];
-          groups = [
-            "git"
-            "media"
-            "mealie_users"
-          ];
-        };
         sasha = {
           displayName = "sasa";
           mailAddresses = [
             "sasha@sso.byte-sized.fyi"
             "sasha@byte-sized.fyi"
           ];
-          groups = [
-            "mealie_users"
-          ];
+          groups = [ "mealie_users" ];
         };
       };
       systems.oauth2 = {

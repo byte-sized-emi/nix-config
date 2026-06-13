@@ -35,21 +35,14 @@
     inputs.quadlet-nix.nixosModules.quadlet
   ];
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     nano
     wget
     git
-    pulseaudio
     pciutils
     alsa-utils
-    speedtest-cli
   ];
 
   services.openssh = {
