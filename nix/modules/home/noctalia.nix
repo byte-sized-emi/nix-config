@@ -231,7 +231,7 @@
       };
       ntfy-notifications = {
         serverUrl = "https://ntfy.service.byte-sized.fyi";
-        topics = "forgejo-cicd";
+        topics = "forgejo-cicd,alerts";
       };
     };
   };

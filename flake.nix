@@ -47,6 +47,10 @@
       url = "github:numtide/blueprint";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     secret-nix-config.url = "git+file:./secret-nix-config";
   };
 

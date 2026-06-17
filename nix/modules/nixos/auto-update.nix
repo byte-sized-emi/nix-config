@@ -30,13 +30,14 @@ in
       "multi-user.target"
     ];
     after = [
-      "network.target"
+      "sysinit.target"
       "tailscaled.service"
     ];
+    requires = [ "sysinit.target" ];
     listenStreams = [ "36196" ];
-    socketConfig = {
-      BindToDevice = "tailscale0";
-      ExecStartPre = "${lib.getExe pkgs.tailscale} wait --timeout=30s";
+    socketConfig.BindToDevice = "tailscale0";
+    unitConfig = {
+      DefaultDependencies = false;
     };
   };
 

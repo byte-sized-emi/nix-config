@@ -18,11 +18,6 @@
     jq
     kdePackages.kwallet
     kdePackages.kwallet-pam
-    # gnome-keyring
-    # xdg-desktop-portal-gtk
-    # xdg-desktop-portal-gnome
-    # polkit-kde-agent
-    # kdePackages.polkit-kde-agent-1
     papirus-icon-theme
   ];
 
@@ -33,18 +28,6 @@
       package = pkgs.papirus-icon-theme;
     };
   };
-
-  # japanese input
-  # i18n.inputMethod = {
-  #   enable = true;
-  # TODO: turn me on
-  # type = "fcitx5";
-  # fcitx5.addons = with pkgs; [
-  #   # fcitx5-mozc
-  #   fcitx5-mozc-ut
-  #   fcitx5-gtk
-  # ];
-  # };
 
   # https://github.com/sodiboo/niri-flake/blob/main/docs.md
   programs.niri =
