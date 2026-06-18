@@ -30,6 +30,20 @@
     pkgs.kdePackages.kwallet
   ];
 
+  fonts.packages = with pkgs; [
+    noto-fonts
+    hack-font
+  ];
+
+  fonts.fontconfig.defaultFonts = {
+    monospace = [
+      "Hack"
+      "Noto Sans Mono"
+    ];
+    sansSerif = [ "Noto Sans" ];
+    serif = [ "Noto Serif" ];
+  };
+
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {

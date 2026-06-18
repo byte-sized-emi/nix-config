@@ -19,6 +19,9 @@
     kdePackages.kwallet
     kdePackages.kwallet-pam
     papirus-icon-theme
+    kdePackages.dolphin
+    kdePackages.okular
+    kdePackages.ark
   ];
 
   gtk = {
