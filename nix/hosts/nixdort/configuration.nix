@@ -13,6 +13,8 @@
     ./disko.nix
   ];
 
+  networking.hostId = "e8c8c66c";
+
   environment.systemPackages = with pkgs; [
     git
     nano

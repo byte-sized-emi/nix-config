@@ -1,3 +1,4 @@
+{ lib, pkgs, ... }:
 let
   hddRaidConfig =
     { mountpoint }:
@@ -24,6 +25,15 @@ let
     };
 in
 {
+  # nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort' --generate-hardware-config nixos-generate-config ./nix/hosts/nixdort/hardware-configuration.nix --target-host nixos@192.168.0.225
+  # nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort' --generate-hardware-config nixos-generate-config ./nix/hosts/nixdort/hardware-configuration.nix --target-host nixos@192.168.0.225 --phases install,reboot --disko-mode mount
+  # fileSystems."/mnt/media".noCheck = lib.mkForce true;
+  environment.systemPackages = with pkgs; [ mergerfs ];
+  boot = {
+    supportedFilesystems = [ "zfs" ];
+    zfs.extraPools = [ "redundant_pool" ];
+  };
+
   # Disks:
   # - 250GB Boot SSD /dev/disk/by-id/wwn-0x500a07510c876ff4
   # - 1TB smallhdd   /dev/disk/by-id/wwn-0x50014ee2b6346905
@@ -78,6 +88,22 @@ in
         device = "/dev/disk/by-id/wwn-0x50014ee2b6407d36";
         content = hddRaidConfig { mountpoint = "/mnt/media3"; };
       };
+      # media = {
+      #   type = "filesystem";
+      #   device = "/mnt/media1:/mnt/media2:/mnt/media3";
+      #   content = {
+      #     type = "filesystem";
+      #     format = "mergerfs";
+      #     mountpoint = "/mnt/media";
+      #     mountOptions = [
+      #       "defaults"
+      #       "noatime"
+      #       "cache.files=partial"
+      #       "dropcacheonclose=true"
+      #       "category.create=mfs"
+      #     ];
+      #   };
+      # };
     };
     zpool = {
       redundant_pool = {
@@ -89,23 +115,6 @@ in
         };
         mountpoint = "/mnt/raid";
         datasets = { };
-      };
-    };
-    nodev = {
-      media = {
-        content = {
-          type = "filesystem";
-          format = "fuse.mergerfs";
-          mountpoint = "/mnt/media";
-          device = "/mnt/media1:/mnt/media2:/mnt/media3";
-          mountOptions = [
-            "defaults"
-            "noatime"
-            "cache.files=partial"
-            "dropcacheonclose=true"
-            "category.create=mfs"
-          ];
-        };
       };
     };
   };
