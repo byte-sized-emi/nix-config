@@ -8,7 +8,7 @@
 
   imports = [
     flake.modules.nixos.my-cloudflared
-    ./tailscale.nix
+    flake.modules.nixos.tailscale-server
     ./caddy.nix
   ];
 

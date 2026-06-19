@@ -27,7 +27,9 @@ in
 {
   # nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort' --generate-hardware-config nixos-generate-config ./nix/hosts/nixdort/hardware-configuration.nix --target-host nixos@192.168.0.225
   # nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort' --generate-hardware-config nixos-generate-config ./nix/hosts/nixdort/hardware-configuration.nix --target-host nixos@192.168.0.225 --phases install,reboot --disko-mode mount
-  # fileSystems."/mnt/media".noCheck = lib.mkForce true;
+  fileSystems."/mnt/media".noCheck = lib.mkForce true;
+
+  # we don't really need the zfs pool to be mounted at boot time, so this might be unnecessary?
   environment.systemPackages = with pkgs; [ mergerfs ];
   boot = {
     supportedFilesystems = [ "zfs" ];
@@ -88,22 +90,22 @@ in
         device = "/dev/disk/by-id/wwn-0x50014ee2b6407d36";
         content = hddRaidConfig { mountpoint = "/mnt/media3"; };
       };
-      # media = {
-      #   type = "filesystem";
-      #   device = "/mnt/media1:/mnt/media2:/mnt/media3";
-      #   content = {
-      #     type = "filesystem";
-      #     format = "mergerfs";
-      #     mountpoint = "/mnt/media";
-      #     mountOptions = [
-      #       "defaults"
-      #       "noatime"
-      #       "cache.files=partial"
-      #       "dropcacheonclose=true"
-      #       "category.create=mfs"
-      #     ];
-      #   };
-      # };
+      media = {
+        type = "filesystem";
+        device = "/mnt/media1:/mnt/media2:/mnt/media3";
+        content = {
+          type = "filesystem";
+          format = "mergerfs";
+          mountpoint = "/mnt/media";
+          mountOptions = [
+            "defaults"
+            "noatime"
+            "cache.files=partial"
+            "dropcacheonclose=true"
+            "category.create=mfs"
+          ];
+        };
+      };
     };
     zpool = {
       redundant_pool = {

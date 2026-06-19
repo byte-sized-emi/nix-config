@@ -9,6 +9,8 @@
     ./hardware-configuration.nix
     flake.modules.nixos.default
     flake.modules.nixos.ssh-server
+    flake.modules.nixos.tailscale-server
+    flake.modules.nixos.auto-update
     inputs.disko.nixosModules.disko
     ./disko.nix
   ];

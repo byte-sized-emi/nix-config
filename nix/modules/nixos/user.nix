@@ -14,6 +14,7 @@
       "dialout"
       "keys"
     ];
+    initialPassword = "emilia";
     shell = pkgs.zsh;
     packages = with pkgs; [
       tree
