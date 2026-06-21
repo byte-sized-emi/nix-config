@@ -100,9 +100,10 @@ in
           mountOptions = [
             "defaults"
             "noatime"
-            "cache.files=partial"
-            "dropcacheonclose=true"
-            "category.create=mfs"
+            "cache.files=off"
+            "func.getattr=newest"
+            "category.create=pfrd"
+            "ignorepponrename=true"
           ];
         };
       };

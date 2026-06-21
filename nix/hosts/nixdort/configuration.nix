@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   flake,
+  lib,
   ...
 }:
 {
@@ -21,8 +22,39 @@
     git
     nano
     wget
-    mergerfs
   ];
+
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    zfsSupport = true;
+    configurationLimit = 7;
+  };
+
+  services.nfs.server = {
+    enable = false;
+    exports = ''
+      /mnt/media 100.64.0.0/10(rw,sync,fsid=0,no_subtree_check) fd7a:115c:a1e0::/48(rw,sync,fsid=0,no_subtree_check)
+    '';
+  };
+
+  users.users.media = {
+    uid = 311;
+    group = "media";
+  };
+
+  users.groups.media = {
+    gid = 311;
+    members = [
+      "media"
+      "emilia"
+    ];
+  };
+
+  # TODO:
+  # - monotoring, esp. for ZFS / the disks
+  # - smartd
 
   system.stateVersion = "26.11";
 }
