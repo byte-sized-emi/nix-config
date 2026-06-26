@@ -31,10 +31,7 @@ in
 
   # we don't really need the zfs pool to be mounted at boot time, so this might be unnecessary?
   environment.systemPackages = with pkgs; [ mergerfs ];
-  boot = {
-    supportedFilesystems = [ "zfs" ];
-    zfs.extraPools = [ "redundant_pool" ];
-  };
+  boot.supportedFilesystems = [ "zfs" ];
 
   # Disks:
   # - 250GB Boot SSD /dev/disk/by-id/wwn-0x500a07510c876ff4

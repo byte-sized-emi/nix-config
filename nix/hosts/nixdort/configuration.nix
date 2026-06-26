@@ -28,12 +28,11 @@
   boot.loader.grub = {
     enable = true;
     efiSupport = true;
-    zfsSupport = true;
     configurationLimit = 7;
   };
 
   services.nfs.server = {
-    enable = false;
+    enable = true;
     exports = ''
       /mnt/media 100.64.0.0/10(rw,sync,fsid=0,no_subtree_check) fd7a:115c:a1e0::/48(rw,sync,fsid=0,no_subtree_check)
     '';
