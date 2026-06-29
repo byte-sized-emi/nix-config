@@ -17,7 +17,7 @@
     # environment file also sets NODE_OPTIONS=--use-system-ca
     environmentFile = config.sops.secrets."hedgeDoc.env".path;
     settings = {
-      domain = config.my.services.external.domain;
+      domain = config.my.services.hedgedoc.external.domain;
       port = config.services.hedgedoc.settings.port;
       protocolUseSSL = true;
       urlAddPort = false;
