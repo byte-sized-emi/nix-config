@@ -31,6 +31,12 @@
     # more virtualHosts are defined in nix/modules/nixos/service.nix
     # or directly in other services for more custom definitions
 
+    virtualHosts."*.byte-sized.fyi" = {
+      extraConfig = ''
+        redir https://links.byte-sized.fyi
+      '';
+    };
+
     # abuse the virtualHosts config to define a template - hey, if it works.
     # client_ip uses either the IP of the remote directly, or the one passed by cloudflared
     virtualHosts."(abort_external)" = {
