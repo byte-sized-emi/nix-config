@@ -75,7 +75,7 @@ in
         immich_users = { };
         media = { };
         media_admins = { };
-        hedgedoc = { };
+        hedgedoc_users = { };
       };
       # when adding a new user, run `sudo kanidmd recover-account <username>`
       # to generate a new temporary password
@@ -95,7 +95,7 @@ in
             "immich_users"
             "media"
             "media_admins"
-            "hedgedoc"
+            "hedgedoc_users"
           ];
         };
         mika = {
@@ -220,7 +220,7 @@ in
           originLanding = "https://${config.services.hedgedoc.settings.domain}";
           basicSecretFile = config.sops.secrets."kanidm/hedgedocOauthSecret".path;
           scopeMaps = {
-            hedgedoc = [
+            hedgedoc_users = [
               "openid"
               "email"
               "profile"
