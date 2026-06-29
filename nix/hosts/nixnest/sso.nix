@@ -16,6 +16,7 @@ in
   sops.secrets."kanidm/mealieOauthSecret".owner = kanidmUser;
   sops.secrets."kanidm/immichOauthSecret".owner = kanidmUser;
   sops.secrets."kanidm/jellyfinOauthSecret".owner = kanidmUser;
+  sops.secrets."kanidm/hedgedocOauthSecret".owner = kanidmUser;
   sops.secrets."kanidm/mealieOauthSecretEnv".owner = "root";
   # sops.secrets."kanidm/grafanaOauthSecret".owner = kanidmUser;
   # sops.secrets."grafana/OauthSecret" = {
@@ -74,6 +75,7 @@ in
         immich_users = { };
         media = { };
         media_admins = { };
+        hedgedoc = { };
       };
       # when adding a new user, run `sudo kanidmd recover-account <username>`
       # to generate a new temporary password
@@ -93,6 +95,7 @@ in
             "immich_users"
             "media"
             "media_admins"
+            "hedgedoc"
           ];
         };
         mika = {
@@ -210,6 +213,19 @@ in
             ];
           };
           preferShortUsername = true;
+        };
+        hedgedoc = {
+          displayName = "HedgeDoc collaborative MarkDown editing";
+          originUrl = "https://${config.services.hedgedoc.settings.domain}/auth/oauth2/callback";
+          originLanding = "https://${config.services.hedgedoc.settings.domain}";
+          basicSecretFile = config.sops.secrets."kanidm/hedgedocOauthSecret".path;
+          scopeMaps = {
+            hedgedoc = [
+              "openid"
+              "email"
+              "profile"
+            ];
+          };
         };
         # grafana = {
         #   displayName = "grafana";

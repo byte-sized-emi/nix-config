@@ -12,13 +12,14 @@
     flake.modules.nixos.service
     flake.modules.nixos.syncthing
     flake.modules.nixos.ssh-server
+    # ./homeassistant.nix
     ./atuin.nix
     ./backups.nix
     ./beeper.nix
     ./certs.nix
     ./dawarich.nix
     ./forgejo.nix
-    # ./homeassistant.nix
+    ./hedgedoc.nix
     ./immich.nix
     ./linktree.nix
     ./mealie.nix
@@ -45,6 +46,20 @@
     pciutils
     alsa-utils
   ];
+
+  # boot.supportedFilesystems = [ "nfs" ];
+
+  # fileSystems."/mnt/media" = {
+  #   device = "nixdort:/media";
+  #   fsType = "nfs";
+  #   options = [
+  #     "x-systemd.automount"
+  #     "noauto"
+  #     "nofail"
+  #     "noexec"
+  #     "x-systemd.idle-timeout=600"
+  #   ];
+  # };
 
   services.xserver.videoDrivers = [ "modesetting" ];
 

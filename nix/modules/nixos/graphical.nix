@@ -16,8 +16,23 @@
     enableAppImageSupport = true;
   };
 
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
+  services.displayManager.ly = {
+    enable = true;
+    x11Support = false;
+    settings = {
+      animation = "matrix";
+      # animation = "dur_file";
+      dur_file_path = "${./blackhole-smooth-240x67.dur}";
+      bigclock = "en";
+      clear_password = true;
+      show_tty = true;
+      full_color = true;
+      text_in_center = true;
+      default_input = "password";
+      clock = "%a %b %d.%m.%Y %H:%M:%S";
+    };
+  };
+
   programs.niri.enable = true;
 
   services.power-profiles-daemon.enable = true;

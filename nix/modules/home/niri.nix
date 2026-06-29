@@ -22,13 +22,24 @@
     kdePackages.dolphin
     kdePackages.okular
     kdePackages.ark
+    kdePackages.breeze
   ];
+
+  home.pointerCursor = {
+    name = "Capitaine";
+    package = pkgs.capitaine-cursors;
+    gtk.enable = true;
+  };
 
   gtk = {
     enable = true;
     iconTheme = {
       name = "Papirus";
       package = pkgs.papirus-icon-theme;
+    };
+    cursorTheme = {
+      name = "Capitaine";
+      package = pkgs.capitaine-cursors;
     };
   };
 
@@ -61,6 +72,10 @@
     in
     {
       settings = {
+        cursor = {
+          theme = "breeze_cursors";
+          size = 26;
+        };
         environment = {
           ELECTRON_OZONE_PLATFORM_HINT = "auto";
         };
