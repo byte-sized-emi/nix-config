@@ -18,7 +18,7 @@
     environmentFile = config.sops.secrets."hedgeDoc.env".path;
     settings = {
       domain = config.my.services.hedgedoc.external.domain;
-      port = config.services.hedgedoc.settings.port;
+      port = config.my.services.hedgedoc.port;
       protocolUseSSL = true;
       urlAddPort = false;
       rateLimitUsingCloudflare = true;
