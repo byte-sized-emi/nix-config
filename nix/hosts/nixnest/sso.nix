@@ -91,11 +91,11 @@ in
             "tailnet"
             "git"
             "mealie_users"
-            "mealie_admins"
             "immich_users"
             "media"
-            "media_admins"
             "hedgedoc_users"
+            "media_admins"
+            "mealie_admins"
           ];
         };
         mika = {
@@ -120,7 +120,11 @@ in
             "sasha@sso.byte-sized.fyi"
             "sasha@byte-sized.fyi"
           ];
-          groups = [ "mealie_users" ];
+          groups = [
+            "tailnet"
+            "media"
+            "mealie_users"
+          ];
         };
       };
       systems.oauth2 = {

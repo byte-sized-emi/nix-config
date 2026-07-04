@@ -23,8 +23,11 @@
       urlAddPort = false;
       rateLimitUsingCloudflare = true;
       # Allow anonymous users to edit *only* when the note owner allows it.
+      email = false;
       allowAnonymous = false;
       allowAnonymousEdits = true;
+      csp.allowPDFEmbed = false;
+      csp.allowFraming = false;
 
       enableStatsApi = false;
       oauth2 = rec {
