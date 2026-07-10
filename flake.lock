@@ -491,7 +491,6 @@
         "noctalia-qs": "noctalia-qs",
         "quadlet-nix": "quadlet-nix",
         "secret-nix-config": "secret-nix-config",
-        "slippi-launcher": "slippi-launcher",
         "sops-nix": "sops-nix"
       }
     },
@@ -546,26 +545,6 @@
       "original": {
         "type": "git",
         "url": "file:./secret-nix-config"
-      }
-    },
-    "slippi-launcher": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765134536,
-        "narHash": "sha256-TH5S+b5q7+tXqDt4MqS8yYqBYL7C6jd1Uws37Z9X0mk=",
-        "owner": "byte-sized-emi",
-        "repo": "slippi-launcher-flake",
-        "rev": "875e043970ccf53031f10b6333e47f16f0421d84",
-        "type": "github"
-      },
-      "original": {
-        "owner": "byte-sized-emi",
-        "repo": "slippi-launcher-flake",
-        "type": "github"
       }
     },
     "sops-nix": {

@@ -18,10 +18,13 @@
 
   networking.hostId = "e8c8c66c";
 
+  # nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort'--target-host nixos@192.168.0.225 --extra-files
+
   environment.systemPackages = with pkgs; [
     git
     nano
     wget
+    efibootmgr
   ];
 
   boot.loader.systemd-boot.enable = lib.mkForce false;

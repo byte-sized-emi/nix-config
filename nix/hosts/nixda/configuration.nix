@@ -7,7 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.slippi-launcher.nixosModules.default
+    # inputs.slippi-launcher.nixosModules.default
   ]
   ++ (with flake.modules.nixos; [
     default

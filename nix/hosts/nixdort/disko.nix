@@ -1,37 +1,5 @@
-{ lib, pkgs, ... }:
-let
-  hddRaidConfig =
-    { mountpoint }:
-    {
-      type = "gpt";
-      partitions = {
-        zfs = {
-          size = "300G";
-          content = {
-            type = "zfs";
-            pool = "redundant_pool";
-          };
-        };
-        media = {
-          size = "100%";
-          content = {
-            type = "filesystem";
-            format = "ext4";
-            mountOptions = [ "noatime" ];
-            inherit mountpoint;
-          };
-        };
-      };
-    };
-in
 {
-  # nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort' --generate-hardware-config nixos-generate-config ./nix/hosts/nixdort/hardware-configuration.nix --target-host nixos@192.168.0.225
-  # nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort' --generate-hardware-config nixos-generate-config ./nix/hosts/nixdort/hardware-configuration.nix --target-host nixos@192.168.0.225 --phases install,reboot --disko-mode mount
-  fileSystems."/mnt/media".noCheck = lib.mkForce true;
-
-  # we don't really need the zfs pool to be mounted at boot time, so this might be unnecessary?
-  environment.systemPackages = with pkgs; [ mergerfs ];
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = [ "btrfs" ];
 
   # Disks:
   # - 250GB Boot SSD /dev/disk/by-id/wwn-0x500a07510c876ff4
@@ -63,9 +31,58 @@ in
             root = {
               size = "100%";
               content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
+                type = "luks";
+                name = "cryptroot";
+                settings = {
+                  allowDiscards = true;
+                };
+                content = {
+                  type = "filesystem";
+                  format = "ext4";
+                  extraArgs = [
+                    "-L"
+                    "cryptroot"
+                  ];
+                  mountpoint = "/";
+                };
+              };
+            };
+          };
+        };
+      };
+      hdd1 = {
+        type = "disk";
+        device = "/dev/disk/by-id/wwn-0x50014ee6053e7faf";
+        content = {
+          type = "gpt";
+          partitions = {
+            media = {
+              size = "100%";
+              content = {
+                type = "luks";
+                name = "crypt1";
+                settings = {
+                  keyFile = "/var/lib/luks/key:LABEL=cryptroot";
+                };
+              };
+            };
+          };
+        };
+      };
+      hdd2 = {
+        type = "disk";
+        device = "/dev/disk/by-id/wwn-0x50014ee2b6407d36";
+        content = {
+          type = "gpt";
+          partitions = {
+            media = {
+              size = "100%";
+              content = {
+                type = "luks";
+                name = "crypt2";
+                settings = {
+                  keyFile = "/var/lib/luks/key:LABEL=cryptroot";
+                };
               };
             };
           };
@@ -74,47 +91,50 @@ in
       smallhdd = {
         type = "disk";
         device = "/dev/disk/by-id/wwn-0x50014ee2b6346905";
-        content = hddRaidConfig { mountpoint = "/mnt/media1"; };
-      };
-      hdd1 = {
-        type = "disk";
-        device = "/dev/disk/by-id/wwn-0x50014ee6053e7faf";
-        content = hddRaidConfig { mountpoint = "/mnt/media2"; };
-
-      };
-      hdd2 = {
-        type = "disk";
-        device = "/dev/disk/by-id/wwn-0x50014ee2b6407d36";
-        content = hddRaidConfig { mountpoint = "/mnt/media3"; };
-      };
-      media = {
-        type = "filesystem";
-        device = "/mnt/media1:/mnt/media2:/mnt/media3";
         content = {
-          type = "filesystem";
-          format = "mergerfs";
-          mountpoint = "/mnt/media";
-          mountOptions = [
-            "defaults"
-            "noatime"
-            "cache.files=off"
-            "func.getattr=newest"
-            "category.create=pfrd"
-            "ignorepponrename=true"
-          ];
+          type = "gpt";
+          partitions = {
+            media = {
+              size = "100%";
+              content = {
+                type = "luks";
+                name = "mediarypt3";
+                settings = {
+                  keyFile = "/var/lib/luks/key:LABEL=cryptroot";
+                };
+                content = {
+                  type = "btrfs";
+                  extraArgs = [
+                    "-d"
+                    "raid5"
+                    "-m"
+                    "raid1"
+                    "/dev/mapper/crypt1"
+                    "/dev/mapper/crypt2"
+                  ];
+                  subvolumes = {
+                    "/backups" = {
+                      mountpoint = "/mnt/backups";
+                      mountOptions = [
+                        "defaults"
+                        "noatime"
+                        "nossd"
+                      ];
+                    };
+                    "/media" = {
+                      mountpoint = "/mnt/media";
+                      mountOptions = [
+                        "defaults"
+                        "noatime"
+                        "nossd"
+                      ];
+                    };
+                  };
+                };
+              };
+            };
+          };
         };
-      };
-    };
-    zpool = {
-      redundant_pool = {
-        type = "zpool";
-        mode = "raidz1";
-        rootFsOptions = {
-          compression = "zstd";
-          refreservation = "1G"; # reserve a gigabyte of space so the partition is never 100% full
-        };
-        mountpoint = "/mnt/raid";
-        datasets = { };
       };
     };
   };

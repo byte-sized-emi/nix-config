@@ -11,10 +11,10 @@
 
   programs.firefox.enable = true;
 
-  programs.slippi-launcher = {
-    enable = true;
-    enableAppImageSupport = true;
-  };
+  # programs.slippi-launcher = {
+  #   enable = false;
+  #   enableAppImageSupport = true;
+  # };
 
   services.displayManager.ly = {
     enable = true;

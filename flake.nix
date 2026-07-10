@@ -39,10 +39,10 @@
 
     niri.url = "github:sodiboo/niri-flake";
 
-    slippi-launcher = {
-      url = "github:byte-sized-emi/slippi-launcher-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # slippi-launcher = {
+    #   url = "github:byte-sized-emi/slippi-launcher-flake";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     blueprint = {
       url = "github:numtide/blueprint";
       inputs.nixpkgs.follows = "nixpkgs";
