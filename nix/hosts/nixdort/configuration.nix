@@ -14,6 +14,7 @@
     flake.modules.nixos.auto-update
     inputs.disko.nixosModules.disko
     ./disko.nix
+    ./node-exporter.nix
   ];
 
   networking.hostId = "e8c8c66c";
