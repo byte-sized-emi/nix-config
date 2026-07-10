@@ -19,6 +19,9 @@ The MCP nixos tool can search for Home Manager and NixOS packages / options. Mak
 
 ## Commands
 
+Do not execute commands on your own, only tell the user which commands you want them to execute.
+Subagents especially cannot execute commands at all.
+
 ### Nix
 
 | Command | Description |

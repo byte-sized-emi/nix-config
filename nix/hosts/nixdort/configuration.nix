@@ -15,6 +15,7 @@
     inputs.disko.nixosModules.disko
     ./disko.nix
     ./node-exporter.nix
+    ./smartd.nix
   ];
 
   networking.hostId = "e8c8c66c";

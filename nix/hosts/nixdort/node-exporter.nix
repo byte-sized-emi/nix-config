@@ -22,4 +22,9 @@
       service.grace = 30;
     };
   };
+
+  systemd.services.fluent-bit.serviceConfig = {
+    ProcSubset = "all";
+    ProtectProc = "invisible";
+  };
 }
