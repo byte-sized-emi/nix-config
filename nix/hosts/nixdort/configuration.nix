@@ -18,7 +18,7 @@
 
   networking.hostId = "e8c8c66c";
 
-  # nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort'--target-host nixos@192.168.0.225 --extra-files
+  # sudo nix run github:nix-community/nixos-anywhere -- --flake '.#nixdort' --target-host nixos@192.168.0.226 --extra-files ./tmp --disk-encryption-keys /var/lib/luks/key ./luks-key --phases kexec,disko,install
 
   environment.systemPackages = with pkgs; [
     git

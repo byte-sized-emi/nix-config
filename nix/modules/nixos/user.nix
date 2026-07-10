@@ -22,6 +22,8 @@
       cloudflared
       bind
     ];
+    # this is only the initial password, I change this on every host. Don't @ me.
+    initialHashedPassword = "$y$j9T$07XdSvsI38i10SFC4x9.u.$QrlTjcpGUYAxWOAfX9vkz75hNnARHgkTLxO5R8.znZA";
   };
 
   environment.pathsToLink = [ "/share/zsh" ];
