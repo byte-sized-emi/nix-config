@@ -5,7 +5,7 @@
       pipeline = {
         inputs = [
           {
-            name = "node_exporter";
+            name = "node_exporter_metrics";
             tag = "node_metrics";
             scrape_interval = 60;
           }
