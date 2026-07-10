@@ -4,9 +4,9 @@
   # Stage-2 crypttab for media LUKS — root is mounted, keyfile accessible.
   # Root LUKS (cryptroot) stays in initrd with password, handled by disko.
   environment.etc."crypttab".text = ''
-    crypt1 /dev/disk/by-id/wwn-0x50014ee6053e7faf-part1 /var/lib/luks/key luks
-    crypt2 /dev/disk/by-id/wwn-0x50014ee2b6407d36-part1 /var/lib/luks/key luks
-    crypt3 /dev/disk/by-id/wwn-0x50014ee2b6346905-part1 /var/lib/luks/key luks
+    crypt1 /dev/disk/by-id/wwn-0x50014ee6053e7faf-part1 /var/luks/key luks
+    crypt2 /dev/disk/by-id/wwn-0x50014ee2b6407d36-part1 /var/luks/key luks
+    crypt3 /dev/disk/by-id/wwn-0x50014ee2b6346905-part1 /var/luks/key luks
   '';
 
   # Disks:
