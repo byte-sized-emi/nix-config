@@ -13,7 +13,7 @@
         outputs = [
           {
             name = "prometheus_exporter";
-            amtch = "node_metrics";
+            match = "node_metrics";
             host = "0.0.0.0";
             port = 2021;
           }
