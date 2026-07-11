@@ -199,6 +199,8 @@ in
           originUrl = [
             "https://${config.settings.media.service_domain}/sso/OID/start/kanidm"
             "https://${config.settings.media.service_domain}/sso/OID/redirect/kanidm"
+            "https://media.byte-sized.fyi/sso/OID/start/kanidm"
+            "https://media.byte-sized.fyi/sso/OID/redirect/kanidm"
           ];
           originLanding = "https://${config.settings.media.service_domain}/sso/OID/start/kanidm";
           basicSecretFile = config.sops.secrets."kanidm/jellyfinOauthSecret".path;
