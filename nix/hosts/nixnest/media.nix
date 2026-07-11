@@ -131,6 +131,10 @@ in
     };
   };
 
+  services.caddy.virtualHosts."media.byte-sized.fyi".extraConfig = ''
+    reverse_proxy localhost:${toString config.my.services.jellyfin.port}
+  '';
+
   services.prometheus.scrapeConfigs = [
     {
       job_name = "qui";
