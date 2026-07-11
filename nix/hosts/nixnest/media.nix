@@ -131,6 +131,12 @@ in
     };
   };
 
+  # this is the only service (currently), which is forwarded through a VPS - not cloudflare.
+  # because of this, I don't have a premade option for it, and just need to do it manually.
+  services.caddy.virtualHosts."media.byte-sized.fyi".extraConfig = ''
+    reverse_proxy localhost:${config.my.services.jellyfin.port}
+  '';
+
   services.prometheus.scrapeConfigs = [
     {
       job_name = "qui";
