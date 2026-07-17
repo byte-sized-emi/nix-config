@@ -13,7 +13,7 @@
     flake.modules.nixos.syncthing
     flake.modules.nixos.ssh-server
     flake.modules.nixos.server-default
-    flake.modules.nixos.cache-beacon
+    # flake.modules.nixos.cache-beacon
     # ./homeassistant.nix
     ./atuin.nix
     ./backups.nix

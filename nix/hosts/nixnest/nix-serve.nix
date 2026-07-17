@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 {
   my.services.nix-serve = {
-    enable = true;
+    enable = false;
     name = "Nix Serve";
     port = config.services.nix-serve.port;
     description = "Nix package repository and file server";
@@ -12,7 +12,7 @@
   };
 
   services.nix-serve = {
-    enable = true;
+    enable = false;
     package = pkgs.nix-serve-ng;
     port = 7384;
     openFirewall = false;
