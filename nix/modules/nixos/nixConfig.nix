@@ -8,6 +8,7 @@
       max-substitution-jobs = 128;
       http-connections = 128;
       max-jobs = "auto";
+      trusted-users = [ "@wheel" ];
       substituters = [
         "https://niri.cachix.org"
       ];

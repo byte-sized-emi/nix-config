@@ -12,6 +12,7 @@
     flake.modules.nixos.ssh-server
     flake.modules.nixos.tailscale-server
     flake.modules.nixos.auto-update
+    flake.modules.nixos.server-default
     inputs.disko.nixosModules.disko
     ./disko.nix
     ./node-exporter.nix

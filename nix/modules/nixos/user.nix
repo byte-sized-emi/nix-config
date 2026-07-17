@@ -18,7 +18,6 @@
     packages = with pkgs; [
       tree
       kanidm_1_10 # also update hosts/nixnest/sso.nix
-      cloudflared
       bind
     ];
     # this is only the initial password, I change this on every host. Don't @ me.
@@ -64,10 +63,8 @@
   programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
-    wget
     pulseaudio
-    pciutils
-    alsa-utils
+    wget
     nano
   ];
 }

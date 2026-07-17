@@ -17,6 +17,7 @@
     syncthing
     auto-update
     vpn
+    cache-beacon
   ]);
 
   # secure boot config

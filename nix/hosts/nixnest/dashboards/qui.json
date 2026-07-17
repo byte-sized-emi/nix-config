@@ -5,18 +5,22 @@
     "name": "adsch9h",
     "namespace": "default",
     "uid": "4ade192d-4170-48ed-af54-6a3876acf9da",
-    "resourceVersion": "1780679992980989",
-    "generation": 2,
+    "resourceVersion": "1780901942559018",
+    "generation": 3,
     "creationTimestamp": "2026-06-03T19:38:39Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "4112647524798464"
     },
     "annotations": {
       "grafana.app/createdBy": "user:deoh3tdllqq68f",
-      "grafana.app/folder": "",
-      "grafana.app/saved-from-ui": "Grafana v13.0.1+security-01 (NA)",
-      "grafana.app/updatedBy": "user:deoh3tdllqq68f",
-      "grafana.app/updatedTimestamp": "2026-06-05T17:19:52Z"
+      "grafana.app/managedBy": "classic-file-provisioning",
+      "grafana.app/managerId": "default",
+      "grafana.app/sourceChecksum": "8077afb601d2f12bbe5a3100fe93ff70",
+      "grafana.app/sourcePath": "/nix/store/n47n4qj8dp4a8ccpwn5wkslz2zycwz82-dashboards/qui.json",
+      "grafana.app/sourceTimestamp": "1000",
+      "grafana.app/updatedBy": "access-policy:service",
+      "grafana.app/updatedTimestamp": "2026-06-08T06:59:02Z",
+      "grafana.app/folder": ""
     }
   },
   "spec": {
@@ -24,20 +28,20 @@
       {
         "kind": "AnnotationQuery",
         "spec": {
-          "query": {
-            "kind": "DataQuery",
-            "group": "grafana",
-            "version": "v0",
-            "datasource": {
-              "name": "-- Grafana --"
-            },
-            "spec": {}
-          },
+          "builtIn": true,
           "enable": true,
           "hide": true,
           "iconColor": "rgba(0, 211, 255, 1)",
           "name": "Annotations & Alerts",
-          "builtIn": true
+          "query": {
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "group": "grafana",
+            "kind": "DataQuery",
+            "spec": {},
+            "version": "v0"
+          }
         }
       }
     ],
@@ -47,10 +51,6 @@
       "panel-1": {
         "kind": "Panel",
         "spec": {
-          "id": 1,
-          "title": "Qui Status",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -58,35 +58,76 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "builder",
                         "expr": "up{job=\"qui\"}",
                         "instant": false,
                         "legendFormat": "__auto",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 1,
+          "links": [],
+          "title": "Qui Status",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "mappings": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "red",
+                          "index": 1,
+                          "text": "Down"
+                        },
+                        "1": {
+                          "color": "green",
+                          "index": 0,
+                          "text": "Up"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
               "options": {
                 "colorMode": "value",
                 "graphMode": "none",
@@ -101,56 +142,15 @@
                 "showPercentChange": false,
                 "textMode": "auto",
                 "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "mappings": [
-                    {
-                      "type": "value",
-                      "options": {
-                        "0": {
-                          "text": "Down",
-                          "color": "red",
-                          "index": 1
-                        },
-                        "1": {
-                          "text": "Up",
-                          "color": "green",
-                          "index": 0
-                        }
-                      }
-                    }
-                  ],
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds"
-                  }
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-10": {
         "kind": "Panel",
         "spec": {
-          "id": 10,
-          "title": "upload speed",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -158,35 +158,57 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "builder",
                         "expr": "rate(qbittorrent_session_upload_bytes{job=\"qui\", instance_name=\"$instance_name\"}[$__rate_interval])",
                         "instant": false,
                         "legendFormat": "__auto",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 10,
+          "links": [],
+          "title": "upload speed",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "fieldMinMax": false,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "binBps"
+                },
+                "overrides": []
+              },
               "options": {
                 "colorMode": "value",
                 "graphMode": "area",
@@ -201,37 +223,15 @@
                 "showPercentChange": false,
                 "textMode": "auto",
                 "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "binBps",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "fieldMinMax": false
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-11": {
         "kind": "Panel",
         "spec": {
-          "id": 11,
-          "title": "download speed",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -239,35 +239,57 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "builder",
                         "expr": "rate(qbittorrent_session_download_bytes{job=\"qui\", instance_name=\"$instance_name\"}[$__rate_interval])",
                         "instant": false,
                         "legendFormat": "__auto",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 11,
+          "links": [],
+          "title": "download speed",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "fieldMinMax": false,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "binBps"
+                },
+                "overrides": []
+              },
               "options": {
                 "colorMode": "value",
                 "graphMode": "area",
@@ -282,37 +304,15 @@
                 "showPercentChange": false,
                 "textMode": "auto",
                 "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "binBps",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "fieldMinMax": false
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-12": {
         "kind": "Panel",
         "spec": {
-          "id": 12,
-          "title": "Connection Status",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -320,35 +320,76 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "builder",
                         "expr": "qbittorrent_instance_connection_status{job=\"qui\", instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "__auto",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 12,
+          "links": [],
+          "title": "Connection Status",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "mappings": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "red",
+                          "index": 1,
+                          "text": "Down"
+                        },
+                        "1": {
+                          "color": "green",
+                          "index": 0,
+                          "text": "Up"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
               "options": {
                 "colorMode": "value",
                 "graphMode": "none",
@@ -363,56 +404,15 @@
                 "showPercentChange": false,
                 "textMode": "auto",
                 "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "mappings": [
-                    {
-                      "type": "value",
-                      "options": {
-                        "0": {
-                          "text": "Down",
-                          "color": "red",
-                          "index": 1
-                        },
-                        "1": {
-                          "text": "Up",
-                          "color": "green",
-                          "index": 0
-                        }
-                      }
-                    }
-                  ],
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds"
-                  }
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-13": {
         "kind": "Panel",
         "spec": {
-          "id": 13,
-          "title": "Qui Timeline",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -420,35 +420,84 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "builder",
                         "expr": "up{job=\"qui\"}",
                         "instant": false,
                         "legendFormat": "state",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 13,
+          "links": [],
+          "title": "Qui Timeline",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "state-timeline",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisPlacement": "auto",
+                    "fillOpacity": 70,
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineWidth": 0,
+                    "spanNulls": false
+                  },
+                  "mappings": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "red",
+                          "index": 1,
+                          "text": "down"
+                        },
+                        "1": {
+                          "color": "green",
+                          "index": 0,
+                          "text": "up"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
               "options": {
                 "alignValue": "center",
                 "annotations": {
@@ -468,64 +517,15 @@
                   "mode": "single",
                   "sort": "none"
                 }
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "mappings": [
-                    {
-                      "type": "value",
-                      "options": {
-                        "0": {
-                          "text": "down",
-                          "color": "red",
-                          "index": 1
-                        },
-                        "1": {
-                          "text": "up",
-                          "color": "green",
-                          "index": 0
-                        }
-                      }
-                    }
-                  ],
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "palette-classic"
-                  },
-                  "custom": {
-                    "axisPlacement": "auto",
-                    "fillOpacity": 70,
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineWidth": 0,
-                    "spanNulls": false
-                  }
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-15": {
         "kind": "Panel",
         "spec": {
-          "id": 15,
-          "title": "ratio",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -533,13 +533,13 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "builder",
                         "exemplar": false,
@@ -547,22 +547,57 @@
                         "instant": false,
                         "legendFormat": "qbittorrent_session_upload_bytes rate",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 15,
+          "links": [],
+          "title": "ratio",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "fixedColor": "red",
+                    "mode": "thresholds",
+                    "seriesBy": "last"
+                  },
+                  "fieldMinMax": false,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 0.8
+                      },
+                      {
+                        "color": "green",
+                        "value": 1
+                      },
+                      {
+                        "color": "#6ED0E0",
+                        "value": 1.2
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
               "options": {
                 "colorMode": "value",
                 "graphMode": "area",
@@ -577,50 +612,15 @@
                 "showPercentChange": false,
                 "textMode": "auto",
                 "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "red"
-                      },
-                      {
-                        "value": 0.8,
-                        "color": "#EAB839"
-                      },
-                      {
-                        "value": 1,
-                        "color": "green"
-                      },
-                      {
-                        "value": 1.2,
-                        "color": "#6ED0E0"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds",
-                    "fixedColor": "red",
-                    "seriesBy": "last"
-                  },
-                  "fieldMinMax": false
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-2": {
         "kind": "Panel",
         "spec": {
-          "id": 2,
-          "title": "Connection Timeline",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -628,35 +628,85 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "builder",
                         "expr": "qbittorrent_instance_connection_status{job=\"qui\", instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "__auto",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 2,
+          "links": [],
+          "title": "Connection Timeline",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "state-timeline",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisPlacement": "auto",
+                    "fillOpacity": 70,
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineWidth": 0,
+                    "spanNulls": false
+                  },
+                  "displayName": "state",
+                  "mappings": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "red",
+                          "index": 1,
+                          "text": "down"
+                        },
+                        "1": {
+                          "color": "green",
+                          "index": 0,
+                          "text": "up"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
               "options": {
                 "alignValue": "center",
                 "annotations": {
@@ -676,65 +726,15 @@
                   "mode": "single",
                   "sort": "none"
                 }
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "displayName": "state",
-                  "mappings": [
-                    {
-                      "type": "value",
-                      "options": {
-                        "0": {
-                          "text": "down",
-                          "color": "red",
-                          "index": 1
-                        },
-                        "1": {
-                          "text": "up",
-                          "color": "green",
-                          "index": 0
-                        }
-                      }
-                    }
-                  ],
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "palette-classic"
-                  },
-                  "custom": {
-                    "axisPlacement": "auto",
-                    "fillOpacity": 70,
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineWidth": 0,
-                    "spanNulls": false
-                  }
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-3": {
         "kind": "Panel",
         "spec": {
-          "id": 3,
-          "title": "Alltime download",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -742,64 +742,40 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "expr": "qbittorrent_alltime_download_bytes{job=\"qui\",instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "{{__name__}}",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 3,
+          "links": [],
+          "title": "Alltime download",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
-              "options": {
-                "annotations": {
-                  "clustering": -1,
-                  "multiLane": false
-                },
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "bytes",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      }
-                    ]
-                  },
                   "color": {
                     "mode": "palette-classic"
                   },
@@ -836,21 +812,45 @@
                     "thresholdsStyle": {
                       "mode": "off"
                     }
-                  }
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "bytes"
                 },
                 "overrides": []
+              },
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-4": {
         "kind": "Panel",
         "spec": {
-          "id": 4,
-          "title": "Alltime upload",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -858,35 +858,60 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "expr": "qbittorrent_alltime_upload_bytes{job=\"qui\",instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "__auto",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 4,
+          "links": [],
+          "title": "Alltime upload",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "bytes"
+                },
+                "overrides": []
+              },
               "options": {
                 "colorMode": "value",
                 "graphMode": "area",
@@ -901,40 +926,15 @@
                 "showPercentChange": false,
                 "textMode": "auto",
                 "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "bytes",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds"
-                  }
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-5": {
         "kind": "Panel",
         "spec": {
-          "id": 5,
-          "title": "Torrents States",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -942,133 +942,106 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "expr": "qbittorrent_torrents_downloading{job=\"qui\",instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "{{__name__}}",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 },
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "expr": "qbittorrent_torrents_seeding{job=\"qui\",instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "{{__name__}}",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "B",
-                    "hidden": false
+                    "refId": "B"
                   }
                 },
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "expr": "qbittorrent_torrents_error{job=\"qui\",instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "{{__name__}}",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "C",
-                    "hidden": false
+                    "refId": "C"
                   }
                 },
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "expr": "qbittorrent_torrents_paused{job=\"qui\",instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "{{__name__}}",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "D",
-                    "hidden": false
+                    "refId": "D"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 5,
+          "links": [],
+          "title": "Torrents States",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
-              "options": {
-                "annotations": {
-                  "clustering": -1,
-                  "multiLane": false
-                },
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
               "fieldConfig": {
                 "defaults": {
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
                   "color": {
                     "mode": "palette-classic"
                   },
@@ -1105,57 +1078,23 @@
                     "thresholdsStyle": {
                       "mode": "off"
                     }
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
                   }
                 },
                 "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-6": {
-        "kind": "Panel",
-        "spec": {
-          "id": 6,
-          "title": "Alltime upload",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "${DS_PROMETHEUS}"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "qbittorrent_alltime_upload_bytes{job=\"qui\",instance_name=\"$instance_name\"}",
-                        "instant": false,
-                        "legendFormat": "{{__name__}}",
-                        "range": true
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.0.1+security-01",
-            "spec": {
+              },
               "options": {
                 "annotations": {
                   "clustering": -1,
@@ -1165,29 +1104,66 @@
                   "calcs": [],
                   "displayMode": "list",
                   "placement": "bottom",
-                  "showLegend": false
+                  "showLegend": true
                 },
                 "tooltip": {
                   "hideZeros": false,
                   "mode": "single",
                   "sort": "none"
                 }
-              },
+              }
+            },
+            "version": "13.0.2"
+          }
+        }
+      },
+      "panel-6": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "qbittorrent_alltime_upload_bytes{job=\"qui\",instance_name=\"$instance_name\"}",
+                        "instant": false,
+                        "legendFormat": "{{__name__}}",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 6,
+          "links": [],
+          "title": "Alltime upload",
+          "vizConfig": {
+            "group": "timeseries",
+            "kind": "VizConfig",
+            "spec": {
               "fieldConfig": {
                 "defaults": {
-                  "unit": "bytes",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      }
-                    ]
-                  },
                   "color": {
-                    "mode": "fixed",
-                    "fixedColor": "red"
+                    "fixedColor": "red",
+                    "mode": "fixed"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -1222,21 +1198,45 @@
                     "thresholdsStyle": {
                       "mode": "off"
                     }
-                  }
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "bytes"
                 },
                 "overrides": []
+              },
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-7": {
         "kind": "Panel",
         "spec": {
-          "id": 7,
-          "title": "Alltime download",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -1244,35 +1244,56 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "expr": "qbittorrent_alltime_download_bytes{job=\"qui\",instance_name=\"$instance_name\"}",
                         "instant": false,
                         "legendFormat": "__auto",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 7,
+          "links": [],
+          "title": "Alltime download",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "bytes"
+                },
+                "overrides": []
+              },
               "options": {
                 "colorMode": "value",
                 "graphMode": "area",
@@ -1287,36 +1308,15 @@
                 "showPercentChange": false,
                 "textMode": "auto",
                 "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "bytes",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds"
-                  }
-                },
-                "overrides": []
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       },
       "panel-8": {
         "kind": "Panel",
         "spec": {
-          "id": 8,
-          "title": "upload speed",
-          "description": "",
-          "links": [],
           "data": {
             "kind": "QueryGroup",
             "spec": {
@@ -1324,13 +1324,13 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "hidden": false,
                     "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
                       "datasource": {
                         "name": "${DS_PROMETHEUS}"
                       },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
                       "spec": {
                         "editorMode": "builder",
                         "exemplar": false,
@@ -1338,54 +1338,30 @@
                         "instant": false,
                         "legendFormat": "qbittorrent_session_upload_bytes rate",
                         "range": true
-                      }
+                      },
+                      "version": "v0"
                     },
-                    "refId": "A",
-                    "hidden": false
+                    "refId": "A"
                   }
                 }
               ],
-              "transformations": [],
-              "queryOptions": {}
+              "queryOptions": {},
+              "transformations": []
             }
           },
+          "description": "",
+          "id": 8,
+          "links": [],
+          "title": "upload speed",
           "vizConfig": {
-            "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.1+security-01",
+            "kind": "VizConfig",
             "spec": {
-              "options": {
-                "annotations": {
-                  "clustering": -1,
-                  "multiLane": false
-                },
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "binBps",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      }
-                    ]
-                  },
                   "color": {
-                    "mode": "fixed",
-                    "fixedColor": "red"
+                    "fixedColor": "red",
+                    "mode": "fixed"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -1421,57 +1397,20 @@
                       "mode": "off"
                     }
                   },
-                  "fieldMinMax": false
+                  "fieldMinMax": false,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "binBps"
                 },
                 "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-9": {
-        "kind": "Panel",
-        "spec": {
-          "id": 9,
-          "title": "download speed",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "${DS_PROMETHEUS}"
-                      },
-                      "spec": {
-                        "editorMode": "builder",
-                        "expr": "rate(qbittorrent_session_download_bytes{job=\"qui\", instance_name=\"$instance_name\"}[$__rate_interval])",
-                        "instant": false,
-                        "legendFormat": "qbittorrent_session_download_bytes rate",
-                        "range": true
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.0.1+security-01",
-            "spec": {
+              },
               "options": {
                 "annotations": {
                   "clustering": -1,
@@ -1488,23 +1427,56 @@
                   "mode": "single",
                   "sort": "none"
                 }
-              },
+              }
+            },
+            "version": "13.0.2"
+          }
+        }
+      },
+      "panel-9": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "builder",
+                        "expr": "rate(qbittorrent_session_download_bytes{job=\"qui\", instance_name=\"$instance_name\"}[$__rate_interval])",
+                        "instant": false,
+                        "legendFormat": "qbittorrent_session_download_bytes rate",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 9,
+          "links": [],
+          "title": "download speed",
+          "vizConfig": {
+            "group": "timeseries",
+            "kind": "VizConfig",
+            "spec": {
               "fieldConfig": {
                 "defaults": {
-                  "unit": "binBps",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
                   "color": {
                     "mode": "palette-classic"
                   },
@@ -1542,11 +1514,43 @@
                       "mode": "off"
                     }
                   },
-                  "fieldMinMax": false
+                  "fieldMinMax": false,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "binBps"
                 },
                 "overrides": []
+              },
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
               }
-            }
+            },
+            "version": "13.0.2"
           }
         }
       }
@@ -1558,7 +1562,6 @@
           {
             "kind": "RowsLayoutRow",
             "spec": {
-              "title": "Qui General",
               "collapse": false,
               "layout": {
                 "kind": "GridLayout",
@@ -1567,43 +1570,39 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 0,
-                        "y": 0,
-                        "width": 3,
-                        "height": 6,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-1"
-                        }
+                        },
+                        "height": 6,
+                        "width": 3,
+                        "x": 0,
+                        "y": 0
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 3,
-                        "y": 0,
-                        "width": 9,
-                        "height": 6,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-13"
-                        }
+                        },
+                        "height": 6,
+                        "width": 9,
+                        "x": 3,
+                        "y": 0
                       }
                     }
                   ]
                 }
-              }
+              },
+              "title": "Qui General"
             }
           },
           {
             "kind": "RowsLayoutRow",
             "spec": {
-              "title": "Instance specific",
               "collapse": false,
-              "repeat": {
-                "mode": "variable",
-                "value": "instance_name"
-              },
               "layout": {
                 "kind": "GridLayout",
                 "spec": {
@@ -1611,162 +1610,167 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 0,
-                        "y": 0,
-                        "width": 3,
-                        "height": 6,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-12"
-                        }
+                        },
+                        "height": 6,
+                        "width": 3,
+                        "x": 0,
+                        "y": 0
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 3,
-                        "y": 0,
-                        "width": 9,
-                        "height": 6,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-2"
-                        }
+                        },
+                        "height": 6,
+                        "width": 9,
+                        "x": 3,
+                        "y": 0
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
-                        "y": 0,
-                        "width": 12,
-                        "height": 6,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-5"
-                        }
+                        },
+                        "height": 6,
+                        "width": 12,
+                        "x": 12,
+                        "y": 0
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 0,
-                        "y": 6,
-                        "width": 10,
-                        "height": 8,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-15"
-                        }
+                        },
+                        "height": 8,
+                        "width": 10,
+                        "x": 0,
+                        "y": 6
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 10,
-                        "y": 6,
-                        "width": 7,
-                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-7"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 17,
-                        "y": 6,
-                        "width": 7,
+                        },
                         "height": 4,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-10"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
+                        "width": 7,
                         "x": 10,
-                        "y": 10,
-                        "width": 7,
-                        "height": 4,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-11"
-                        }
+                        "y": 6
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 17,
-                        "y": 10,
-                        "width": 7,
-                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-4"
-                        }
+                        },
+                        "height": 4,
+                        "width": 7,
+                        "x": 17,
+                        "y": 6
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 0,
-                        "y": 14,
-                        "width": 12,
-                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-11"
+                        },
+                        "height": 4,
+                        "width": 7,
+                        "x": 10,
+                        "y": 10
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-10"
+                        },
+                        "height": 4,
+                        "width": 7,
+                        "x": 17,
+                        "y": 10
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-3"
-                        }
+                        },
+                        "height": 8,
+                        "width": 12,
+                        "x": 0,
+                        "y": 14
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
-                        "y": 14,
-                        "width": 12,
-                        "height": 8,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-6"
-                        }
+                        },
+                        "height": 8,
+                        "width": 12,
+                        "x": 12,
+                        "y": 14
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 0,
-                        "y": 22,
-                        "width": 12,
-                        "height": 8,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-9"
-                        }
+                        },
+                        "height": 8,
+                        "width": 12,
+                        "x": 0,
+                        "y": 22
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
-                        "y": 22,
-                        "width": 12,
-                        "height": 8,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-8"
-                        }
+                        },
+                        "height": 8,
+                        "width": 12,
+                        "x": 12,
+                        "y": 22
                       }
                     }
                   ]
                 }
-              }
+              },
+              "repeat": {
+                "mode": "variable",
+                "value": "instance_name"
+              },
+              "title": "Instance specific"
             }
           }
         ]
@@ -1777,9 +1781,6 @@
     "preload": false,
     "tags": ["torrent"],
     "timeSettings": {
-      "timezone": "browser",
-      "from": "now-7d",
-      "to": "now",
       "autoRefresh": "auto",
       "autoRefreshIntervals": [
         "5s",
@@ -1793,63 +1794,66 @@
         "2h",
         "1d"
       ],
+      "fiscalYearStartMonth": 0,
+      "from": "now-7d",
       "hideTimepicker": false,
-      "fiscalYearStartMonth": 0
+      "timezone": "browser",
+      "to": "now"
     },
     "title": "Torrents",
     "variables": [
       {
         "kind": "QueryVariable",
         "spec": {
-          "name": "instance_name",
+          "allowCustomValue": false,
           "current": {
             "text": "Main",
             "value": "Main"
           },
-          "label": "Instance Name",
+          "definition": "label_values(qbittorrent_instance_connection_status,instance_name)",
           "hide": "dontHide",
-          "refresh": "onDashboardLoad",
-          "skipUrlSync": false,
+          "includeAll": false,
+          "label": "Instance Name",
+          "multi": false,
+          "name": "instance_name",
+          "options": [],
           "query": {
-            "kind": "DataQuery",
-            "group": "prometheus",
-            "version": "v0",
             "datasource": {
               "name": "${DS_PROMETHEUS}"
             },
+            "group": "prometheus",
+            "kind": "DataQuery",
             "spec": {
               "qryType": 1,
               "query": "label_values(qbittorrent_instance_connection_status,instance_name)",
               "refId": "PrometheusVariableQueryEditor-VariableQuery"
-            }
+            },
+            "version": "v0"
           },
+          "refresh": "onDashboardLoad",
           "regex": "",
           "regexApplyTo": "value",
-          "sort": "alphabeticalAsc",
-          "definition": "label_values(qbittorrent_instance_connection_status,instance_name)",
-          "options": [],
-          "multi": false,
-          "includeAll": false,
-          "allowCustomValue": false
+          "skipUrlSync": false,
+          "sort": "alphabeticalAsc"
         }
       },
       {
         "kind": "DatasourceVariable",
         "spec": {
-          "name": "DS_PROMETHEUS",
-          "pluginId": "prometheus",
-          "refresh": "onDashboardLoad",
-          "regex": "",
+          "allowCustomValue": true,
           "current": {
             "text": "Prometheus",
             "value": "PBFA97CFB590B2093"
           },
-          "options": [],
-          "multi": false,
-          "includeAll": false,
           "hide": "dontHide",
-          "skipUrlSync": false,
-          "allowCustomValue": true
+          "includeAll": false,
+          "multi": false,
+          "name": "DS_PROMETHEUS",
+          "options": [],
+          "pluginId": "prometheus",
+          "refresh": "onDashboardLoad",
+          "regex": "",
+          "skipUrlSync": false
         }
       }
     ]

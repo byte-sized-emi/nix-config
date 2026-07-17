@@ -52,6 +52,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     secret-nix-config.url = "git+file:./secret-nix-config";
+    nix-cache-beacon = {
+      url = "github:adisbladis/nix-cache-beacon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
