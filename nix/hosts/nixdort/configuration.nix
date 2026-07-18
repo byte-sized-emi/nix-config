@@ -15,6 +15,7 @@
     flake.modules.nixos.server-default
     inputs.disko.nixosModules.disko
     ./disko.nix
+    ./data.nix
     ./node-exporter.nix
     ./smartd.nix
   ];
@@ -36,30 +37,6 @@
     efiSupport = true;
     configurationLimit = 7;
   };
-
-  services.nfs.server = {
-    enable = true;
-    exports = ''
-      /mnt/media 100.64.0.0/10(rw,sync,fsid=0,no_subtree_check) fd7a:115c:a1e0::/48(rw,sync,fsid=0,no_subtree_check)
-    '';
-  };
-
-  users.users.media = {
-    uid = 311;
-    group = "media";
-  };
-
-  users.groups.media = {
-    gid = 311;
-    members = [
-      "media"
-      "emilia"
-    ];
-  };
-
-  # TODO:
-  # - monotoring, esp. for ZFS / the disks
-  # - smartd
 
   system.stateVersion = "26.11";
 }

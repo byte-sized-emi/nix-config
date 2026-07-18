@@ -272,6 +272,7 @@
           "Mod+Plus" = action-with-arg "set-column-width" "+10%";
         };
         input = {
+          keyboard.xkb.layout = "de";
           touchpad = {
             tap = true;
             dwt = true;

@@ -19,6 +19,7 @@
     ./backups.nix
     ./beeper.nix
     ./certs.nix
+    ./data.nix
     ./dawarich.nix
     ./forgejo.nix
     ./hedgedoc.nix
@@ -48,20 +49,6 @@
     pciutils
     alsa-utils
   ];
-
-  # boot.supportedFilesystems = [ "nfs" ];
-
-  # fileSystems."/mnt/media" = {
-  #   device = "nixdort:/media";
-  #   fsType = "nfs";
-  #   options = [
-  #     "x-systemd.automount"
-  #     "noauto"
-  #     "nofail"
-  #     "noexec"
-  #     "x-systemd.idle-timeout=600"
-  #   ];
-  # };
 
   services.xserver.videoDrivers = [ "modesetting" ];
 
