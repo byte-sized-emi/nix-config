@@ -29,7 +29,7 @@
     shellAliases = {
       update = "nixos-rebuild switch --sudo";
       update-test = "nixos-rebuild test --sudo";
-      ls = "eza";
+      ls = "eza -M";
       cat = "bat";
       # for opening a directory in the current zed window
       zopen = "zeditor -r";
