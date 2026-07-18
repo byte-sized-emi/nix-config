@@ -124,7 +124,7 @@
                       ];
                     };
                     "/media" = {
-                      mountpoint = "/mnt/media";
+                      mountpoint = "/export/media";
                       mountOptions = [
                         "defaults"
                         "noatime"
