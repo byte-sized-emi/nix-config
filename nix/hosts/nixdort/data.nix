@@ -8,9 +8,14 @@
 
   services.nfs.server = {
     enable = true;
-    exports = ''
-      /export       100.64.0.0/10(rw,sync,fsid=root,no_subtree_check,insecure) fd7a:115c:a1e0::/48(rw,sync,fsid=root,no_subtree_check,insecure)
-      /export/media 100.64.0.0/10(rw,sync,fsid=2,no_subtree_check,insecure) fd7a:115c:a1e0::/48(rw,sync,fsid=2,no_subtree_check,insecure)
+    exports =
+    let
+      # insecure means "allow non-privileged source ports"
+      defaultOptions = "rw,sync,no_subtree_check,insecure";
+      mediaOptions = "${defaultOptions},all_squash,anonuid=311,anongid=311";
+    in ''
+      /export       100.64.0.0/10(${defaultOptions},fsid=root) fd7a:115c:a1e0::/48(${defaultOptions},fsid=root)
+      /export/media 100.64.0.0/10(${mediaOptions},fsid=2) fd7a:115c:a1e0::/48(${mediaOptions},fsid=2)
     '';
   };
 
