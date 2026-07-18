@@ -12,7 +12,7 @@ let
   qbittorrentPath = "${stackPath}/qbittorrent";
   gluetunPath = "${stackPath}/gluetun";
   quiPath = "${stackPath}/qui";
-  dataPath = "/data";
+  dataPath = "/mnt/media";
   jellyfinPort = 8096;
   qbittorrentPort = 8097;
   sonarrPort = 8989;
@@ -60,7 +60,6 @@ in
     "d ${jellyfinPath}/cache        0770 media media"
 
     # dataPath is now mounted, which makes this scary
-    # - see nix/hosts/nixnest/hardware-configuration.nix for the mount
     # "d ${dataPath}/torrents/books   0775 media media"
     # "d ${dataPath}/torrents/movies  0775 media media"
     # "d ${dataPath}/torrents/music   0775 media media"
@@ -72,7 +71,7 @@ in
   ];
 
   # TRaSH guides recommended folder structure:
-  # /data
+  # /mnt/media
   # ├── torrents
   # │   ├── books
   # │   ├── movies
