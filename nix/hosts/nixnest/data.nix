@@ -3,7 +3,7 @@
 
   fileSystems."/mnt/media" = {
     device = "nixdort:/media";
-    fsType = "nfs4";
+    fsType = "nfs";
     options = [
       "x-systemd.automount"
       "noauto"
