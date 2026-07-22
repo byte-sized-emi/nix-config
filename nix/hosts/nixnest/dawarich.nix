@@ -63,7 +63,7 @@ lib.mkIf config.settings.dawarich.enable (
 
         containers.dawarich-redis = {
           containerConfig = {
-            image = "docker.io/valkey/valkey:9.1@sha256:50b70cdef934d4b6a4aced5579ac3e3a4a34f36a045851bb7a3306ead1931d27";
+            image = "docker.io/valkey/valkey:9.1@sha256:3acc0687f2a2e1091fae6450d7842dd658c941338cf0a873ddd9e14b9e4ea4dd";
             exec = "redis-server --save 900 1 --save 300 10 --appendonly no";
             networks = [ networks.dawarich.ref ];
             networkAliases = [ "dawarich_redis" ];
