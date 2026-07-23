@@ -4,22 +4,20 @@
   "metadata": {
     "name": "adsch9h",
     "namespace": "default",
-    "uid": "4ade192d-4170-48ed-af54-6a3876acf9da",
-    "resourceVersion": "1780901942559018",
-    "generation": 3,
-    "creationTimestamp": "2026-06-03T19:38:39Z",
+    "uid": "051ad181-7e4a-41e0-acbe-6a7d414cfc2c",
+    "resourceVersion": "1784301371948017",
+    "generation": 1,
+    "creationTimestamp": "2026-07-17T15:16:11Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "4112647524798464"
+      "grafana.app/deprecatedInternalID": "1977263793704960"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:deoh3tdllqq68f",
+      "grafana.app/createdBy": "access-policy:service",
       "grafana.app/managedBy": "classic-file-provisioning",
       "grafana.app/managerId": "default",
-      "grafana.app/sourceChecksum": "8077afb601d2f12bbe5a3100fe93ff70",
-      "grafana.app/sourcePath": "/nix/store/n47n4qj8dp4a8ccpwn5wkslz2zycwz82-dashboards/qui.json",
+      "grafana.app/sourceChecksum": "aa59510f4f39f8ea3377b290bd9001dd",
+      "grafana.app/sourcePath": "/nix/store/4qalh5cncjmzn7bhm7wi3f66vjy05rjf-dashboards/qui.json",
       "grafana.app/sourceTimestamp": "1000",
-      "grafana.app/updatedBy": "access-policy:service",
-      "grafana.app/updatedTimestamp": "2026-06-08T06:59:02Z",
       "grafana.app/folder": ""
     }
   },
@@ -135,7 +133,9 @@
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
                 "reduceOptions": {
-                  "calcs": ["lastNotNull"],
+                  "calcs": [
+                    "lastNotNull"
+                  ],
                   "fields": "",
                   "values": false
                 },
@@ -144,7 +144,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -216,7 +216,9 @@
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
                 "reduceOptions": {
-                  "calcs": ["lastNotNull"],
+                  "calcs": [
+                    "lastNotNull"
+                  ],
                   "fields": "",
                   "values": false
                 },
@@ -225,7 +227,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -297,7 +299,9 @@
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
                 "reduceOptions": {
-                  "calcs": ["lastNotNull"],
+                  "calcs": [
+                    "lastNotNull"
+                  ],
                   "fields": "",
                   "values": false
                 },
@@ -306,7 +310,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -397,7 +401,9 @@
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
                 "reduceOptions": {
-                  "calcs": ["lastNotNull"],
+                  "calcs": [
+                    "lastNotNull"
+                  ],
                   "fields": "",
                   "values": false
                 },
@@ -406,7 +412,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -506,6 +512,7 @@
                 },
                 "legend": {
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": false
                 },
@@ -519,7 +526,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -605,7 +612,9 @@
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
                 "reduceOptions": {
-                  "calcs": ["lastNotNull"],
+                  "calcs": [
+                    "lastNotNull"
+                  ],
                   "fields": "",
                   "values": false
                 },
@@ -614,7 +623,177 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
+          }
+        }
+      },
+      "panel-16": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "qbittorrent_torrents_seeding{job=\"qui\",instance_name=\"$instance_name\"}",
+                        "instant": false,
+                        "legendFormat": "__auto",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 16,
+          "links": [],
+          "title": "Torrents Seeding",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.1.0"
+          }
+        }
+      },
+      "panel-17": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "qbittorrent_torrents_downloading{job=\"qui\",instance_name=\"$instance_name\"}",
+                        "instant": false,
+                        "legendFormat": "__auto",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 17,
+          "links": [],
+          "title": "Torrents Downloading",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.1.0"
           }
         }
       },
@@ -715,6 +894,7 @@
                 },
                 "legend": {
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -728,7 +908,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -834,6 +1014,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": false
                 },
@@ -844,7 +1026,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -919,7 +1101,9 @@
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
                 "reduceOptions": {
-                  "calcs": ["lastNotNull"],
+                  "calcs": [
+                    "lastNotNull"
+                  ],
                   "fields": "",
                   "values": false
                 },
@@ -928,7 +1112,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -1103,6 +1287,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -1113,7 +1299,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -1220,6 +1406,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": false
                 },
@@ -1230,7 +1418,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -1301,7 +1489,9 @@
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
                 "reduceOptions": {
-                  "calcs": ["lastNotNull"],
+                  "calcs": [
+                    "lastNotNull"
+                  ],
                   "fields": "",
                   "values": false
                 },
@@ -1310,7 +1500,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -1419,6 +1609,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": false
                 },
@@ -1429,7 +1621,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       },
@@ -1540,6 +1732,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": false
                 },
@@ -1550,7 +1744,7 @@
                 }
               }
             },
-            "version": "13.0.2"
+            "version": "13.1.0"
           }
         }
       }
@@ -1628,7 +1822,7 @@
                           "name": "panel-2"
                         },
                         "height": 6,
-                        "width": 9,
+                        "width": 7,
                         "x": 3,
                         "y": 0
                       }
@@ -1641,8 +1835,34 @@
                           "name": "panel-5"
                         },
                         "height": 6,
-                        "width": 12,
-                        "x": 12,
+                        "width": 8,
+                        "x": 10,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-16"
+                        },
+                        "height": 6,
+                        "width": 3,
+                        "x": 18,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-17"
+                        },
+                        "height": 6,
+                        "width": 3,
+                        "x": 21,
                         "y": 0
                       }
                     },
@@ -1779,7 +1999,9 @@
     "links": [],
     "liveNow": true,
     "preload": false,
-    "tags": ["torrent"],
+    "tags": [
+      "torrent"
+    ],
     "timeSettings": {
       "autoRefresh": "auto",
       "autoRefreshIntervals": [

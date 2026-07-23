@@ -73,7 +73,7 @@
     vlc
     libreoffice
     file
-    jellyfin-desktop
+    jellyflix
     deezer-enhanced
     mission-center
     beeper

@@ -9,6 +9,8 @@
     ./audio.nix
   ];
 
+  programs.fuse.enable = true;
+
   programs.firefox.enable = true;
 
   # programs.slippi-launcher = {

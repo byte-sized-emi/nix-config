@@ -1,13 +1,13 @@
 # nix-config
 
-The NixOS config for my Soyo M4 minipc, on which I self-host a couple of things.
-
 ## TODO:
+
 - [x] setup proper automatic updates of docker images, esp. for the services and the forgejo CI/CD Actions
 
 # nix-update-server
 
 ## TODOs
+
 - [x] automatically update nixlaptop
 - [x] how to update nix-update-server with nix-update-server?
 - [x] stop server after successful update

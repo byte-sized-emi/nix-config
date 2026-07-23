@@ -11,12 +11,7 @@
       autoStart = true;
     };
     settings = {
-      providers."@ricoberger/gitmoji" = {
-        preferences = {
-          copy = "code";
-          action = "paste";
-        };
-      };
+      pop_to_root_on_close = true;
       rootSearch.searchFiles = false;
       close_on_focus_loss = true;
       launcher_window.layer_shell.layer = "overlay";
@@ -29,6 +24,26 @@
         dark = {
           name = "vicinae-dark";
           icon_theme = "Papirus-Dark";
+        };
+      };
+      providers = {
+        "@ricoberger/gitmoji" = {
+          preferences = {
+            copy = "code";
+            action = "paste";
+          };
+        };
+        clipboard.preferences = {
+          encryption = true;
+        };
+        files.preferences = {
+          autoIndexing = true;
+          excludedIndexingPaths = [ ];
+          indexingPaths = [
+            "/home/emilia/mnt"
+            "/home/emilia/Ablage"
+            "/home/emilia/Documents"
+          ];
         };
       };
     };

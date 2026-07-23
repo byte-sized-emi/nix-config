@@ -14,6 +14,7 @@
     ];
 
     userSettings = {
+      format_on_save = "on";
       indent_guides = {
         enabled = true;
         coloring = "indent_aware";
