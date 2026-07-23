@@ -8,7 +8,7 @@ nix/
 ├── modules/
 │   ├── home/        # Home Manager modules
 │   └── nixos/       # NixOS modules
-├── packages/        # packages (blog-builder, nix-update-server)
+├── packages/        # packages (nix-update-server)
 ├── secrets/         # SOPS-encrypted secrets
 └── devshell.nix
 ```
@@ -24,25 +24,25 @@ Subagents especially cannot execute commands at all.
 
 ### Nix
 
-| Command | Description |
-|---------|-------------|
-| `nix flake check` | Validate entire flake. Very expensive, only use if strictly asked for |
-| `nix build .#<package>` | Build a package |
-| `nixos-rebuild dry-build --flake .#<host>` | Test build (no switch) |
-| `nixos-rebuild build --flake .#<host>` | Build without switching |
-| `nix develop` | Enter devshell |
+| Command                                    | Description                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------- |
+| `nix flake check`                          | Validate entire flake. Very expensive, only use if strictly asked for |
+| `nix build .#<package>`                    | Build a package                                                       |
+| `nixos-rebuild dry-build --flake .#<host>` | Test build (no switch)                                                |
+| `nixos-rebuild build --flake .#<host>`     | Build without switching                                               |
+| `nix develop`                              | Enter devshell                                                        |
 
 ### Rust (run in `nix/packages/<name>/`)
 
-| Command | Description |
-|---------|-------------|
-| `cargo check` | Fast compile check |
-| `cargo clippy --all-targets` | Lint all targets |
-| `cargo test` | Run all tests |
-| `cargo test <test_name>` | Run a single test |
-| `cargo run` | Run binary |
-| `bacon` | Watch-mode check |
-| `bacon test` | Watch-mode testing |
+| Command                      | Description        |
+| ---------------------------- | ------------------ |
+| `cargo check`                | Fast compile check |
+| `cargo clippy --all-targets` | Lint all targets   |
+| `cargo test`                 | Run all tests      |
+| `cargo test <test_name>`     | Run a single test  |
+| `cargo run`                  | Run binary         |
+| `bacon`                      | Watch-mode check   |
+| `bacon test`                 | Watch-mode testing |
 
 ## Code Style
 
