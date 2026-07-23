@@ -116,7 +116,7 @@ in
 
       # containers.openthread = {
       #   containerConfig = {
-      #     image = "docker.io/openthread/border-router:latest@sha256:fd123415d97ac5e6ef5cb8e48632397edca40263afb5dbd1651685662b550b65";
+      #     image = "docker.io/openthread/border-router:latest@sha256:72934b68e3ce50f5c9bcea37614be389f40716f67780bcfbce066c4f1a975a63";
       #     environments = {
       #       TZ = "Europe/Berlin";
       #       OT_RCP_DEVICE = "spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800";
