@@ -52,7 +52,7 @@ in
     {
       containers.home-assistant = {
         containerConfig = {
-          image = "ghcr.io/home-assistant/home-assistant:2026.5.4";
+          image = "ghcr.io/home-assistant/home-assistant:2026.7.4";
           environments.TZ = "Europe/Berlin";
           exposePorts = [ "${toString port}" ];
           addCapabilities = [ "CAP_NET_RAW" ];
@@ -86,7 +86,7 @@ in
       # containers.whisper = {
       #   # volume
       #   containerConfig = {
-      #     image = "rhasspy/wyoming-whisper:3.1.0";
+      #     image = "rhasspy/wyoming-whisper:3.5.0";
       #     environments.TZ = "Europe/Berlin";
       #     publishPorts = [ "127.0.0.1:10300:10300" ];
       #     exec = "--model small-int8 --language de";
@@ -101,7 +101,7 @@ in
 
       # containers.piper = {
       #   containerConfig = {
-      #     image = "rhasspy/wyoming-piper:2.2.2";
+      #     image = "rhasspy/wyoming-piper:2.3.1";
       #     environments.TZ = "Europe/Berlin";
       #     publishPorts = [ "127.0.0.1:10200:10200" ];
       #     exec = "--voice de_DE-ramona-low";
