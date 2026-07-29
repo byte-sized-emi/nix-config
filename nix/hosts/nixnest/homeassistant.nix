@@ -154,7 +154,7 @@ in
             "NET_RAW"
           ];
           volumes = [
-            "${openthreadPath}/data:/data"
+            "${openthreadPath}:/data"
           ];
           networks = [
             "host"
@@ -169,7 +169,7 @@ in
             TZ = "Europe/Berlin";
           };
           volumes = [
-            "${matterPath}/data:/data"
+            "${matterPath}:/data"
           ];
           networks = [
             "host"
