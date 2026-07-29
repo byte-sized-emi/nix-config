@@ -3,8 +3,11 @@
   ...
 }:
 let
-  homeAssistantPath = "/etc/stacks/home-assistant";
-  threadInfraIfName = "eth0";
+  stackPath = "/var/stacks/home-automation";
+  homeAssistantPath = "${stackPath}/home-assistant";
+  openthreadPath = "${stackPath}/openthread";
+  matterPath = "${stackPath}/matter";
+  threadInfraIfName = "enp2s0";
   port = 8123;
 in
 {
@@ -27,6 +30,9 @@ in
     "net.ipv6.conf.${threadInfraIfName}.accept_ra" = 2;
     "net.ipv6.conf.${threadInfraIfName}.accept_ra_rt_info_max_plen" = 64;
   };
+
+  environment.etc."dev/openthread-radio-USB-JTAG".target =
+    "/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_AC:EB:E6:C1:52:2C-if00";
 
   environment.etc."stacks/home-assistant/config/configuration.yaml".text = # yaml
     ''
@@ -54,11 +60,11 @@ in
         containerConfig = {
           image = "ghcr.io/home-assistant/home-assistant:2026.5.4";
           environments.TZ = "Europe/Berlin";
-          exposePorts = [ "${toString port}" ];
+          exposePorts = [ (toString port) ];
           addCapabilities = [ "CAP_NET_RAW" ];
           volumes = [
             "${homeAssistantPath}/config:/config"
-            "${homeAssistantPath}/config/configuration.yaml:/config/configuration.yaml:ro"
+            "/etc/stacks/home-assistant/config/configuration.yaml:/config/configuration.yaml:ro"
             "/run/dbus:/run/dbus:ro"
             "/etc/localtime:/etc/localtime:ro"
           ];
@@ -114,66 +120,82 @@ in
       #   };
       # };
 
-      # containers.openthread = {
-      #   containerConfig = {
-      #     image = "docker.io/openthread/border-router:latest@sha256:fd123415d97ac5e6ef5cb8e48632397edca40263afb5dbd1651685662b550b65";
-      #     environments = {
-      #       TZ = "Europe/Berlin";
-      #       OT_RCP_DEVICE = "spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800";
-      #       OT_INFRA_IF = threadInfraIfName;
-      #       OT_THREAD_IF = "wpan0";
-      #       OT_LOG_LEVEL = "7";
-      #       OT_REST_PORT = "8981";
-      #       OT_REST_LISTEN_PORT = "8981";
-      #       OT_FLOW_CONTROL = "0";
-      #       FLOW_CONTROL = "0";
-      #     };
-      #     devices = [
-      #       "/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_AC:EB:E6:C2:85:68-if00:/dev/ttyACM0"
-      #       "/dev/net/tun"
-      #     ];
-      #     exposePorts = [
-      #       "8981"
-      #     ];
-      #     addCapabilities = [
-      #       "NET_ADMIN"
-      #       "NET_RAW"
-      #     ];
-      #     volumes = [
-      #       "${homeAssistantPath}/data:/data"
-      #     ];
-      #     networks = [
-      #       "host"
-      #     ];
-      #   };
-      # };
-
-      containers.otbr = {
+      containers.openthread = {
         containerConfig = {
-          image = "ghcr.io/ownbee/hass-otbr-docker";
+          image = "docker.io/openthread/border-router:latest@sha256:d46d8e53c505cf63c03f746ffa3aaf1e28715ebe1d831d2c722200c17928fcce";
           environments = {
-            DEVICE = "/dev/ttyACM0";
-            FLOW_CONTROL = "1";
-            FIREWALL = "1";
-            NAT64 = "1";
-            BAUDRATE = "460800";
-            OTBR_REST_PORT = "8081";
-            OTBR_WEB_PORT = "7586";
-            AUTOFLASH_FIRMWARE = "0";
-            BACKBONE_IF = "eth0";
+            TZ = "Europe/Berlin";
+            OT_RCP_DEVICE = "spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800";
+            OT_INFRA_IF = threadInfraIfName;
+            OT_THREAD_IF = "wpan0";
+            OT_LOG_LEVEL = "7";
+            OT_REST_PORT = "8981";
+            OT_REST_LISTEN_PORT = "8981";
+            OT_FLOW_CONTROL = "0";
+            FLOW_CONTROL = "0";
           };
           devices = [
+            # "/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_AC:EB:E6:C1:52:2C-if00:/dev/ttyACM0"
             "/dev/ttyACM0:/dev/ttyACM0"
+            "/dev/net/tun"
+          ];
+          exposePorts = [
+            "8981"
+          ];
+          addCapabilities = [
+            "NET_ADMIN"
+            "NET_RAW"
           ];
           volumes = [
-            "${homeAssistantPath}/data:/var/lib/thread"
+            "${openthreadPath}/data:/data"
           ];
-          networks = [ "host" ];
-          extraOptions = [ "--privileged" ];
-        };
-        serviceConfig = {
-          Restart = "always";
+          networks = [
+            "host"
+          ];
         };
       };
+
+      containers.matter = {
+        containerConfig = {
+          image = "ghcr.io/matter-js/python-matter-server:8.1.2";
+          environments = {
+            TZ = "Europe/Berlin";
+          };
+          volumes = [
+            "${matterPath}/data:/data"
+          ];
+          networks = [
+            "host"
+          ];
+        };
+      };
+
+      # containers.otbr = {
+      #   containerConfig = {
+      #     image = "ghcr.io/ownbee/hass-otbr-docker";
+      #     environments = {
+      #       DEVICE = "/dev/ttyACM0";
+      #       FLOW_CONTROL = "1";
+      #       FIREWALL = "1";
+      #       NAT64 = "1";
+      #       BAUDRATE = "460800";
+      #       OTBR_REST_PORT = "8081";
+      #       OTBR_WEB_PORT = "7586";
+      #       AUTOFLASH_FIRMWARE = "0";
+      #       BACKBONE_IF = "eth0";
+      #     };
+      #     devices = [
+      #       "/dev/ttyACM0:/dev/ttyACM0"
+      #     ];
+      #     volumes = [
+      #       "${homeAssistantPath}/data:/var/lib/thread"
+      #     ];
+      #     networks = [ "host" ];
+      #     extraOptions = [ "--privileged" ];
+      #   };
+      #   serviceConfig = {
+      #     Restart = "always";
+      #   };
+      # };
     };
 }

@@ -6,65 +6,66 @@
   programs.ssh.enable = true;
   programs.ssh.enableDefaultConfig = false;
 
-  # TODO: Improve me
-  # - add key to sops-nix
-  # - make this config smaller and more nix-ified
-
   programs.ssh.settings =
     let
-      genHostRoot = HostName: {
+      genPhysicalRoot = HostName: {
         inherit HostName;
         Port = 22;
         User = "root";
-        IdentityFile = "~/.ssh/fs/hmKey";
-        ProxyJump = "fs-gateway";
       };
-      genHost = HostName: {
+      genDirect = HostName: {
+        inherit HostName;
+        Port = 22;
+        User = "fsadmin";
+        IdentityFile = "~/.ssh/fs/hmKey";
+      };
+      genViaGateway = HostName: {
         inherit HostName;
         Port = 22;
         User = "fsadmin";
         IdentityFile = "~/.ssh/fs/hmKey";
         ProxyJump = "fs-gateway";
-      };
-      genHostDirect = HostName: {
-        inherit HostName;
-        Port = 22;
-        User = "fsadmin";
-        IdentityFile = "~/.ssh/fs/hmKey";
       };
     in
     {
       "*" = { };
 
-      fs-gateway = genHostDirect "141.40.176.36";
+      # Physical systems sorted by IP
+      fs-prod01 = genPhysicalRoot "10.19.5.104";
+      fs-prod02 = genPhysicalRoot "10.19.5.105";
+      fs-prodbackup = genPhysicalRoot "10.19.5.106";
+      fs-lab01 = genPhysicalRoot "10.19.5.111";
+      fs-lab02 = genPhysicalRoot "10.19.5.112";
+      fs-labbackup = genPhysicalRoot "10.19.5.113";
+      fs-heinl = genPhysicalRoot "10.19.5.114";
+      fs-infoscreen-foyer = genDirect "10.28.26.87";
 
-      # root user
-      fs-lab01 = genHostRoot "10.19.5.111";
-      fs-lab02 = genHostRoot "10.19.5.112";
-      fs-labbackup = genHostRoot "10.19.5.113";
-      fs-prod01 = genHostRoot "10.19.5.104";
-      fs-prod02 = genHostRoot "10.19.5.105";
-      fs-prodbackup = genHostRoot "10.19.5.106";
+      # Public-IP-Only
+      fs-minecraft = genDirect "141.40.176.39";
+      fs-gitlab = genDirect "141.40.176.40";
+      fs-kasse-scanner = genDirect "192.168.1.50";
 
-      # fsadmin user
-      fs-forms = genHost "10.19.5.35";
-      fs-gitlab = genHost "10.19.5.17";
-      fs-kasse = genHost "10.19.5.27";
-      fs-keycloak = genHost "10.19.5.12";
-      fs-ldap = genHost "10.19.5.11";
-      fs-mail = genHost "10.19.5.22";
-      fs-matrix = genHost "10.19.5.37";
-      fs-nextcloud = genHost "10.19.5.15";
-      fs-nfs = genHost "10.19.5.19";
-      fs-roomfinder = genHost "10.19.5.18";
-      fs-webmail = genHost "10.19.5.14";
-      fs-website = genHost "10.19.5.25";
-      fs-wiki = genHost "10.19.5.16";
-      fs-zammad = genHost "10.19.5.33";
+      # Gateway
+      fs-gateway = genDirect "141.40.176.36";
 
-      # direct connections, without gateway
-      fs-infoscreen = genHostDirect "10.28.26.87";
-      fs-kasse-scanner = genHostDirect "192.168.1.206";
-      fs-minecraft = genHostDirect "141.40.176.39";
+      # Normal VMs sorted by IP
+      fs-ldap = genViaGateway "10.19.5.11";
+      fs-keycloak = genViaGateway "10.19.5.12";
+      fs-docker = genViaGateway "10.19.5.13";
+      fs-webmail = genViaGateway "10.19.5.14";
+      fs-spindverwaltung = genViaGateway "10.19.5.18";
+      fs-nfs = genViaGateway "10.19.5.19";
+      fs-mail = genViaGateway "10.19.5.22";
+      fs-wiki = genViaGateway "10.19.5.23";
+      fs-grist = genViaGateway "10.19.5.24";
+      fs-helfertool = genViaGateway "10.19.5.25";
+      fs-zammad = genViaGateway "10.19.5.33";
+      fs-forms = genViaGateway "10.19.5.35";
+      fs-matrix = genViaGateway "10.19.5.37";
+      fs-monitoring = genViaGateway "10.19.5.39";
+      fs-nextcloud = genViaGateway "10.19.5.43";
+      fs-kasse = genViaGateway "10.19.5.46";
+      fs-pretix = genViaGateway "10.19.5.47";
+      fs-infoscreen-vm = genViaGateway "10.19.5.62";
     };
 }

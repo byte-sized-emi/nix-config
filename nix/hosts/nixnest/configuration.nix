@@ -14,7 +14,6 @@
     flake.modules.nixos.ssh-server
     flake.modules.nixos.server-default
     # flake.modules.nixos.cache-beacon
-    # ./homeassistant.nix
     ./atuin.nix
     ./backups.nix
     ./beeper.nix
@@ -23,6 +22,7 @@
     ./dawarich.nix
     ./forgejo.nix
     ./hedgedoc.nix
+    ./homeassistant.nix
     ./immich.nix
     ./linktree.nix
     ./mealie.nix
