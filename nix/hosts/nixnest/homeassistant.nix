@@ -31,7 +31,7 @@ in
     "net.ipv6.conf.${threadInfraIfName}.accept_ra_rt_info_max_plen" = 64;
   };
 
-  environment.etc."dev/openthread-radio-USB-JTAG".target =
+  environment.etc."dev/openthread-radio-USB-JTAG".source =
     "/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_AC:EB:E6:C1:52:2C-if00";
 
   environment.etc."stacks/home-assistant/config/configuration.yaml".text = # yaml
