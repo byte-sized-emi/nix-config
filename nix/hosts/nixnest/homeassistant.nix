@@ -31,6 +31,13 @@ in
     "net.ipv6.conf.${threadInfraIfName}.accept_ra_rt_info_max_plen" = 64;
   };
 
+  systemd.tmpfiles.rules = [
+    "d ${stackPath}          0770 root root"
+    "d ${homeAssistantPath}  0770 root root"
+    "d ${openthreadPath}     0770 root root"
+    "d ${matterPath}         0770 root root"
+  ];
+
   environment.etc."dev/openthread-radio-USB-JTAG".source =
     "/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_AC:EB:E6:C1:52:2C-if00";
 
@@ -122,7 +129,7 @@ in
 
       containers.openthread = {
         containerConfig = {
-          image = "docker.io/openthread/border-router:latest@sha256:d46d8e53c505cf63c03f746ffa3aaf1e28715ebe1d831d2c722200c17928fcce";
+          image = "docker.io/openthread/border-router:latest@sha256:ebb7e2c648d1633898558d265d371b68cf33423533fa69e228a9a2b2115e22ca";
           environments = {
             TZ = "Europe/Berlin";
             OT_RCP_DEVICE = "spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800";
