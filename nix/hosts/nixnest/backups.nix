@@ -3,6 +3,25 @@
   pkgs,
   ...
 }:
+let
+  prepareBackupApp = pkgs.writeShellApplication {
+    name = "prepare-backup";
+    runtimeInputs = [
+      config.virtualisation.podman.package
+      pkgs.gnutar
+      pkgs.gzip
+    ];
+    text = ''
+      rm -rf /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/ /var/backup/dawarich_db/
+      mkdir /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/ /var/backup/dawarich_db/
+      podman volume export mealie-data | tar xf - -C /var/backup/mealie/
+      podman exec -t immich-database pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/immich_db/dump.sql.gz"
+      podman exec -t umami-db pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/umami_db/dump.sql.gz"
+      podman exec -t dawarich-db pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/dawarich_db/dump.sql.gz"
+    '';
+  };
+  prepareBackupScript = pkgs.lib.getExe prepareBackupApp;
+in
 {
   sops.secrets."borg/backupKey" = {
     owner = config.users.users.borg.name;
@@ -20,21 +39,8 @@
   };
 
   systemd.services."prepare-backup" = {
-    path = [
-      config.virtualisation.podman.package
-      pkgs.gnutar
-      pkgs.gzip
-    ];
-
-    script = ''
-      rm -rf /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/ /var/backup/dawarich_db/
-      mkdir /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/ /var/backup/dawarich_db/
-      podman volume export mealie-data | tar xf - -C /var/backup/mealie/
-      podman exec -t immich-database pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/immich_db/dump.sql.gz"
-      podman exec -t umami-db pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/umami_db/dump.sql.gz"
-      podman exec -t dawarich-db pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/dawarich_db/dump.sql.gz"
-    '';
     serviceConfig = {
+      ExecStart = prepareBackupScript;
       Type = "oneshot";
       User = "root";
     };
@@ -46,6 +52,7 @@
     group = "borg";
     createHome = true;
     home = "/var/borghome";
+    extraGroups = [ "podman" ];
   };
 
   programs.ssh.knownHosts = {
@@ -83,8 +90,46 @@
     group = "borg";
   };
 
+  services.borgbackup.jobs.nixnest-nas-backup = {
+    paths = [
+      "/var/backup"
+      "/var/immich/upload_location"
+    ];
+    environment.BORG_RSH = "ssh -i /home/emilia/.ssh/id_nas_backup -p 2222";
+    repo = "borg@192.168.0.204:.";
+    compression = "auto,zstd";
+    startAt = config.settings.backup.local.interval;
+    encryption = {
+      mode = "repokey";
+      passCommand = "cat ${config.sops.secrets."borg/backupKey".path}";
+    };
+    readWritePaths = [
+      "/var/backup"
+      "/var/lib/containers/"
+      "/run/"
+    ];
+    preHook = ''
+      ${prepareBackupScript}
+    '';
+    # "borg help prune" for informatino
+    prune.keep = {
+      within = "1w"; # Keep all archives from the last week
+      daily = 7;
+      weekly = 5;
+      monthly = 4; # Keep at least one archive for the last four months
+      "13weekly" = 3; # one archive for the last 3 quarters
+      yearly = -1; # one archive per year
+    };
+    # user = "borg";
+    # group = "borg";
+  };
+
   systemd.services.borgbackup-job-nixnest.serviceConfig = {
-    # read-only access to every file on the filesystem
+    ReadOnlyPaths = [
+      "/var/immich/upload_location"
+      config.sops.secrets."borg/backupKey".path
+    ];
+    # read-only access to every file on the filesystem - should be unnecessary with the above option?
     AmbientCapabilities = "CAP_DAC_READ_SEARCH";
   };
 }

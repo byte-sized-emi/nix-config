@@ -63,6 +63,10 @@ with lib;
     };
 
     backup = {
+      local.interval = mkOption {
+        type = types.str;
+      };
+
       interval = mkOption {
         type = types.str;
       };
@@ -95,6 +99,7 @@ with lib;
     media.service_domain = "media.${services.domain}";
     dawarich.enable = true;
     ingress_tunnel = "a7cff2a8-b287-4edc-94fd-35527c3c3858";
+    backup.local.interval = "03:00";
     backup.interval = "Mon,Fri 02:00";
     backup.prepare.interval = "Mon,Fri 01:20";
     backup.prepare.interval_cron = "20 1 * * 1,5";

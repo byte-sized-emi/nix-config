@@ -16,6 +16,9 @@
     "Host d0804253.repo.borgbase.com" = {
       IdentityFile = "~/.ssh/id_byte_sized";
     };
+    "Host 192.168.0.204" = {
+      IdentityFile = "~/.ssh/id_byte_sized";
+    };
   };
 
   programs.git = {
