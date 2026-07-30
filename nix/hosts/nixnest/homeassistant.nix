@@ -7,6 +7,7 @@ let
   homeAssistantPath = "${stackPath}/home-assistant";
   openthreadPath = "${stackPath}/openthread";
   matterPath = "${stackPath}/matter";
+  esphomePath = "${stackPath}/esphome";
   threadInfraIfName = "enp2s0";
   port = 8123;
 in
@@ -22,6 +23,13 @@ in
     };
   };
 
+  my.services.esphome = {
+    enable = true;
+    name = "ESPHome";
+    port = 6052;
+    internal.enable = true;
+  };
+
   networking.firewall.allowedTCPPorts = [ port ];
 
   boot.kernel.sysctl = {
@@ -32,10 +40,13 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "d ${stackPath}          0770 root root"
-    "d ${homeAssistantPath}  0770 root root"
-    "d ${openthreadPath}     0770 root root"
-    "d ${matterPath}         0770 root root"
+    "d ${stackPath}              0770 root root"
+    "d ${homeAssistantPath}      0770 root root"
+    "d ${openthreadPath}         0770 root root"
+    "d ${matterPath}             0770 root root"
+    "d ${esphomePath}            0770 root root"
+    "d ${esphomePath}/config     0770 root root"
+    "d ${esphomePath}/platformio 0770 root root"
   ];
 
   environment.etc."dev/openthread-radio-USB-JTAG".source =
@@ -135,15 +146,14 @@ in
             OT_RCP_DEVICE = "spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800";
             OT_INFRA_IF = threadInfraIfName;
             OT_THREAD_IF = "wpan0";
-            OT_LOG_LEVEL = "7";
+            OT_LOG_LEVEL = "4";
             OT_REST_PORT = "8981";
             OT_REST_LISTEN_PORT = "8981";
             OT_FLOW_CONTROL = "0";
             FLOW_CONTROL = "0";
           };
           devices = [
-            # "/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_AC:EB:E6:C1:52:2C-if00:/dev/ttyACM0"
-            "/dev/ttyACM0:/dev/ttyACM0"
+            "/etc/dev/openthread-radio-USB-JTAG:/dev/ttyACM0"
             "/dev/net/tun"
           ];
           exposePorts = [
@@ -176,33 +186,26 @@ in
           ];
         };
       };
-
-      # containers.otbr = {
-      #   containerConfig = {
-      #     image = "ghcr.io/ownbee/hass-otbr-docker";
-      #     environments = {
-      #       DEVICE = "/dev/ttyACM0";
-      #       FLOW_CONTROL = "1";
-      #       FIREWALL = "1";
-      #       NAT64 = "1";
-      #       BAUDRATE = "460800";
-      #       OTBR_REST_PORT = "8081";
-      #       OTBR_WEB_PORT = "7586";
-      #       AUTOFLASH_FIRMWARE = "0";
-      #       BACKBONE_IF = "eth0";
-      #     };
-      #     devices = [
-      #       "/dev/ttyACM0:/dev/ttyACM0"
-      #     ];
-      #     volumes = [
-      #       "${homeAssistantPath}/data:/var/lib/thread"
-      #     ];
-      #     networks = [ "host" ];
-      #     extraOptions = [ "--privileged" ];
-      #   };
-      #   serviceConfig = {
-      #     Restart = "always";
-      #   };
-      # };
+      containers.esphome = {
+        containerConfig = {
+          image = "ghcr.io/esphome/esphome:2026.7.2";
+          environments = {
+            TZ = "Europe/Berlin";
+          };
+          exposePorts = [
+            "6052"
+          ];
+          addCapabilities = [
+            "CAP_NET_RAW"
+          ];
+          volumes = [
+            "${esphomePath}/config:/config"
+            "${esphomePath}/platformio:/root/.platformio"
+          ];
+          networks = [
+            "host"
+          ];
+        };
+      };
     };
 }
