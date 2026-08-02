@@ -18,3 +18,21 @@
 - [ ] show notification with cancel button before updating
 - [ ] make nix use my cache only when it makes sense
 - [x] backup dawarich
+
+# nixnest stability fixes
+
+The Soyo M4 Plus (Intel N150) can hard-hang in deep C-states (C8/C10), see
+<https://bugs.launchpad.net/bugs/2160711>. Two mitigations are in [nix/hosts/nixnest/configuration.nix](nix/hosts/nixnest/configuration.nix).
+
+To ensure the mitigations are active:
+
+```console
+$ cat /sys/module/intel_idle/parameters/max_cstate
+2
+$ cat /sys/class/watchdog/watchdog0/state
+active
+$ cat /sys/class/watchdog/watchdog0/timeout
+30
+# Triggers a panic - only do this when downtime is okay!
+$ echo c | sudo tee /proc/sysrq-trigger
+```

@@ -59,9 +59,15 @@
     ];
   };
 
-  # May help if FFmpeg/VAAPI/QSV init fails (esp. on Arc with i915):
-  # hardware.enableRedistributableFirmware = true;
-  # boot.kernelParams = [ "i915.enable_guc=3" ];
+  hardware.enableRedistributableFirmware = true;
+
+  # Cap the CPU at C6 to avoid the deep C-state (C8/C10) hard-hang on this N150
+  # mini PC. See https://bugs.launchpad.net/bugs/2160711
+  boot.kernelParams = [ "intel_idle.max_cstate=2" ];
+
+  # Hardware watchdog: auto-reboot if the box hangs (best-effort on C10 hangs).
+  boot.kernelModules = [ "iTCO_wdt" ];
+  systemd.extraConfig = "RuntimeWatchdogSec=30";
 
   # Audio setup
   services.pulseaudio.enable = false;
