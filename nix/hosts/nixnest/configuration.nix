@@ -67,7 +67,7 @@
 
   # Hardware watchdog: auto-reboot if the box hangs (best-effort on C10 hangs).
   boot.kernelModules = [ "iTCO_wdt" ];
-  systemd.extraConfig = "RuntimeWatchdogSec=30";
+  systemd.settings.Manager.RuntimeWatchdogSec = "30s";
 
   # Audio setup
   services.pulseaudio.enable = false;
