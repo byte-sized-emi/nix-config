@@ -9,6 +9,8 @@
     ./audio.nix
   ];
 
+  networking.networkmanager.enable = true;
+
   programs.fuse.enable = true;
 
   programs.firefox.enable = true;

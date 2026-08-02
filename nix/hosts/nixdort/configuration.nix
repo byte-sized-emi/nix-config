@@ -14,8 +14,9 @@
     flake.modules.nixos.auto-update
     flake.modules.nixos.server-default
     inputs.disko.nixosModules.disko
-    ./disko.nix
     ./data.nix
+    ./disko.nix
+    ./networking.nix
     ./node-exporter.nix
     ./smartd.nix
   ];

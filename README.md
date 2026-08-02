@@ -33,6 +33,6 @@ $ cat /sys/class/watchdog/watchdog0/state
 active
 $ cat /sys/class/watchdog/watchdog0/timeout
 30
-# Triggers a panic - only do this when downtime is okay!
+# WARNING: Triggers a panic - only do this when downtime is okay!
 $ echo c | sudo tee /proc/sysrq-trigger
 ```

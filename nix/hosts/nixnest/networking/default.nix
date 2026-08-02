@@ -12,16 +12,30 @@
     ./caddy.nix
   ];
 
-  networking.nameservers = [
-    "100.100.100.100"
-    "8.8.8.8"
-    "1.1.1.1"
-  ];
-  networking.search = [ "bushbaby-chimera.ts.net" ];
+  networking = {
+    nameservers = [
+      "100.100.100.100"
+      "8.8.8.8"
+      "1.1.1.1"
+    ];
 
-  # https://forgejo.org/docs/latest/admin/actions/runner-installation/#nixos
-  # supposed to make cache actions work
-  networking.firewall.trustedInterfaces = [ "br-+" ];
+    search = [ "bushbaby-chimera.ts.net" ];
+
+    # https://forgejo.org/docs/latest/admin/actions/runner-installation/#nixos
+    # supposed to make cache actions work
+    firewall.trustedInterfaces = [ "br-+" ];
+
+    useDHCP = false;
+    interfaces.enp2s0 = {
+      ipv4.addresses = [
+        {
+          address = "192.168.0.201";
+          prefixLength = 24;
+        }
+      ];
+    };
+    defaultGateway = "192.168.0.1";
+  };
 
   # mDNS setup
 
