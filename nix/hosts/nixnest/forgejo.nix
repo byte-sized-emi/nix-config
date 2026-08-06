@@ -49,6 +49,10 @@
         SIGNING_KEY = config.sops.secrets."forgejo/instanceKey.pub".path;
         SIGNING_NAME = "byte-sized.fyi Forgejo Instance";
         SIGNING_EMAIL = "forgejo@byte-sized.fyi";
+        INITIAL_COMMIT = "pubkey";
+        WIKI = "pubkey,parentsigned";
+        MERGES = "pubkey,basesigned,commitsigned";
+        CRUD_ACTIONS = "pubkey,twofa,parentsigned";
       };
       session.COOKIE_SECURE = true;
       service = {
