@@ -42,13 +42,29 @@ in
     };
   };
 
-  systemd.services."prepare-backup" = {
-    serviceConfig = {
-      ExecStart = prepareBackupScript;
-      Type = "oneshot";
-      User = "root";
+  systemd.services =
+    let
+      serviceConfig = {
+        ReadOnlyPaths = [
+          "/var/immich/upload_location"
+          config.sops.secrets."borg/backupKey".path
+          config.sops.secrets."ssh_keys/nas_backup/priv".path
+        ];
+        # read-only access to every file on the filesystem - should be unnecessary with the above option?
+        AmbientCapabilities = "CAP_DAC_READ_SEARCH";
+      };
+    in
+    {
+      borgbackup-job-nixnest = { inherit serviceConfig; };
+      borgbackup-job-nixnest-nas-backup = { inherit serviceConfig; };
+      prepare-backup = {
+        serviceConfig = {
+          ExecStart = prepareBackupScript;
+          Type = "oneshot";
+          User = "root";
+        };
+      };
     };
-  };
 
   users.groups.borg = { };
   users.users.borg = {
@@ -71,6 +87,9 @@ in
     "d0804253.repo.borgbase.com/ecdsa-sha2-nistp256" = {
       hostNames = [ "d0804253.repo.borgbase.com" ];
       publicKey = "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOstKfBbwVOYQh3J7X4nzd6/VYgLfaucP9z5n4cpSzcZAOKGh6jH8e1mhQ4YupthlsdPKyFFZ3pKo4mTaRRuiJo=";
+    };
+    "[192.168.0.204]:2222" = {
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMezII1cT3PA1BZaU/wWawE30gjfuPYm7K2tDLx6ZlAb";
     };
   };
 
@@ -126,15 +145,5 @@ in
     };
     # user = "borg";
     # group = "borg";
-  };
-
-  systemd.services.borgbackup-job-nixnest.serviceConfig = {
-    ReadOnlyPaths = [
-      "/var/immich/upload_location"
-      config.sops.secrets."borg/backupKey".path
-      config.sops.secrets."ssh_keys/nas_backup/priv".path
-    ];
-    # read-only access to every file on the filesystem - should be unnecessary with the above option?
-    AmbientCapabilities = "CAP_DAC_READ_SEARCH";
   };
 }
