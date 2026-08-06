@@ -27,6 +27,10 @@ in
     owner = config.users.users.borg.name;
     group = config.users.groups.borg.name;
   };
+  sops.secrets."ssh_keys/nas_backup/priv" = {
+    owner = config.users.users.borg.name;
+    group = config.users.groups.borg.name;
+  };
 
   # Backup pruning:
   # borg prune ssh://d0804253@d0804253.repo.borgbase.com/./repo --dry-run --list -v --keep-weekly 5 --keep-monthly 5 --keep-13weekly 3 --keep-yearly 2
@@ -95,7 +99,7 @@ in
       "/var/backup"
       "/var/immich/upload_location"
     ];
-    environment.BORG_RSH = "ssh -i /home/emilia/.ssh/id_nas_backup -p 2222";
+    environment.BORG_RSH = "ssh -i ${config.sops.secrets."ssh_keys/nas_backup/priv".path} -p 2222";
     repo = "borg@192.168.0.204:.";
     compression = "auto,zstd";
     startAt = config.settings.backup.local.interval;
@@ -128,6 +132,7 @@ in
     ReadOnlyPaths = [
       "/var/immich/upload_location"
       config.sops.secrets."borg/backupKey".path
+      config.sops.secrets."ssh_keys/nas_backup/priv".path
     ];
     # read-only access to every file on the filesystem - should be unnecessary with the above option?
     AmbientCapabilities = "CAP_DAC_READ_SEARCH";
