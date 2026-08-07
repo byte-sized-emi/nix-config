@@ -17,6 +17,7 @@
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 
   den.hosts.x86_64-linux.nixlaptop.users.emilia = { };
+  den.hosts.x86_64-linux.nixda.users.emilia = { };
 
   # den.hosts.x86_64-linux.nixnest.users.emilia = { };
 

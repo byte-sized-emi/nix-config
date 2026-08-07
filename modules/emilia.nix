@@ -11,6 +11,9 @@
       <graphical>
       <anki>
       <fachschaft>
+    ]
+    ++ lib.optionals (host.hostName == "nixda") [
+      <graphical>
     ];
 
     nixos = { config, pkgs, ... }: {
