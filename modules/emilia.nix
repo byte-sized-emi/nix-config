@@ -89,7 +89,7 @@
         usbutils
         borgbackup
         wl-clipboard-rs
-        kanidm_1_10
+        kanidm_1_11
       ];
 
       programs.home-manager.enable = true;

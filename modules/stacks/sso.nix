@@ -22,8 +22,6 @@
       #   owner = config.users.users.grafana.name;
       # };
 
-      # also add kanidm package to user environment
-
       my.services.kanidm = {
         enable = true;
         name = "Kanidm";
@@ -48,7 +46,7 @@
       systemd.services.kanidm.serviceConfig.Restart = "always";
 
       services.kanidm = {
-        package = pkgs.kanidmWithSecretProvisioning_1_10; # also update modules/nixos/user.nix
+        package = pkgs.kanidmWithSecretProvisioning_1_11; # also update modules/emilia.nix
         server = {
           enable = true;
           settings = {
