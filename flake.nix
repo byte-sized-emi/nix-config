@@ -32,21 +32,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    isd = {
-      url = "github:kainctl/isd";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     niri.url = "github:sodiboo/niri-flake";
 
     # slippi-launcher = {
     #   url = "github:byte-sized-emi/slippi-launcher-flake";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
-    blueprint = {
-      url = "github:numtide/blueprint";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,21 +47,14 @@
       url = "github:adisbladis/nix-cache-beacon";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    import-tree.url = "github:denful/import-tree";
+    den.url = "github:denful/den";
   };
 
   outputs =
     inputs:
-    inputs.blueprint {
-      inherit inputs;
-      prefix = "nix/";
-      nixpkgs.config.allowUnfree = true;
-      nixpkgs.overlays = [
-        (final: prev: {
-          stable = import inputs.nixpkgs-stable {
-            inherit (final) config;
-            inherit (final.stdenv.hostPlatform) system;
-          };
-        })
-      ];
-    };
+    (inputs.nixpkgs.lib.evalModules {
+      modules = [ (inputs.import-tree ./modules) ];
+      specialArgs.inputs = inputs;
+    }).config.flake;
 }

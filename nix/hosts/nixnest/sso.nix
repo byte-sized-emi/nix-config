@@ -24,6 +24,8 @@ in
   #   owner = config.users.users.grafana.name;
   # };
 
+  # also add kanidm package to user environment
+
   my.services.kanidm = {
     enable = true;
     name = "Kanidm";
