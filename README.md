@@ -22,7 +22,7 @@
 # nixnest stability fixes
 
 The Soyo M4 Plus (Intel N150) can hard-hang in deep C-states (C8/C10), see
-<https://bugs.launchpad.net/bugs/2160711>. Two mitigations are in [nix/hosts/nixnest/configuration.nix](nix/hosts/nixnest/configuration.nix).
+<https://bugs.launchpad.net/bugs/2160711>. Two mitigations are in [modules/hosts/nixnest/configuration.nix](modules/hosts/nixnest/configuration.nix).
 
 To ensure the mitigations are active:
 

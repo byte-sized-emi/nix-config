@@ -1,5 +1,5 @@
 # when adding a new host, run:
-# sops updatekeys nix/secrets/* nix/secrets.yaml
+# sops updatekeys secrets/* secrets.yaml
 keys:
   - users:
       - &emilia age1qgn0n4wjjews7tdnqtyw9mcfjenzcxmn8kvcc2ydpdy300ue75dq07rjws
@@ -13,7 +13,7 @@ creation_rules:
           - *emilia
           - *nixnest
           - *nixdort
-  - path_regex: nix/secrets/.*$
+  - path_regex: secrets/.*$
     key_groups:
       - age:
           - *emilia
