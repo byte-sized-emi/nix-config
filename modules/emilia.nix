@@ -94,7 +94,7 @@
 
       programs.home-manager.enable = true;
 
-      home.stateVersion = "24.11";
+      home.stateVersion = if host.hostName == "nixdort" then "26.11" else "24.11";
     };
   };
 }

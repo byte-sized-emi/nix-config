@@ -31,6 +31,12 @@ secret-nix-config/         # Git submodule
   aspects to every host / user (e.g. `<boot>`, `<secrets>`, `<den/define-user>`).
 - **Class keys**: an aspect can define `nixos`, `homeManager`, and `packages` keys.
   Context args like `{ host, user, pkgs, config, ... }` are injected automatically.
+  `pkgs` (and `host` / `user` context) is only available inside these inner functions —
+  the top-level module args only get `{ __findFile, lib, config, inputs, den, ... }`.
+- **Git index**: `import-tree` only sees files tracked in the git index. `git add` new
+  files before evaluating, or the flake silently omits them (symptoms: missing options /
+  assertions, e.g. a host aspect not applied → "The 'fileSystems' option does not specify
+  your root file system").
 - **Includes**: aspects pull in other aspects via `includes = [ <aspect-name> ... ]`.
   Angle-bracket references resolve to other aspects / den batteries and require the
   `__findFile` argument. Den batteries are called as functions, e.g.
@@ -79,8 +85,10 @@ Subagents especially cannot execute commands at all.
 
 - **Indentation**: 2 spaces, LF line endings, trailing newline
 - **Trailing commas**: Always in lists and attrsets
-- **Args**: `{ pkgs, lib, ... }:` pattern; include `__findFile` when using angle-bracket
-  includes, and `host` / `user` when context is needed
+- **Args**: top-level module args are `{ __findFile, lib, config, inputs, den, ... }` —
+  `pkgs` is NOT available there, only in inner module functions (`nixos = { pkgs, ... }:`,
+  `homeManager = { pkgs, ... }:`). Include `__findFile` when using angle-bracket includes,
+  and `host` / `user` when context is needed
 - **Imports**: Group `imports = [...]` at top
 - **Naming**: `kebab-case` files, `camelCase` options, aspects named after their concern
 - **Aspects**: `den.aspects.<name> = { includes = [...]; nixos = {...}; homeManager = {...}; }`
