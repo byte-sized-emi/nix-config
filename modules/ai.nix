@@ -20,6 +20,7 @@
       programs.opencode = {
         enable = true;
         enableMcpIntegration = true;
+        skills.blueprint-to-den-migration = ./ai/skills/blueprint-to-den-migration;
         settings =
           let
             bash = {

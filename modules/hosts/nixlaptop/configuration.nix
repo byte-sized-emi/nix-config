@@ -1,9 +1,4 @@
-{
-  inputs,
-  lib,
-  __findFile,
-  ...
-}:
+{ __findFile, ... }:
 {
   den.aspects.nixlaptop = {
     includes = [

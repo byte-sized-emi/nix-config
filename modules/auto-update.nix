@@ -4,7 +4,11 @@
     nixos =
       { pkgs, ... }:
       let
-        inherit (inputs.self.packages.${pkgs.stdenvNoCC.hostPlatform.system}) nix-update-server;
+        system = pkgs.stdenvNoCC.hostPlatform.system;
+        perSystem = lib.mapAttrs (
+          name: input: (input.legacyPackages.${system} or input.packages.${system} or { })
+        ) inputs;
+        nix-update-server = perSystem.self.nix-update-server;
       in
       {
         environment.systemPackages = [ nix-update-server ];

@@ -4,16 +4,24 @@
     includes = [
       <apps/browser>
       <apps/email>
+      <apps/rclone>
       <apps/signal>
       <apps/steam>
       <apps/vicinae>
       <apps/zed>
       <audio>
+      <controller>
       <docker>
       <fonts>
       <niri>
       <noctalia>
       <swayidle>
+      (<den/unfree> [
+        "discord"
+        "beeper"
+        "obsidian"
+        "todoist-electron"
+      ])
     ];
 
     nixos = { pkgs, ... }: {

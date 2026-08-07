@@ -22,7 +22,6 @@
 
   den.schema.host.includes = [
     <boot>
-    <controller>
     <den/hostname>
     <nix-settings>
     <secrets>

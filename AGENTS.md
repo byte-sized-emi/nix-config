@@ -2,20 +2,50 @@
 
 ## Directory Structure
 
+The config uses the **dendritic / den** pattern (https://den.denful.dev/). Everything
+lives under `modules/`, which is imported by `import-tree` in `flake.nix`. Each file
+defines one or more **aspects** (`den.aspects.<name>`) that bundle NixOS, home-manager
+and package config for a single concern.
+
 ```
-nix/
-├── hosts/           # Host configs (nixlaptop, nixnest, nixda)
-├── modules/
-│   ├── home/        # Home Manager modules
-│   └── nixos/       # NixOS modules
-├── packages/        # packages (nix-update-server)
-├── secrets/         # SOPS-encrypted secrets
-└── devshell.nix
+modules/
+├── hosts/                  # Per-host aspects (e.g. nixlaptop/configuration.nix)
+├── apps/                   # Per-app aspects (e.g. apps/git.nix)
+├── packages/               # Flake package outputs (e.g. packages/nix-update-server/)
+├── den.nix                 # Entrypoint: hosts/users schema + global aspect includes
+├── outputs.nix             # Flake output wiring
+├── emilia.nix              # The emilia user aspect
+├── secrets.nix             # SOPS secrets aspect
+└── <concern>.nix           # One file per aspect (audio, niri, graphical, ...)
+
+secrets.yaml               # SOPS-encrypted secrets (repo root)
+secrets/                   # Raw secret material
+secret-nix-config/         # Git submodule
 ```
+
+### How aspects work
+
+- **Registration**: hosts and users are declared in `modules/den.nix` under
+  `den.hosts.x86_64-linux.<host>.users.<user>`.
+- **Global wiring**: `den.schema.host.includes` and `den.schema.user.includes` apply
+  aspects to every host / user (e.g. `<boot>`, `<secrets>`, `<den/define-user>`).
+- **Class keys**: an aspect can define `nixos`, `homeManager`, and `packages` keys.
+  Context args like `{ host, user, pkgs, config, ... }` are injected automatically.
+- **Includes**: aspects pull in other aspects via `includes = [ <aspect-name> ... ]`.
+  Angle-bracket references resolve to other aspects / den batteries and require the
+  `__findFile` argument. Den batteries are called as functions, e.g.
+  `(<den/user-shell> "zsh")`, `(<den/unfree> [ "steam" ])`, `(<den/primary-user>)`.
+- **User-specific aspects**: `den.aspects.<user>` may branch on `host.hostName` with
+  `lib.optionals`.
+- **Conditional wiring**: aspects like `<graphical>` and `<ai>` are only included for
+  hosts / users that opt in.
 
 ## mcp-nixos tool
 
 The MCP nixos tool can search for Home Manager and NixOS packages / options. Make sure that, when defining an option, that the specified values / format exactly matches what MCP nixos expects.
+
+For den-specific options and battery aspects (e.g. `den/unfree`, `den/user-shell`), check
+the den documentation: https://den.denful.dev/
 
 ## Commands
 
@@ -30,9 +60,8 @@ Subagents especially cannot execute commands at all.
 | `nix build .#<package>`                    | Build a package                                                       |
 | `nixos-rebuild dry-build --flake .#<host>` | Test build (no switch)                                                |
 | `nixos-rebuild build --flake .#<host>`     | Build without switching                                               |
-| `nix develop`                              | Enter devshell                                                        |
 
-### Rust (run in `nix/packages/<name>/`)
+### Rust (run in `modules/packages/<name>/`)
 
 | Command                      | Description        |
 | ---------------------------- | ------------------ |
@@ -50,9 +79,13 @@ Subagents especially cannot execute commands at all.
 
 - **Indentation**: 2 spaces, LF line endings, trailing newline
 - **Trailing commas**: Always in lists and attrsets
-- **Args**: `{ pkgs, lib, ... }:` pattern
+- **Args**: `{ pkgs, lib, ... }:` pattern; include `__findFile` when using angle-bracket
+  includes, and `host` / `user` when context is needed
 - **Imports**: Group `imports = [...]` at top
-- **Naming**: `kebab-case` files, `camelCase` options
+- **Naming**: `kebab-case` files, `camelCase` options, aspects named after their concern
+- **Aspects**: `den.aspects.<name> = { includes = [...]; nixos = {...}; homeManager = {...}; }`
+- **User/host wiring**: keep it in `den.nix` (`den.hosts`, `den.schema`) or the relevant
+  user aspect, not scattered across files
 - **Options**: Use `mkEnableOption` for booleans with descriptions
 - **Validation**: Use `config.assertions` with descriptive messages
 

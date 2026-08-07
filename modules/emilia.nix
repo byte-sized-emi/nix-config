@@ -13,7 +13,7 @@
       <fachschaft>
     ];
 
-    nixos = { config, ... }: {
+    nixos = { config, pkgs, ... }: {
       users.groups.emilia = { };
       users.groups.keys = { };
       users.users.emilia = {
@@ -32,6 +32,7 @@
       };
 
       environment.pathsToLink = [ "/share/zsh" ];
+      environment.systemPackages = with pkgs; [ nano ];
 
       home-manager.backupFileExtension = "bac";
 
@@ -74,7 +75,6 @@
         bind
         pulseaudio
         wget
-        nano
         openssl
         htop
         btop
@@ -86,6 +86,7 @@
         usbutils
         borgbackup
         wl-clipboard-rs
+        kanidm_1_10
       ];
 
       programs.home-manager.enable = true;

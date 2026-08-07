@@ -1,5 +1,12 @@
+{ __findFile, ... }:
 {
   apps.steam = {
+    includes = [
+      (<den/unfree> [
+        "steam"
+        "steam-unwrapped"
+      ])
+    ];
     nixos = {
       programs.steam = {
         enable = true;
