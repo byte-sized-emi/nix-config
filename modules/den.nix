@@ -12,14 +12,14 @@
   imports = [
     inputs.den.flakeModule
     (inputs.den.namespace "apps" false)
+    (inputs.den.namespace "stacks" false)
   ];
 
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 
   den.hosts.x86_64-linux.nixlaptop.users.emilia = { };
   den.hosts.x86_64-linux.nixda.users.emilia = { };
-
-  # den.hosts.x86_64-linux.nixnest.users.emilia = { };
+  den.hosts.x86_64-linux.nixnest.users.emilia = { };
 
   den.schema.host.includes = [
     <boot>

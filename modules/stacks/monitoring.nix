@@ -1,0 +1,251 @@
+{
+  stacks.monitoring.nixos =
+    { config, ... }:
+    {
+      my.services.grafana = {
+        enable = true;
+        name = "Grafana";
+        port = config.services.grafana.settings.server.http_port;
+        description = "Monitoring and analytics platform";
+        internal = {
+          enable = true;
+          domain = "grafana.${config.settings.services.domain}";
+        };
+      };
+
+      # TODO: plan for upgrading this:
+      # - switch everything (logs and metrics) to fluent-bit
+      # - put logs into loki
+      # - maybe put logs into an influxdb instead of the prometheus.
+      #   if we don't really use prometheus it doesn't make sense to keep it around
+
+      services.fluent-bit = {
+        enable = true;
+        settings = {
+          pipeline = {
+            inputs = [
+              {
+                name = "systemd";
+                tag = "systemd.*";
+                read_from_tail = true;
+                strip_underscores = true;
+                lowercase = true;
+              }
+              # {
+              #   name = "fluentbit_logs";
+              #   tag = "internal.logs";
+              # }
+            ];
+            filters = [
+              {
+                name = "record_modifier";
+                match = "systemd.*";
+                allowlist_key = [
+                  "systemd_unit"
+                  "message"
+                  "container_id"
+                  "container_id_full"
+                  "container_name"
+                  "hostname"
+                  "machine_id"
+                  "gid"
+                  "pid"
+                  "exe"
+                  "service_name"
+                  "boot_id"
+                  "detected_level"
+                  "priority"
+                  "cmdline"
+                ];
+              }
+            ];
+            outputs = [
+              {
+                name = "loki";
+                port = config.services.loki.configuration.server.http_listen_port;
+                match = "systemd.*";
+                labels = "job=systemd,systemd_unit=$systemd_unit";
+              }
+            ];
+          };
+          service.grace = 30;
+        };
+      };
+
+      systemd.services.fluent-bit.serviceConfig.ReadWritePaths = [ "/var/log" ];
+
+      services.loki = {
+        enable = true;
+        extraFlags = [ "--target=all" ];
+        configuration = {
+          server = {
+            http_listen_address = "127.0.0.1";
+            http_listen_port = 9094;
+          };
+          auth_enabled = false;
+
+          # from https://grafana.com/docs/loki/latest/configure/examples/configuration-examples/#1-local-configuration-exampleyaml
+          common = {
+            ring = {
+              instance_addr = "127.0.0.1";
+              kvstore.store = "inmemory";
+            };
+            replication_factor = 1;
+            path_prefix = "/var/lib/loki";
+          };
+
+          schema_config.configs = [
+            {
+              from = "2020-05-15";
+              store = "tsdb";
+              object_store = "filesystem";
+              schema = "v13";
+              index = {
+                prefix = "index_";
+                period = "24h";
+              };
+            }
+          ];
+
+          storage_config.filesystem.directory = "/var/lib/loki/chunks";
+          compactor = {
+            compaction_interval = "1h";
+            retention_enabled = true;
+            retention_delete_delay = "2h";
+            retention_delete_worker_count = 10;
+            delete_request_store = "filesystem";
+          };
+          limits_config = {
+            retention_period = "168h";
+          };
+        };
+      };
+
+      # monitoring uses the 9000 range of ports
+      # adapted from https://oblivion.keyruu.de/Homelab/Monitoring
+      services.cadvisor = {
+        enable = true;
+        port = 9091;
+        extraOptions = [ "--docker_only=false" ];
+      };
+
+      services.prometheus = {
+        enable = true;
+        listenAddress = "127.0.0.1";
+        port = 9090;
+        checkConfig = true;
+        # TODO: Backups
+        # can be created with curl -XPOST http://localhost:9090/api/v1/admin/tsdb/snapshot
+        # will then be located in /var/lib/prometheus2/data/snapshots/
+        # Make sure to delete old snapshots - even though they are hardlinked,
+        # they will take up space.
+        extraFlags = [ "--web.enable-admin-api" ];
+
+        exporters = {
+          node = {
+            enable = true;
+            port = 9092;
+            enabledCollectors = [ "systemd" ];
+          };
+        };
+
+        scrapeConfigs = [
+          {
+            job_name = "node_exporter";
+            static_configs = [
+              {
+                targets = [
+                  "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
+                  "nixdort:2021"
+                ];
+              }
+            ];
+          }
+          {
+            job_name = "cadvisor";
+            static_configs = [
+              {
+                targets = [
+                  "127.0.0.1:${toString config.services.cadvisor.port}"
+                ];
+              }
+            ];
+          }
+        ];
+      };
+
+      # this puts the folder dashboards on the host system at /etc/grafana/dashboards
+      environment.etc."grafana/dashboards" = {
+        source = ./dashboards;
+        user = "grafana";
+        group = "grafana";
+      };
+
+      # TODO: auth
+      # maybe from this?
+      # https://github.com/oddlama/nix-config/blob/main/hosts/sire/guests/grafana.nix#L183
+      # https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/generic-oauth/#configure-generic-oauth-authentication-client-using-the-grafana-configuration-file
+      services.grafana = {
+        enable = true;
+
+        settings = {
+          server = {
+            http_addr = "127.0.0.1";
+            http_port = 9093;
+          };
+
+          analytics = {
+            reporting_enabled = false;
+            feedback_links_enabled = false;
+          };
+
+          security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
+
+          # auth.generic_oauth = {
+          #   enabled = true;
+          #   allow_sign_up = true;
+          #   auto_login = false;
+          #   name = "KaniDM SSO";
+          #   client_id = "grafana";
+          #   client_secret = "$__file{${config.sops.secrets."grafana/OauthSecret".path}}";
+          #   scopes = "openid profile email";
+          #   auth_url = "https://${config.settings.sso.domain}/oauth2/openid/grafana/authorize";
+          #   token_url = "https://${config.settings.sso.domain}/oauth2/openid/grafana/token";
+          #   api_url = "https://${config.settings.sso.domain}/oauth2/openid/grafana/userinfo";
+          #   use_pkce = true;
+          # };
+        };
+
+        provision = {
+          enable = true;
+          dashboards.settings.providers = [
+            {
+              # this tells grafana to look at the path for dashboards
+              options.path = "/etc/grafana/dashboards";
+            }
+          ];
+          datasources.settings.datasources = [
+            {
+              name = "Prometheus";
+              type = "prometheus";
+              access = "proxy";
+              url = "http://127.0.0.1:${toString config.services.prometheus.port}";
+              jsonData = {
+                timeInterval = "60s";
+              };
+            }
+            {
+              name = "Loki";
+              type = "loki";
+              access = "proxy";
+              url = "http://localhost:${toString config.services.loki.configuration.server.http_listen_port}";
+              jsonData = {
+                timeout = 60;
+                maxLines = 1000;
+              };
+            }
+          ];
+        };
+      };
+    };
+}

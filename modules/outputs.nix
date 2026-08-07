@@ -1,7 +1,8 @@
-{ inputs, den, ... }:
+{ inputs, den, stacks, ... }:
 {
   imports = [ inputs.den.flakeOutputs.packages ];
   den.schema.flake-system.includes = [
     den.aspects.auto-update
+    stacks.linktree
   ];
 }

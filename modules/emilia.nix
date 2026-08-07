@@ -2,15 +2,15 @@
 {
   den.aspects.emilia = { host, ... }: {
     includes = [
-      (<den/user-shell> "zsh")
       <apps/git>
       <apps/shell>
+      (<den/user-shell> "zsh")
     ]
     ++ lib.optionals (host.hostName == "nixlaptop") [
       <ai>
-      <graphical>
       <anki>
       <fachschaft>
+      <graphical>
     ]
     ++ lib.optionals (host.hostName == "nixda") [
       <graphical>

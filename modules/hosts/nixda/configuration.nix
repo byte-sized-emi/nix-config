@@ -2,9 +2,9 @@
 {
   den.aspects.nixda = {
     includes = [
+      <auto-update>
       <graphical>
       <syncthing>
-      <auto-update>
       (<den/unfree> [ "nvidia-x11" ])
     ];
 
