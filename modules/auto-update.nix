@@ -1,14 +1,10 @@
-{ lib, inputs, ... }:
+{ lib, ... }:
 {
   den.aspects.auto-update = {
     nixos =
-      { pkgs, ... }:
+      { perSystem, ... }:
       let
-        system = pkgs.stdenvNoCC.hostPlatform.system;
-        perSystem = lib.mapAttrs (
-          name: input: (input.legacyPackages.${system} or input.packages.${system} or { })
-        ) inputs;
-        nix-update-server = perSystem.self.nix-update-server;
+        inherit (perSystem.self) nix-update-server;
       in
       {
         environment.systemPackages = [ nix-update-server ];

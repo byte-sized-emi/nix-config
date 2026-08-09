@@ -1,13 +1,8 @@
-{ inputs, lib, ... }:
+{ lib, ... }:
 {
   stacks.linktree.nixos =
-    { pkgs, config, ... }:
+    { config, perSystem, ... }:
     let
-      system = pkgs.stdenvNoCC.hostPlatform.system;
-      perSystem = lib.mapAttrs (
-        name: input: (input.legacyPackages.${system} or input.packages.${system} or { })
-      ) inputs;
-      linktree = perSystem.self.linktree;
       # cloudflare origin certificates
       cert = "/etc/certs/links_byte_sized_fyi_origin_cert.pem";
       key = config.sops.secrets."caddy/links_byte_sized_fyi/key.pem".path;
@@ -32,7 +27,7 @@
         }
         tls ${cert} ${key}
         encode
-        root * ${linktree}
+        root * ${perSystem.self.linktree}
         file_server {
           etag_file_extensions .etag
         }

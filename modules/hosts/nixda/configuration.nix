@@ -5,7 +5,11 @@
       <auto-update>
       <graphical>
       <syncthing>
-      (<den/unfree> [ "nvidia-x11" ])
+      (<den/unfree> [
+        "nvidia-x11"
+        "nvidia-settings"
+        "nvidia-kernel-modules"
+      ])
     ];
 
     nixos = { config, ... }: {

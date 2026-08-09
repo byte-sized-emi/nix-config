@@ -14,6 +14,7 @@
     ]
     ++ lib.optionals (host.hostName == "nixda") [
       <graphical>
+      <gaming>
     ];
 
     nixos = { config, pkgs, ... }: {

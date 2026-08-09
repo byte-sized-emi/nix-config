@@ -15,6 +15,8 @@
     (inputs.den.namespace "stacks" false)
   ];
 
+  den.default.includes = [ <per-system> ];
+
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 
   den.hosts.x86_64-linux.nixlaptop.users.emilia = { };
@@ -30,6 +32,8 @@
     <tailscale>
   ];
 
+  # maybe add <den/host-aspects>?
+  # https://den.denful.dev/reference/batteries/#denbatterieshost-aspects
   den.schema.user.includes = [
     <den/define-user>
     <secrets>

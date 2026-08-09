@@ -7,6 +7,8 @@
 
     boot.supportedFilesystems = [ "btrfs" ];
 
+    services.btrfs.autoScrub.enable = true;
+
     # Stage-2 crypttab for media LUKS — root is mounted, keyfile accessible.
     # Root LUKS (cryptroot) stays in initrd with password, handled by disko.
     environment.etc."crypttab".text = ''
