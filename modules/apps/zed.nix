@@ -16,6 +16,7 @@
         ];
 
         userSettings = {
+          codee_lens = "on";
           format_on_save = "on";
           indent_guides = {
             enabled = true;
@@ -51,6 +52,12 @@
               args = [ "acp" ];
               env = { };
             };
+          };
+          languages.Nix.inlay_hints.enabled = true;
+          lsp.nixd.settings.options = {
+            nixos.expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixlaptop.options";
+            home-manager.expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixlaptop.options";
+            den.expr = "(builtins.getFlake (builtins.toString ./.)).den.options";
           };
         };
 

@@ -1,14 +1,23 @@
 {
   inputs,
   den,
-  stacks,
+  __findFile,
   ...
 }:
 {
-  imports = [ inputs.den.flakeOutputs.packages ];
+  imports = with inputs.den.flakeOutputs; [
+    packages
+    checks
+  ];
+
+  den.schema.flake.includes = [ den.policies.flake-to-systems ];
+
   den.schema.flake-system.includes = [
-    den.aspects.auto-update
-    stacks.linktree
+    <auto-update>
+    <stacks/linktree>
+    <nixos-checks>
+    <build-paths>
+    # <diagrams>
   ];
 
   flake.formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;

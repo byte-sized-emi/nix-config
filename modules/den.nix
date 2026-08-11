@@ -19,10 +19,18 @@
 
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 
-  den.hosts.x86_64-linux.nixlaptop.users.emilia = { };
-  den.hosts.x86_64-linux.nixda.users.emilia = { };
-  den.hosts.x86_64-linux.nixnest.users.emilia = { };
-  den.hosts.x86_64-linux.nixdort.users.emilia = { };
+  den.hosts.x86_64-linux = {
+    nixlaptop.users.emilia = { };
+    nixda.users.emilia = { };
+    nixnest = {
+      users.emilia = { };
+      ipv4 = "192.168.0.201";
+    };
+    nixdort = {
+      users.emilia = { };
+      ipv4 = "192.168.0.204";
+    };
+  };
 
   den.schema.host.includes = [
     <boot>

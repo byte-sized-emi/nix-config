@@ -49,6 +49,7 @@
     };
     import-tree.url = "github:denful/import-tree";
     den.url = "github:denful/den";
+    den-diagram.url = "github:denful/den-diagram";
   };
 
   outputs =

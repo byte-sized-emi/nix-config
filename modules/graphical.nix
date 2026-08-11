@@ -36,8 +36,8 @@
         enable = true;
         x11Support = false;
         settings = {
-          animation = "matrix";
-          # animation = "dur_file";
+          # animation = "matrix";
+          animation = "dur_file";
           dur_file_path = "${./blackhole-smooth-240x67.dur}";
           bigclock = "en";
           clear_password = true;
