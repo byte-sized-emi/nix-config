@@ -8,6 +8,7 @@
   imports = with inputs.den.flakeOutputs; [
     packages
     checks
+    devShells
   ];
 
   den.schema.flake.includes = [ den.policies.flake-to-systems ];
@@ -17,6 +18,8 @@
     <stacks/linktree>
     <nixos-checks>
     <build-paths>
+    <control-server>
+    <dev-shell>
     # <diagrams>
   ];
 

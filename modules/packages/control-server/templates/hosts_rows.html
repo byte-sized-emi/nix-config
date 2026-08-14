@@ -1,0 +1,8 @@
+{% for row in hosts %}<tr>
+  <td><a href="/hosts/{{ row.name }}">{{ row.name }}</a></td>
+  <td><span class="badge {{ row.status_class }}">{{ row.status }}</span></td>
+  <td class="muted">{{ row.last_seen }}</td>
+  <td class="mono">{{ row.actual_derivation }}{% if row.actual_commit != "-" %}<span class="muted"> @ {{ row.actual_commit }}</span>{% endif %}</td>
+  <td class="mono">{{ row.desired_derivation }}{% if row.desired_commit != "-" %}<span class="muted"> @ {{ row.desired_commit }}</span>{% endif %}</td>
+  <td>{% if row.desired_forgejo_status != "-" %}<span class="badge {{ row.desired_forgejo_status_class }}">{{ row.desired_forgejo_status }}</span>{% else %}<span class="muted">-</span>{% endif %}</td>
+</tr>{% endfor %}

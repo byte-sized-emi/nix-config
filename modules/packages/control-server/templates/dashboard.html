@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>hosts</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>host</th>
+      <th>status</th>
+      <th>last seen</th>
+      <th>actual</th>
+      <th>desired</th>
+      <th>forgejo</th>
+    </tr>
+  </thead>
+  <tbody id="hosts-rows" hx-get="/partials/hosts" hx-trigger="every 10s" hx-swap="innerHTML">{% include "hosts_rows.html" %}</tbody>
+</table>
+<h2>recent builds</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>commit</th>
+      <th>message</th>
+      <th>observed</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for build in builds %}
+    <tr>
+      <td class="mono">{{ build.commit }}</td>
+      <td>{{ build.message }}</td>
+      <td class="muted">{{ build.observed }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -16,7 +16,58 @@
         ];
 
         userSettings = {
-          codee_lens = "on";
+          language_models = {
+            opencode = {
+              available_models = [
+                {
+                  name = "deepseek-v4-flash-free";
+                  display_name = "DeepSeek V4 Flash Free";
+                  max_tokens = 200000;
+                  max_output_tokens = 128000;
+                  protocol = "openai_chat";
+                  reasoning_effort_levels = [
+                    "low"
+                    "high"
+                    "max"
+                  ];
+                  interleaved_reasoning = true;
+                  subscription = "free";
+                }
+                {
+                  name = "hy3-free";
+                  display_name = "Hy3 Free";
+                  max_tokens = 190000;
+                  max_output_tokens = 64000;
+                  protocol = "openai_chat";
+                  reasoning_effort_levels = [
+                    "low"
+                    "medium"
+                    "high"
+                  ];
+                  interleaved_reasoning = true;
+                  subscription = "free";
+                }
+              ];
+              show_go_models = false;
+              show_zen_models = false;
+            };
+          };
+          agent = {
+            subagent_model = {
+              provider = "opencode";
+              model = "deepseek-v4-flash-free";
+            };
+            default_profile = "write";
+            dock = "right";
+            default_model = {
+              effort = "max";
+              enable_thinking = true;
+              provider = "opencode";
+              model = "free/deepseek-v4-flash-free";
+            };
+            model_parameters = [ ];
+          };
+          code_lens = "on";
           format_on_save = "on";
           indent_guides = {
             enabled = true;

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}deployment {{ deployment_id }}{% endblock %}
+{% block content %}
+<h1><a href="/">hosts</a> / <a href="/hosts/{{ host_name }}">{{ host_name }}</a> / deployment {{ deployment_id }}</h1>
+<table class="info">
+  <tr>
+    <th>status</th>
+    <td><span class="badge {{ status_class }}">{{ status }}</span></td>
+  </tr>
+  <tr>
+    <th>commit</th>
+    <td class="mono">{{ commit }} <span class="muted">({{ commit_short }})</span></td>
+  </tr>
+  <tr>
+    <th>build message</th>
+    <td>{{ message }}</td>
+  </tr>
+  <tr>
+    <th>derivation</th>
+    <td class="mono">{{ derivation }}</td>
+  </tr>
+  <tr>
+    <th>started</th>
+    <td>{{ started }}</td>
+  </tr>
+  <tr>
+    <th>finished</th>
+    <td>{{ finished }}</td>
+  </tr>
+  {% if error != "-" %}
+  <tr>
+    <th>error</th>
+    <td class="error">{{ error }}</td>
+  </tr>
+  {% endif %}
+</table>
+{% if sse_active %}
+<div id="logs" class="log-box" hx-ext="sse" sse-connect="/deployments/{{ deployment_id }}/log/stream?after={{ last_id }}" sse-swap="log:beforeend">
+  {% for log in logs %}
+  <div class="log-line"><span class="log-ts">[{{ log.ts }}]</span> {{ log.line }}</div>
+  {% endfor %}
+</div>
+{% else %}
+<div id="logs" class="log-box">
+  {% for log in logs %}
+  <div class="log-line"><span class="log-ts">[{{ log.ts }}]</span> {{ log.line }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

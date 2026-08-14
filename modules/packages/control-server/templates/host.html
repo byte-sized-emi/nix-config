@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ name }}{% endblock %}
+{% block content %}
+<h1><a href="/">hosts</a> / {{ name }}</h1>
+<table class="info">
+  <tr>
+    <th>status</th>
+    <td><span class="badge {{ host.status_class }}">{{ host.status }}</span></td>
+  </tr>
+  <tr>
+    <th>last seen</th>
+    <td>{{ host.last_seen }}</td>
+  </tr>
+  <tr>
+    <th>actual derivation</th>
+    <td class="mono">{{ host.actual_derivation }}</td>
+  </tr>
+  <tr>
+    <th>actual commit</th>
+    <td class="mono">{{ host.actual_commit }}</td>
+  </tr>
+  <tr>
+    <th>desired derivation</th>
+    <td class="mono">{{ host.desired_derivation }}</td>
+  </tr>
+  <tr>
+    <th>desired commit</th>
+    <td class="mono">{{ host.desired_commit }}</td>
+  </tr>
+</table>
+<h2>deployments</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>commit</th>
+      <th>status</th>
+      <th>started</th>
+      <th>finished</th>
+      <th>derivation</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in deployments %}
+    <tr>
+      <td><a href="/deployments/{{ row.id }}">{{ row.id }}</a></td>
+      <td class="mono">{{ row.commit }}</td>
+      <td><span class="badge {{ row.status_class }}">{{ row.status }}</span></td>
+      <td class="muted">{{ row.started }}</td>
+      <td class="muted">{{ row.finished }}</td>
+      <td class="mono">{{ row.derivation }}</td>
+      <td class="error">{{ row.error }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
