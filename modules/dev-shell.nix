@@ -1,7 +1,7 @@
 {
   den.aspects.dev-shell.devShells = { pkgs, ... }: {
     default = pkgs.mkShell {
-      inputs = with pkgs; [
+      nativeBuildInputs = with pkgs; [
         rust-analyzer
         rustfmt
         rustc

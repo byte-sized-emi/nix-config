@@ -4,71 +4,23 @@ on:
   push:
     branches: ["main"]
 
+# mount /nix/store and /nix/var/nix/daemon-socket/nix
+
 jobs:
   update-hosts:
-    if: false
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        host:
-          - nixnest
-          - nixlaptop
-          # - nixda # update this manually
+    runs-on: alpine-x86_64-linux
+    container:
+      volumes:
+        - /nix:/nix
+    environment:
+      NIX_REMOTE: daemon
 
     steps:
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-
-      - name: Tailscale join
-        uses: https://github.com/tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:cicd
-          version: latest
-          use-cache: "false"
-          tailscaled-args: --verbose 2 --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
-          ping: ${{ matrix.host }}
-
-      - name: Test connectivity
-        run: |
-          # Test that we can reach the Tailscale network
-          tailscale status
-
-          # Show our IP address
-          tailscale ip
-
-      - name: Updating host
-        env:
-          http_proxy: http://localhost:1055/
-          ALL_PROXY: socks5://localhost:1055/
-          HTTP_PROXY: http://localhost:1055/
-          NTFY_URL: https://ntfy.service.byte-sized.fyi/forgejo-cicd
-        run: |
-          TEMPFILE=$(mktemp)
-          trap 'rm -f "$TEMPFILE"' EXIT
-          stdbuf -oL curl -X POST -sS --no-buffer --connect-timeout 10 "http://${{ matrix.host }}.bushbaby-chimera.ts.net:36196/update" 2>&1 | tee "$TEMPFILE"
-          CI_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-          if grep -q "NIX_UPDATE_SERVER_SUCCESS_kjimqe0c" "$TEMPFILE"; then
-            curl -sS "$NTFY_URL" \
-              -H 'Title: (${{ matrix.host }}) Update Succeeded' \
-              -H 'Tags: white_check_mark,green_circle,pass' \
-              -H "Click: $CI_URL" \
-              -d "Update succeeded"
-          elif grep -q "NIX_UPDATE_SERVER_FAILED_kjimqe0c" "$TEMPFILE"; then
-            LAST_LINES=$(tail -n 10 "$TEMPFILE")
-            curl -sS "$NTFY_URL" \
-              -H 'Title: (${{ matrix.host }}) Update Failed' \
-              -H 'Tags: warning,red_circle,fail' \
-              -H "Click: $CI_URL" \
-              -d "$LAST_LINES"
-            exit 1
-          else
-            curl -sS "$NTFY_URL" \
-              -H 'Title: (${{ matrix.host }}) Update Skipped' \
-              -H 'Tags: grey_question,warning' \
-              -H "Click: $CI_URL" \
-              -d "Update skipped"
-          fi
+      - uses: actions/checkout@v7
+      - run: |
+          export PATH=$(dirname $(readlink -f $(whence -p nix))):$PATH
+          nix --extra-experimental-features 'nix-command flakes' run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.build-paths --skip-cached
+          cp result-x86_64-linux-build-paths .build-paths.json
+          git add .build-paths.json
+          git commit -m "Update build paths"
+          git push

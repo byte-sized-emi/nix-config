@@ -83,11 +83,14 @@
           tokenFile = config.sops.secrets."forgejo/actionsRunnerToken".path;
           labels = [
             "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
-            "ubuntu-24.04:docker://ghcr.io/catthehacker/ubuntu:rust-24.04"
-            "ubuntu-js-latest:docker://ghcr.io/catthehacker/ubuntu:js-latest"
+            "alpine-${pkgs.stdenv.hostPlatform.system}:docker://ghcr.io/nixos/nixos:latest"
           ];
           settings = {
             cache.enabled = true;
+            container.valid_volumes = [
+              "/nix/store"
+              "/nix/var/nix/daemon-socket/nix"
+            ];
           };
         };
       };
