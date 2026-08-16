@@ -3,6 +3,8 @@ name: Update hosts
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - .build-paths.json
 
 jobs:
   update-hosts:
@@ -19,8 +21,8 @@ jobs:
           apk add nix git -q
           export NIX_REMOTE=daemon
           echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
-          nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.build-paths --skip-cached
-          cp result-x86_64-linux-build-paths .build-paths.json
+          nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux --skip-cached --out-link result
+          cp result-build-paths .build-paths.json
           git add .build-paths.json
-          git commit -m "Update build paths"
+          git commit -m "Update build paths [skip ci]"
           git push
