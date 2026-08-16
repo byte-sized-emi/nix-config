@@ -88,10 +88,9 @@
 
           settings = {
             cache.enabled = true;
-            runner.envs.NIX_BIN_PATH = "${pkgs.nix}/bin";
+            # runner.envs.NIX_BIN_PATH = "${pkgs.nix}/bin";
             container.valid_volumes = [
-              "/nix/store"
-              "/nix/var/nix/daemon-socket/nix"
+              "/nix"
             ];
           };
         };

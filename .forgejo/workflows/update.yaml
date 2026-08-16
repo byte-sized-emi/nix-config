@@ -9,15 +9,15 @@ jobs:
     runs-on: alpine-x86_64-linux
     container:
       volumes:
-        - /nix/store:/nix/store
-        - /nix/var/nix/daemon-socket/nix:/nix/var/nix/daemon-socket/nix
+        - /nix:/nix:ro
     environment:
       NIX_REMOTE: daemon
 
     steps:
       - uses: actions/checkout@v7
       - run: |
-          export PATH=$NIX_BIN_PATH:$PATH
+          apk add nix -q
+          export NIX_REMOTE=daemon
           nix --extra-experimental-features 'nix-command flakes' run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.build-paths --skip-cached
           cp result-x86_64-linux-build-paths .build-paths.json
           git add .build-paths.json
