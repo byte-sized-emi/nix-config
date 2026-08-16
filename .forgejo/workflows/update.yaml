@@ -18,7 +18,8 @@ jobs:
       - run: |
           apk add nix -q
           export NIX_REMOTE=daemon
-          nix --extra-experimental-features 'nix-command flakes' run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.build-paths --skip-cached
+          echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+          nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.build-paths --skip-cached
           cp result-x86_64-linux-build-paths .build-paths.json
           git add .build-paths.json
           git commit -m "Update build paths"
