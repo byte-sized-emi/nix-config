@@ -14,6 +14,7 @@
       <stacks/beeper>
       <stacks/dawarich>
       <stacks/forgejo>
+      <stacks/freshrss>
       <stacks/hedgedoc>
       <stacks/homeassistant>
       <stacks/immich>
