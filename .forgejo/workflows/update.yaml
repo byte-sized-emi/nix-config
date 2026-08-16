@@ -4,8 +4,6 @@ on:
   push:
     branches: ["main"]
 
-# mount /nix/store and /nix/var/nix/daemon-socket/nix
-
 jobs:
   update-hosts:
     runs-on: alpine-x86_64-linux
@@ -19,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: |
-          export PATH=$(dirname $(readlink -f $(whence -p nix))):$PATH
+          export PATH=$NIX_BIN_PATH:$PATH
           nix --extra-experimental-features 'nix-command flakes' run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.build-paths --skip-cached
           cp result-x86_64-linux-build-paths .build-paths.json
           git add .build-paths.json

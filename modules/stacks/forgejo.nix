@@ -85,8 +85,10 @@
             "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
             "alpine-${pkgs.stdenv.hostPlatform.system}:docker://docker.io/node:26-alpine3.23"
           ];
+
           settings = {
             cache.enabled = true;
+            runner.envs.NIX_BIN_PATH = "${pkgs.nix}/bin";
             container.valid_volumes = [
               "/nix/store"
               "/nix/var/nix/daemon-socket/nix"
