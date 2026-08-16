@@ -83,7 +83,7 @@
           tokenFile = config.sops.secrets."forgejo/actionsRunnerToken".path;
           labels = [
             "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
-            "alpine-${pkgs.stdenv.hostPlatform.system}:docker://docker.io/alpine:3.24.1"
+            "alpine-${pkgs.stdenv.hostPlatform.system}:docker://docker.io/node:26-alpine3.23"
           ];
           settings = {
             cache.enabled = true;
