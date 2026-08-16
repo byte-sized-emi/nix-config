@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: |
-          apk add nix -q
+          apk add nix git -q
           export NIX_REMOTE=daemon
           echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
           nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.build-paths --skip-cached
