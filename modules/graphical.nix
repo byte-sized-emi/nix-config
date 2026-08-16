@@ -165,6 +165,7 @@
         libreoffice
         file
         jellyflix
+        plezy
         deezer-enhanced
         mission-center
         beeper
