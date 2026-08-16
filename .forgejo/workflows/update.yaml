@@ -11,7 +11,8 @@ jobs:
     runs-on: alpine-x86_64-linux
     container:
       volumes:
-        - /nix:/nix
+        - /nix/store:/nix/store
+        - /nix/var/nix/daemon-socket/nix:/nix/var/nix/daemon-socket/nix
     environment:
       NIX_REMOTE: daemon
 
