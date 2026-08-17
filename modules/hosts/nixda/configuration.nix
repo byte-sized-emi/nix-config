@@ -50,5 +50,13 @@
 
       system.stateVersion = "25.11"; # Did you read the comment?
     };
+
+    provides.to-users.homeManager = {
+      programs.niri.settings.outputs."DP-3".mode = {
+        height = 1440;
+        width = 2560;
+        refresh = 179.998;
+      };
+    };
   };
 }
