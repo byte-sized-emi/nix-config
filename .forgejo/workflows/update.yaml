@@ -16,11 +16,13 @@ jobs:
       NIX_REMOTE: daemon
 
     steps:
+      # TODO: probably needs to checkout all submodules as well
       - run: |
           apk add nix git -q
           echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
       - uses: actions/checkout@v7
       - run: |
+          git -c "submodule.secret-nix-config.url=https://x-access-token:${{ secrets.TOKEN }}@git.byte-sized.fyi/emilia/secret-nix-config.git" submodule update --init --recursive
           export NIX_REMOTE=daemon
           nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux --skip-cached --out-link result
           cp result-build-paths .build-paths.json
