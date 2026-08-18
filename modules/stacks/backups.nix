@@ -116,7 +116,10 @@
           "/var/backup"
           "/var/immich/upload_location"
         ];
-        environment.BORG_RSH = "ssh -i ${config.sops.secrets."ssh_keys/nas_backup/priv".path} -p 2222";
+        environment = {
+          BORG_RSH = "ssh -i ${config.sops.secrets."ssh_keys/nas_backup/priv".path} -p 2222";
+          BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
+        };
         repo = "ssh://borg@192.168.0.204/./.";
         compression = "auto,zstd";
         startAt = config.settings.backup.local.interval;
