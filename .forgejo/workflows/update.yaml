@@ -29,7 +29,8 @@ jobs:
           nix flake metadata
           nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux --skip-cached --out-link result
           cp result-build-paths .build-paths.json
-          
+
+          git status
           git add .build-paths.json
           git config user.name "byte-sized.fyi Forgejo Instance"
           git config user.email "forgejo@byte-sized.fyi"
