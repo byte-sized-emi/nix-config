@@ -25,8 +25,12 @@ jobs:
           git submodule init
           git -c "submodule.secret-nix-config.url=https://x-access-token:${{ secrets.TOKEN }}@git.byte-sized.fyi/emilia/secret-nix-config.git" submodule update --recursive
           export NIX_REMOTE=daemon
+          
           nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux --skip-cached --out-link result
           cp result-build-paths .build-paths.json
+          
           git add .build-paths.json
-          git commit -m "Update build paths [skip ci]"
+          git config user.name "byte-sized.fyi Forgejo Instance"
+          git config user.email "forgejo@byte-sized.fyi"
+          git commit -m ":white_check_mark: (CI) Update .build-paths.json [skip ci]"
           git push
