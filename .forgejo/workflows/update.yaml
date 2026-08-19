@@ -21,15 +21,12 @@ jobs:
           apk add nix git -q
           echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
       - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
       - run: |
           git submodule init
           git -c "submodule.secret-nix-config.url=https://x-access-token:${{ secrets.TOKEN }}@git.byte-sized.fyi/emilia/secret-nix-config.git" submodule update --recursive    
-          git reset --hard
-          git update-index --refresh
           export NIX_REMOTE=daemon
-          
+
+          nix flake metadata
           nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux --skip-cached --out-link result
           cp result-build-paths .build-paths.json
           
