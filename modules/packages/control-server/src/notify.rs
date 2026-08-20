@@ -28,6 +28,12 @@ pub async fn push_host_status(
     });
     state
         .forgejo
-        .set_commit_status(&build.commit, &context, build_state, description, target_url.as_deref())
+        .set_commit_status(
+            &build.commit,
+            &context,
+            build_state,
+            description,
+            target_url.as_deref(),
+        )
         .await
 }

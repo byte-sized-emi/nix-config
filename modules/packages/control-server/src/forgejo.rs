@@ -42,8 +42,12 @@ impl Forgejo {
 
     /// SHA and subject message of the branch head.
     pub async fn branch_head(&self, branch: &str) -> Result<(String, Option<String>), String> {
-        let mut url = self.url(&["commits"]).map_err(|e| format!("branch head: {e}"))?;
-        url.query_pairs_mut().append_pair("sha", branch).append_pair("limit", "1");
+        let mut url = self
+            .url(&["commits"])
+            .map_err(|e| format!("branch head: {e}"))?;
+        url.query_pairs_mut()
+            .append_pair("sha", branch)
+            .append_pair("limit", "1");
         let response = self
             .client
             .get(url)
@@ -93,7 +97,10 @@ impl Forgejo {
         if !response.status().is_success() {
             return Err(format!("fetching raw file {path}: {}", response.status()));
         }
-        let bytes = response.bytes().await.map_err(|e| format!("reading raw file {path}: {e}"))?;
+        let bytes = response
+            .bytes()
+            .await
+            .map_err(|e| format!("reading raw file {path}: {e}"))?;
         Ok(bytes.to_vec())
     }
 
@@ -106,7 +113,9 @@ impl Forgejo {
         description: &str,
         target_url: Option<&str>,
     ) -> Result<(), String> {
-        let url = self.url(&["statuses", sha]).map_err(|e| format!("commit status: {e}"))?;
+        let url = self
+            .url(&["statuses", sha])
+            .map_err(|e| format!("commit status: {e}"))?;
         let body = serde_json::json!({
             "state": state,
             "context": context,

@@ -7,6 +7,8 @@
         rustc
         clippy
         cargo
+        pkg-config
+        openssl
       ];
     };
   };

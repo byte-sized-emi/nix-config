@@ -3,7 +3,7 @@ use std::path::Path;
 use std::sync::Arc;
 
 use chrono::Utc;
-use rusqlite::{params, Connection, OptionalExtension};
+use rusqlite::{Connection, OptionalExtension, params};
 use tokio::sync::Mutex;
 
 const SCHEMA: &str = r#"
@@ -154,6 +154,24 @@ pub struct ClaimedDeployment {
     pub derivation: String,
 }
 
+/// Outcome of a deployment claim.
+pub enum ClaimResult {
+    Claimed(ClaimedDeployment),
+    /// The host already has an active deployment for a different build.
+    OtherBuildActive {
+        active_build_id: i64,
+    },
+}
+
+impl ClaimResult {
+    pub fn claimed(self) -> Option<ClaimedDeployment> {
+        match self {
+            ClaimResult::Claimed(d) => Some(d),
+            ClaimResult::OtherBuildActive { .. } => None,
+        }
+    }
+}
+
 pub struct Db {
     conn: Mutex<Connection>,
 }
@@ -162,9 +180,11 @@ impl Db {
     pub async fn open(path: &Path) -> Result<Arc<Db>, String> {
         let parent = path.parent().filter(|p| !p.as_os_str().is_empty());
         if let Some(dir) = parent {
-            std::fs::create_dir_all(dir).map_err(|e| format!("creating db dir {}: {e}", dir.display()))?;
+            std::fs::create_dir_all(dir)
+                .map_err(|e| format!("creating db dir {}: {e}", dir.display()))?;
         }
-        let conn = Connection::open(path).map_err(|e| format!("opening db {}: {e}", path.display()))?;
+        let conn =
+            Connection::open(path).map_err(|e| format!("opening db {}: {e}", path.display()))?;
         conn.pragma_update(None, "journal_mode", "WAL")
             .map_err(|e| format!("setting WAL journal mode: {e}"))?;
         conn.pragma_update(None, "foreign_keys", "ON")
@@ -178,7 +198,8 @@ impl Db {
 
     async fn migrate(&self) -> Result<(), String> {
         let conn = self.conn.lock().await;
-        conn.execute_batch(SCHEMA).map_err(|e| format!("running migrations: {e}"))?;
+        conn.execute_batch(SCHEMA)
+            .map_err(|e| format!("running migrations: {e}"))?;
         // Add columns introduced after the initial schema. Existing databases
         // already have the column, so the "duplicate column name" error is fine.
         let _ = conn.execute("ALTER TABLE hosts ADD COLUMN desired_override TEXT", []);
@@ -322,7 +343,11 @@ impl Db {
         Ok(out)
     }
 
-    pub async fn desire_derivation(&self, build_id: i64, host: &str) -> Result<Option<String>, String> {
+    pub async fn desire_derivation(
+        &self,
+        build_id: i64,
+        host: &str,
+    ) -> Result<Option<String>, String> {
         let conn = self.conn.lock().await;
         conn.query_row(
             "SELECT derivation FROM build_desires WHERE build_id = ?1 AND host = ?2",
@@ -439,7 +464,9 @@ impl Db {
         let mut conn = self.conn.lock().await;
 
         let existing: Option<i64> = conn
-            .query_row("SELECT id FROM builds WHERE sha = ?1", [commit], |row| row.get(0))
+            .query_row("SELECT id FROM builds WHERE sha = ?1", [commit], |row| {
+                row.get(0)
+            })
             .optional()
             .map_err(|e| format!("checking existing build: {e}"))?;
         if let Some(id) = existing {
@@ -449,7 +476,9 @@ impl Db {
             });
         }
 
-        let tx = conn.transaction().map_err(|e| format!("starting transaction: {e}"))?;
+        let tx = conn
+            .transaction()
+            .map_err(|e| format!("starting transaction: {e}"))?;
         tx.execute(
             "INSERT INTO builds (sha, message, observed_at) VALUES (?1, ?2, ?3)",
             params![commit, message, now()],
@@ -496,9 +525,13 @@ impl Db {
         )
         .map_err(|e| format!("storing last observed commit: {e}"))?;
 
-        tx.commit().map_err(|e| format!("committing build ingest: {e}"))?;
+        tx.commit()
+            .map_err(|e| format!("committing build ingest: {e}"))?;
 
-        Ok(IngestedBuild { build_id, desires: plan })
+        Ok(IngestedBuild {
+            build_id,
+            desires: plan,
+        })
     }
 
     // --- hosts ---
@@ -544,7 +577,12 @@ impl Db {
         Ok(())
     }
 
-    pub async fn set_host_actual(&self, name: &str, derivation: &str, commit: &str) -> Result<(), String> {
+    pub async fn set_host_actual(
+        &self,
+        name: &str,
+        derivation: &str,
+        commit: &str,
+    ) -> Result<(), String> {
         let conn = self.conn.lock().await;
         conn.execute(
             "UPDATE hosts SET actual_derivation = ?2, actual_commit = ?3 WHERE name = ?1",
@@ -571,23 +609,35 @@ impl Db {
     /// existing active (pending/deploying) deployment if it already has one
     /// (idempotent claim, so a re-claim after a crash resumes the same attempt).
     /// The claimed deployment is marked 'deploying' and the host status updated.
-    pub async fn claim_deployment(&self, host: &str, build_id: i64) -> Result<Option<ClaimedDeployment>, String> {
+    pub async fn claim_deployment(
+        &self,
+        host: &str,
+        build_id: i64,
+    ) -> Result<Option<ClaimResult>, String> {
         let mut conn = self.conn.lock().await;
-        let tx = conn.transaction().map_err(|e| format!("starting transaction: {e}"))?;
+        let tx = conn
+            .transaction()
+            .map_err(|e| format!("starting transaction: {e}"))?;
 
-        let active: Option<i64> = tx
+        let active: Option<(i64, i64)> = tx
             .query_row(
-                "SELECT id FROM deployments
+                "SELECT id, build_id FROM deployments
                  WHERE host = ?1 AND status IN ('pending', 'deploying')
                  ORDER BY id
                  LIMIT 1",
                 [host],
-                |row| row.get(0),
+                |row| Ok((row.get(0)?, row.get(1)?)),
             )
             .optional()
             .map_err(|e| format!("loading active deployment for {host}: {e}"))?;
 
-        let deployment_id = if let Some(id) = active {
+        let deployment_id = if let Some((id, active_build_id)) = active {
+            // A host can only have one active deployment; if the agent is
+            // claiming a different build than the one already in flight, that's
+            // a conflict, not a resume. Roll back by returning without commit.
+            if active_build_id != build_id {
+                return Ok(Some(ClaimResult::OtherBuildActive { active_build_id }));
+            }
             id
         } else {
             tx.execute(
@@ -601,8 +651,11 @@ impl Db {
                 params![build_id, host, now()],
             )
             .map_err(|e| format!("creating deployment for {host}: {e}"))?;
-            tx.execute("UPDATE hosts SET status = 'deploying' WHERE name = ?1", [host])
-                .map_err(|e| format!("marking host {host} deploying: {e}"))?;
+            tx.execute(
+                "UPDATE hosts SET status = 'deploying' WHERE name = ?1",
+                [host],
+            )
+            .map_err(|e| format!("marking host {host} deploying: {e}"))?;
             tx.last_insert_rowid()
         };
 
@@ -627,7 +680,7 @@ impl Db {
             .map_err(|e| format!("loading claimed deployment {deployment_id}: {e}"))?;
 
         tx.commit().map_err(|e| format!("committing claim: {e}"))?;
-        Ok(claimed)
+        Ok(claimed.map(ClaimResult::Claimed))
     }
 
     pub async fn finish_deployment(
@@ -725,25 +778,36 @@ impl Db {
 
     // --- logs ---
 
-    pub async fn append_logs(&self, deployment_id: i64, lines: &[String]) -> Result<Vec<LogEntry>, String> {
+    pub async fn append_logs(
+        &self,
+        deployment_id: i64,
+        lines: &[String],
+    ) -> Result<Vec<LogEntry>, String> {
         let conn = self.conn.lock().await;
         let mut out = Vec::new();
         for line in lines {
+            // Store and broadcast the same timestamp for this entry.
+            let ts = now();
             conn.execute(
                 "INSERT INTO deployment_logs (deployment_id, ts, line) VALUES (?1, ?2, ?3)",
-                params![deployment_id, now(), line],
+                params![deployment_id, ts, line],
             )
             .map_err(|e| format!("appending log line: {e}"))?;
             out.push(LogEntry {
                 id: conn.last_insert_rowid(),
-                ts: now(),
+                ts,
                 line: line.clone(),
             });
         }
         Ok(out)
     }
 
-    pub async fn logs_after(&self, deployment_id: i64, after_id: i64, limit: i64) -> Result<Vec<LogEntry>, String> {
+    pub async fn logs_after(
+        &self,
+        deployment_id: i64,
+        after_id: i64,
+        limit: i64,
+    ) -> Result<Vec<LogEntry>, String> {
         let conn = self.conn.lock().await;
         let mut stmt = conn
             .prepare(
@@ -761,7 +825,11 @@ impl Db {
     }
 
     /// Most recent log lines, newest-last (for the initial page render).
-    pub async fn recent_logs(&self, deployment_id: i64, limit: i64) -> Result<Vec<LogEntry>, String> {
+    pub async fn recent_logs(
+        &self,
+        deployment_id: i64,
+        limit: i64,
+    ) -> Result<Vec<LogEntry>, String> {
         let conn = self.conn.lock().await;
         let mut stmt = conn
             .prepare(

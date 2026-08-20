@@ -12,12 +12,12 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
+use axum::Router;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::routing::{delete, get, post};
-use axum::Router;
 use clap::Parser;
-use tokio::sync::{broadcast, Mutex};
+use tokio::sync::{Mutex, broadcast};
 
 use crate::config::Config;
 use crate::db::Db;
@@ -91,7 +91,10 @@ impl ApiError {
     }
 
     pub fn not_found(what: impl AsRef<str>) -> Self {
-        ApiError::Status(StatusCode::NOT_FOUND, format!("{} not found", what.as_ref()))
+        ApiError::Status(
+            StatusCode::NOT_FOUND,
+            format!("{} not found", what.as_ref()),
+        )
     }
 
     pub fn bad_request(msg: impl Into<String>) -> Self {
@@ -125,7 +128,9 @@ fn api_routes() -> Router<AppState> {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cfg = Arc::new(Config::parse());
 
-    let db = Db::open(&cfg.db).await.map_err(|e| format!("opening database: {e}"))?;
+    let db = Db::open(&cfg.db)
+        .await
+        .map_err(|e| format!("opening database: {e}"))?;
     let forgejo = Arc::new(Forgejo::new(
         &cfg.forgejo_api,
         &cfg.forgejo_owner,

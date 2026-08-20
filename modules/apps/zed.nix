@@ -17,6 +17,43 @@
 
         userSettings = {
           language_models = {
+            openai_compatible.NeuralWatt = {
+              api_url = "https://api.neuralwatt.com/v1";
+              available_models = [
+                {
+                  name = "deepseek-v4-flash";
+                  max_tokens = 1000000;
+                  max_output_tokens = 262000;
+                  max_completion_tokens = 100000;
+                  reasoning_effort = "medium";
+                  capabilities = {
+                    tools = true;
+                    images = false;
+                    parallel_tool_calls = true;
+                    prompt_cache_key = false;
+                    chat_completions = true;
+                    interleaved_reasoning = true;
+                    max_tokens_parameter = true;
+                  };
+                }
+                {
+                  name = "glm-5.2";
+                  max_tokens = 1000000;
+                  max_output_tokens = 128000;
+                  max_completion_tokens = 100000;
+                  reasoning_effort = "medium";
+                  capabilities = {
+                    tools = true;
+                    images = false;
+                    parallel_tool_calls = true;
+                    prompt_cache_key = false;
+                    chat_completions = true;
+                    interleaved_reasoning = true;
+                    max_tokens_parameter = false;
+                  };
+                }
+              ];
+            };
             opencode = {
               available_models = [
                 {
@@ -53,17 +90,62 @@
             };
           };
           agent = {
+            notify_when_agent_waiting = "all_screens";
+            play_sound_when_agent_done = "when_hidden";
+            tool_permissions = {
+              default = "confirm";
+              tools = {
+                terminal = {
+                  default = "confirm";
+                  always_allow = [
+                    { pattern = "^awk\\b"; }
+                    { pattern = "^cat\\b"; }
+                    { pattern = "^cargo\\s+(check|clippy|test|build)\\b"; }
+                    { pattern = "^curl\\b"; }
+                    { pattern = "^cut\\b"; }
+                    { pattern = "^file\\b"; }
+                    { pattern = "^find\\b"; }
+                    { pattern = "^grep\\b"; }
+                    { pattern = "^printf\\b"; }
+                    { pattern = "^head\\b"; }
+                    { pattern = "^jq\\b"; }
+                    { pattern = "^ls\\b"; }
+                    { pattern = "^rg\\b"; }
+                    { pattern = "^sed\\b"; }
+                    { pattern = "^sort\\b"; }
+                    { pattern = "^stat\\b"; }
+                    { pattern = "^tail\\b"; }
+                    { pattern = "^tr\\b"; }
+                    { pattern = "^uniq\\b"; }
+                    { pattern = "^wc\\b"; }
+                  ];
+                };
+                edit_file = {
+                  default = "allow";
+                };
+                write_file = {
+                  default = "allow";
+                };
+                fetch = {
+                  default = "allow";
+                };
+              };
+            };
             subagent_model = {
-              provider = "opencode";
-              model = "deepseek-v4-flash-free";
+              provider = "neuralwatt";
+              model = "deepseek-v4-flash";
+            };
+            compaction_model = {
+              provider = "neuralwatt";
+              model = "deepseek-v4-flash";
             };
             default_profile = "write";
             dock = "right";
             default_model = {
-              effort = "max";
+              effort = "medium";
               enable_thinking = true;
-              provider = "opencode";
-              model = "free/deepseek-v4-flash-free";
+              provider = "NeuralWatt";
+              model = "deepseek-v4-flash";
             };
             model_parameters = [ ];
           };
@@ -96,8 +178,19 @@
             }
           ];
           calls.mute_on_join = true;
+          cli_default_open_behavior = "existing_window";
+          edit_predictions.provider = "zed";
+          project_panel.dock = "left";
+          outline_panel.dock = "left";
+          collaboration_panel.dock = "left";
+          git_panel.dock = "left";
           agent_servers = {
             opencode = {
+              default_config_options = {
+                effort = "high";
+                model = "opencode/big-pickle";
+                mode = "build";
+              };
               type = "custom";
               command = "opencode";
               args = [ "acp" ];
@@ -105,6 +198,11 @@
             };
           };
           languages.Nix.inlay_hints.enabled = true;
+          lsp.nixd.initialization_options.options = {
+            nixos.expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixnest.options";
+            home-manager.expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixlaptop.options.home-manager.users.type.getSubOptions []";
+            den.expr = "(builtins.getFlake (builtins.toString ./.)).den.options";
+          };
           lsp.nixd.settings.options = {
             nixos.expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixlaptop.options";
             home-manager.expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixlaptop.options";

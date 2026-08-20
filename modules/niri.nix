@@ -42,6 +42,7 @@
         ];
 
         home.pointerCursor = {
+          enable = true;
           name = "Capitaine";
           package = pkgs.capitaine-cursors;
           gtk.enable = true;
