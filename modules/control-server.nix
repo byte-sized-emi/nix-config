@@ -45,7 +45,7 @@
               };
               port = mkOption {
                 type = types.port;
-                default = 8080;
+                default = 60968;
               };
 
               publicUrl = mkOption {
