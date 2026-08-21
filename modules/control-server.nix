@@ -14,7 +14,7 @@
     in
     {
       options.my.control-server = mkOption {
-        description = "The NixOS deployment control plane (nix-control-server) service.";
+        description = "The NixOS deployment control plane (control-server) service.";
         type = types.submodule (
           { config, ... }:
           {

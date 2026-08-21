@@ -1,6 +1,6 @@
-# nix-control-server
+# control-server
 
-`nix-control-server` is the control plane of a GitOps deployment pipeline: it watches a Forgejo
+`control-server` is the control plane of a GitOps deployment pipeline: it watches a Forgejo
 repository for commits that add a fresh `.build-paths.json` (via polling and a webhook), records
 which derivation each NixOS host should be on, and serves agents on the hosts so they can decide
 to upgrade and claim deployments, streaming back logs. It reports per-host progress as Forgejo
@@ -14,7 +14,7 @@ deployment logs.
 The server runs on a VPS or nixnest that can reach the Forgejo instance:
 
 ```sh
-nix run .#nix-control-server -- \
+nix run .#control-server -- \
   --forgejo-api https://git.example.org/api/v1 \
   --forgejo-owner myorg \
   --forgejo-repo mynix \
@@ -27,7 +27,7 @@ Required env secrets:
 - `WEBHOOK_SECRET` — shared secret used to verify the Forgejo webhook signature.
 
 Optional flags: `--listen` (default `127.0.0.1:8080`), `--db` (default
-`/var/lib/nix-control-server/state.db`), `--branch` (default `main`),
+`/var/lib/control-server/state.db`), `--branch` (default `main`),
 `--build-path` (default `.build-paths.json`), `--poll-interval` (seconds,
 default 30), `--webhook-path` (default `/webhook/forgejo`). Point the Forgejo
 webhook at `https://<server><webhook-path>` with content type `application/json`.

@@ -11,7 +11,7 @@ pub struct Forgejo {
 impl Forgejo {
     pub fn new(api: &str, owner: &str, repo: &str, token: &str) -> Result<Forgejo, String> {
         let client = reqwest::Client::builder()
-            .user_agent("nix-control-server")
+            .user_agent("control-server")
             .build()
             .map_err(|e| format!("building http client: {e}"))?;
         Ok(Forgejo {

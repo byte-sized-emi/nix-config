@@ -3,14 +3,14 @@ use std::path::PathBuf;
 use clap::Parser;
 
 #[derive(Parser, Debug, Clone)]
-#[command(name = "nix-control-server", about = "NixOS deployment control plane")]
+#[command(name = "control-server", about = "NixOS deployment control plane")]
 pub struct Config {
     /// Address to listen on for the web UI and agent API.
     #[arg(long, default_value = "127.0.0.1:8080")]
     pub listen: String,
 
     /// Path to the SQLite database file.
-    #[arg(long, default_value = "/var/lib/nix-control-server/state.db")]
+    #[arg(long, default_value = "/var/lib/control-server/state.db")]
     pub db: PathBuf,
 
     /// Forgejo API base URL, e.g. https://git.example.org/api/v1

@@ -179,7 +179,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind(&cfg.listen).await?;
-    println!("nix-control-server listening on http://{}", cfg.listen);
+    println!("control-server listening on http://{}", cfg.listen);
     axum::serve(listener, app).await?;
     Ok(())
 }
