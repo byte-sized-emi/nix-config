@@ -130,6 +130,8 @@
             "d ${cfg.dataPath} 0755 ${serviceUser} ${serviceGroup} - -"
           ];
 
+          environment.systemPackages = [ cfg.package ];
+
           systemd.services.control-server = {
             description = "NixOS deployment control plane";
             wantedBy = [ "multi-user.target" ];
