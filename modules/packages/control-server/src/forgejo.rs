@@ -1,4 +1,18 @@
+use base64::Engine;
+use serde::Deserialize;
 use url::Url;
+
+/// `ContentsResponse` is what Forgejo's `GET /repos/{owner}/{repo}/contents/{filepath}`
+/// returns: for a file, `content` is populated (base64-encoded when `encoding` is
+/// `base64`) and `type` is `file`.
+#[derive(Debug, Deserialize)]
+struct ContentsResponse {
+    content: String,
+    encoding: Option<String>,
+    /// `file`, `dir`, `symlink`, or `submodule`.
+    #[serde(rename = "type")]
+    kind: String,
+}
 
 pub struct Forgejo {
     api: String,
@@ -84,7 +98,8 @@ impl Forgejo {
 
     /// Raw file contents at a given ref (branch or SHA).
     pub async fn raw_file(&self, path: &str, sha: &str) -> Result<Vec<u8>, String> {
-        let segments: Vec<&str> = path.split('/').filter(|s| !s.is_empty()).collect();
+        let mut segments: Vec<&str> = vec!["contents"];
+        segments.extend(path.split('/').filter(|s| !s.is_empty()));
         let mut url = self.url(&segments).map_err(|e| format!("raw file: {e}"))?;
         url.query_pairs_mut().append_pair("ref", sha);
         let response = self
@@ -95,13 +110,32 @@ impl Forgejo {
             .await
             .map_err(|e| format!("fetching raw file {path}: {e}"))?;
         if !response.status().is_success() {
-            return Err(format!("fetching raw file {path}: {}", response.status()));
+            return Err(format!(
+                "fetching raw file {path}: {} {}",
+                response.status(),
+                response.text().await.unwrap_or_default()
+            ));
         }
-        let bytes = response
-            .bytes()
+        let contents: ContentsResponse = response
+            .json()
             .await
-            .map_err(|e| format!("reading raw file {path}: {e}"))?;
-        Ok(bytes.to_vec())
+            .map_err(|e| format!("parsing raw file response for {path}: {e}"))?;
+        if contents.kind != "file" {
+            return Err(format!(
+                "raw file {path}: expected a file, got '{}'",
+                contents.kind
+            ));
+        }
+        if contents.encoding.as_deref() != Some("base64") {
+            return Err(format!(
+                "raw file {path}: unsupported encoding {:?}",
+                contents.encoding
+            ));
+        }
+        let decoded = base64::engine::general_purpose::STANDARD
+            .decode(contents.content.as_bytes())
+            .map_err(|e| format!("decoding base64 content for {path}: {e}"))?;
+        Ok(decoded)
     }
 
     /// Set a commit status under a given context.

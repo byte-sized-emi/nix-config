@@ -1,5 +1,9 @@
 # Rust-specific agent instructions
 
+ONLY write comments that explain things not otherwise obvious.
+Comments exists to either explain things not directly shown through code,
+or to provide a shorter explanation for otherwise complex code.
+
 ## Commands (run in `modules/packages/<name>/`)
 
 | Command                      | Description        |

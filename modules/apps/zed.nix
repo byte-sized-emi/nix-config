@@ -90,7 +90,6 @@
             };
           };
           agent = {
-            notify_when_agent_waiting = "all_screens";
             play_sound_when_agent_done = "when_hidden";
             tool_permissions = {
               default = "confirm";
@@ -216,6 +215,8 @@
             bindings = {
               ctrl-tab = "pane::ActivateNextItem";
               ctrl-shift-tab = "pane::ActivatePreviousItem";
+              alt-left = "pane::GoBack";
+              alt-right = "pane::GoForward";
             };
           }
           {

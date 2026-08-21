@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 askama = { version = "0.16", features = ["derive"] }
+base64 = "0.22"
 axum = "0.8"
 bytes = "1"
 chrono = "0.4"

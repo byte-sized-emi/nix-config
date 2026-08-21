@@ -27,3 +27,7 @@ There are more detailed instructions depending on what you are working on:
 
 - [AGENTS-NIX.md](AGENTS-NIX.md) for Nix-specific agents
 - [AGENTS-RUST.md](AGENTS-RUST.md) for Rust-specific agents
+
+## Downloading files
+
+User-provided references can be very large files, of which only a part is necessary for completion of the task. When a specific line is provided, only download that specific line and some context around it, for example by using curl like this: `curl -s https://raw.githubusercontent.com/...RepositoryApi.java | sed -n 5,10p` (returns only lines 5-10).
