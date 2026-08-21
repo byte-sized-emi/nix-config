@@ -144,6 +144,7 @@ fn to_host_row_from_host(h: &Host) -> HostRow {
         last_seen: opt(&h.last_seen_at),
         actual_derivation: opt(&h.actual_derivation),
         actual_commit: opt(&h.actual_commit),
+        // TODO: fix these
         desired_derivation: "-".to_string(),
         desired_commit: "-".to_string(),
         desired_forgejo_status: "-".to_string(),

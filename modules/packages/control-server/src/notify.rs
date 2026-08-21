@@ -1,3 +1,5 @@
+use std::fmt::format;
+
 use crate::AppState;
 
 /// Push a per-host commit status to Forgejo and record it in the DB.
@@ -18,14 +20,17 @@ pub async fn push_host_status(
         .db
         .set_desire_forgejo_status(build_id, host, build_state)
         .await?;
-    let context = format!("nix/deploy/{host}");
-    let target_url = deployment_id.and_then(|id| {
-        state
-            .cfg
-            .public_url
-            .as_ref()
-            .map(|url| format!("{}/deployments/{id}", url.trim_end_matches('/')))
-    });
+    let context = format!("deploy/{host}");
+
+    let target_path = deployment_id
+        .map(|id| format!("deployments/{id}"))
+        .unwrap_or(format!("hosts/{host}"));
+    let target_url = state
+        .cfg
+        .public_url
+        .as_ref()
+        .map(|url| format!("{}/{target_path}", url.trim_end_matches('/')));
+
     state
         .forgejo
         .set_commit_status(
