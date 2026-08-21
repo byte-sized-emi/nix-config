@@ -12,6 +12,7 @@
       <stacks/atuin>
       <stacks/backups>
       <stacks/beeper>
+      <stacks/control-server>
       <stacks/dawarich>
       <stacks/forgejo>
       <stacks/freshrss>
