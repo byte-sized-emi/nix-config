@@ -25,6 +25,8 @@ pub async fn handle(
     headers: HeaderMap,
     body: Bytes,
 ) -> Result<StatusCode, StatusCode> {
+    println!("Received webhook request");
+
     let signature = headers
         .get("X-Forgejo-Signature")
         .or_else(|| headers.get("X-Hub-Signature-256"))
@@ -62,6 +64,8 @@ pub async fn handle(
     if !state.sha_guard.try_acquire(&sha).await {
         return Ok(StatusCode::OK);
     }
+
+    println!("Webhook request valid, ingesting {sha}");
 
     let state = state.clone();
     let sha2 = sha.clone();

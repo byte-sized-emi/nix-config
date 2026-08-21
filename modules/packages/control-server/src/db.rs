@@ -500,7 +500,6 @@ impl Db {
                     [host],
                     |row| row.get(0),
                 )
-                .optional()
                 .map_err(|e| format!("reading host actual: {e}"))?;
 
             let needs_deploy = actual.as_deref() != Some(derivation.as_str());
