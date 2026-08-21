@@ -263,7 +263,7 @@
 
           containers.qui = {
             containerConfig = {
-              image = "ghcr.io/autobrr/qui:v1.19.0@sha256:36e068e1f1cae0d055295701934137a27e570c37b4e931fe284b6389fe8fdcbc";
+              image = "ghcr.io/autobrr/qui:v1.26.0@sha256:42949835052f8218ca1800d9cb410704002ee93b1bf2a5c417f4d18881adea60";
               user = "${toString uid}:${toString gid}";
               publishPorts = [
                 "127.0.0.1:${toString quiPort}:${toString quiPort}/tcp"
@@ -305,7 +305,7 @@
 
           containers.gluetun = {
             containerConfig = {
-              image = "ghcr.io/qdm12/gluetun:v3.41.1@sha256:1a5bf4b4820a879cdf8d93d7ef0d2d963af56670c9ebff8981860b6804ebc8ab";
+              image = "ghcr.io/qdm12/gluetun:v3.41.3@sha256:fa19cc76b2af13d57a8d3dc3066f2ada061b1c761b8aecf989b3877c0486e027";
               addCapabilities = [
                 "NET_ADMIN"
                 "NET_RAW" # for ICMP listening
