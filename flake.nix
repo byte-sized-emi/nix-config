@@ -50,6 +50,9 @@
     import-tree.url = "github:denful/import-tree";
     den.url = "github:denful/den";
     den-diagram.url = "github:denful/den-diagram";
+
+    slippi.url = "github:lytedev/slippi-nix";
+    slippi.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

@@ -13,6 +13,7 @@
       <graphical>
     ]
     ++ lib.optionals (host.hostName == "nixda") [
+      <ai>
       <graphical>
       <gaming>
     ];
