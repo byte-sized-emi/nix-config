@@ -18,7 +18,7 @@
               volumes.${volumeName}.volumeConfig = { };
               containers."beeper-${name}" = {
                 containerConfig = {
-                  image = "ghcr.io/beeper/bridge-manager:latest@sha256:276af44ca3285347011d82c3f3f7f7616a39f7a40c2962a9fe73f0fc4a9d2922";
+                  image = "ghcr.io/beeper/bridge-manager:latest@sha256:063c2bff04bc99b7e7c60f44adc8deaf2230dc7364bfc83a94c44fdb82891ea2";
                   environments = {
                     BRIDGE_NAME = name;
                   };
