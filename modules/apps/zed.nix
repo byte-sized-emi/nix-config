@@ -11,7 +11,7 @@
       programs.zed-editor = {
         enable = true;
         enableMcpIntegration = true;
-        extraPackages = with pkgs; [ bubblewrap ];
+        # extraPackages = with pkgs; [ bubblewrap ];
         # name needs to be one of these (warning, very long): https://github.com/zed-industries/extensions/tree/main/extensions
         extensions = [
           "git-firefly"
@@ -61,40 +61,6 @@
                   };
                 }
               ];
-            };
-            opencode = {
-              available_models = [
-                {
-                  name = "deepseek-v4-flash-free";
-                  display_name = "DeepSeek V4 Flash Free";
-                  max_tokens = 200000;
-                  max_output_tokens = 128000;
-                  protocol = "openai_chat";
-                  reasoning_effort_levels = [
-                    "low"
-                    "high"
-                    "max"
-                  ];
-                  interleaved_reasoning = true;
-                  subscription = "free";
-                }
-                {
-                  name = "hy3-free";
-                  display_name = "Hy3 Free";
-                  max_tokens = 190000;
-                  max_output_tokens = 64000;
-                  protocol = "openai_chat";
-                  reasoning_effort_levels = [
-                    "low"
-                    "medium"
-                    "high"
-                  ];
-                  interleaved_reasoning = true;
-                  subscription = "free";
-                }
-              ];
-              show_go_models = false;
-              show_zen_models = false;
             };
           };
           agent = {
