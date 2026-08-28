@@ -1,11 +1,18 @@
 {
-  apps.zed.homeManager =
-    { pkgs, ... }:
-    {
+  apps.zed = {
+    nixos = {
+      programs.nix-ld.enable = true;
+    };
+    homeManager = { perSystem, pkgs, ... }: {
+      home.packages = with perSystem.llm-agents; [
+        agent-browser
+        rtk
+      ];
       programs.zed-editor = {
-        package = pkgs.zed-editor;
         enable = true;
         enableMcpIntegration = true;
+        extraPackages = with pkgs; [ bubblewrap ];
+        # name needs to be one of these (warning, very long): https://github.com/zed-industries/extensions/tree/main/extensions
         extensions = [
           "git-firefly"
           "github-actions"
@@ -13,6 +20,7 @@
           "material-icon-theme"
           "nix"
           "toml"
+          "path-server-lsp"
         ];
 
         userSettings = {
@@ -197,6 +205,19 @@
             };
           };
           languages.Nix.inlay_hints.enabled = true;
+          lsp.path-server-lsp.settings = {
+            basePath = [
+              "\${workspaceFolder}"
+              "\${document}"
+            ];
+            completion = {
+              triggerNextCompletion = true;
+            };
+            highlight = {
+              enable = true;
+              highlightDirectory = true;
+            };
+          };
           lsp.nixd.initialization_options.options = {
             nixos.expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixnest.options";
             home-manager.expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixlaptop.options.home-manager.users.type.getSubOptions []";
@@ -227,7 +248,14 @@
               "ctrl-k c" = "editor::ToggleComments";
             };
           }
+          {
+            bindings = {
+              ctrl-alt-tab = "workspace::ActivateNextPane";
+              ctrl-alt-shift-tab = "workspace::ActivatePreviousPane";
+            };
+          }
         ];
       };
     };
+  };
 }
