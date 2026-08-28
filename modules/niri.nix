@@ -88,6 +88,8 @@
             action = actionName: action-with-arg actionName [ ];
           in
           {
+            # TODO: switch to home manager config
+            package = pkgs.niri;
             settings = {
               cursor = {
                 theme = "breeze_cursors";

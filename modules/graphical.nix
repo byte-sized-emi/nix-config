@@ -18,6 +18,7 @@
       <swayidle>
       (<den/unfree> [
         "discord"
+        "discord-unwrapped"
         "beeper"
         "obsidian"
         "todoist-electron"
