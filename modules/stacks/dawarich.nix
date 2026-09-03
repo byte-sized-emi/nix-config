@@ -61,7 +61,7 @@
 
             containers.dawarich-redis = {
               containerConfig = {
-                image = "docker.io/valkey/valkey:9.1@sha256:50b70cdef934d4b6a4aced5579ac3e3a4a34f36a045851bb7a3306ead1931d27";
+                image = "docker.io/valkey/valkey:9.1@sha256:475ee65cc75c327407458f5096cdd36954b3de3fc83f4c8ac31a4a8edecbf49e";
                 exec = "redis-server --save 900 1 --save 300 10 --appendonly no";
                 networks = [ networks.dawarich.ref ];
                 networkAliases = [ "dawarich_redis" ];
