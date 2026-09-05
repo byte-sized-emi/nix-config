@@ -32,8 +32,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri.url = "github:sodiboo/niri-flake";
-
     # slippi-launcher = {
     #   url = "github:byte-sized-emi/slippi-launcher-flake";
     #   inputs.nixpkgs.follows = "nixpkgs";

@@ -52,11 +52,59 @@
     };
 
     provides.to-users.homeManager = {
-      programs.niri.settings.spawn-at-startup = [
-        { command = [ "zeditor" ]; }
-        { command = [ "todoist-electron" ]; }
-        { command = [ "obsidian" ]; }
-        { command = [ "thunderbird" ]; }
+      wayland.windowManager.niri.settings._children = [
+        { spawn-at-startup = [ "zeditor" ]; }
+        { spawn-at-startup = [ "todoist-electron" ]; }
+        { spawn-at-startup = [ "obsidian" ]; }
+        { spawn-at-startup = [ "thunderbird" ]; }
+
+        { workspace = "browser"; }
+        { workspace = "social"; }
+        { workspace = "editor"; }
+        { workspace = "extra"; }
+
+        {
+          window-rule = {
+            _children = [
+              { match._props.app-id = "^firefox$"; }
+              { match._props.app-id = "^anki$"; }
+              { open-on-workspace = "browser"; }
+              { open-maximized = true; }
+            ];
+          };
+        }
+        {
+          window-rule = {
+            _children = [
+              { match._props.app-id = "dev.zed.Zed"; }
+              { match._props.app-id = "^obsidian$"; }
+              { open-on-workspace = "editor"; }
+              { open-maximized = true; }
+            ];
+          };
+        }
+        {
+          window-rule = {
+            _children = [
+              { match._props.app-id = "^discord$"; }
+              { match._props.app-id = "^signal$"; }
+              { match._props.app-id = "^BeeperTexts$"; }
+              { match._props.app-id = "^thunderbird$"; }
+              { open-on-workspace = "social"; }
+              { open-maximized = true; }
+            ];
+          };
+        }
+        {
+          window-rule = {
+            _children = [
+              { match._props.app-id = "^deezer-enhanced$"; }
+              { match._props.app-id = "^Todoist$"; }
+              { open-on-workspace = "extra"; }
+              { open-maximized = true; }
+            ];
+          };
+        }
       ];
     };
   };

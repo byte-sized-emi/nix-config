@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ lib, ... }:
 {
   den.aspects.niri = {
     nixos = { pkgs, ... }: {
@@ -22,10 +22,6 @@
         ...
       }:
       {
-        imports = [
-          inputs.niri.homeModules.niri
-        ];
-
         programs.alacritty.enable = true;
 
         home.packages = with pkgs; [
@@ -60,8 +56,7 @@
           };
         };
 
-        # https://github.com/sodiboo/niri-flake/blob/main/docs.md
-        programs.niri =
+        wayland.windowManager.niri =
           let
             noctalia-ipc-call =
               cmd:
@@ -72,124 +67,63 @@
               ]
               ++ (lib.splitString " " cmd);
             noctalia-action = cmd: {
-              action.spawn = noctalia-ipc-call cmd;
+              spawn = noctalia-ipc-call cmd;
             };
             noctalia-action-hidden = cmd: {
-              action.spawn = noctalia-ipc-call cmd;
-              hotkey-overlay.hidden = true;
+              _props.hotkey-overlay-title = null;
+              spawn = noctalia-ipc-call cmd;
             };
             noctalia-action-locked = cmd: {
-              action.spawn = noctalia-ipc-call cmd;
-              allow-when-locked = true;
+              _props.allow-when-locked = true;
+              spawn = noctalia-ipc-call cmd;
             };
             action-with-arg = actionName: arg: {
-              action.${actionName} = arg;
+              ${actionName} = arg;
             };
-            action = actionName: action-with-arg actionName [ ];
+            action = actionName: {
+              ${actionName} = { };
+            };
           in
           {
-            # TODO: switch to home manager config
+            enable = true;
             package = pkgs.niri;
             settings = {
               cursor = {
-                theme = "breeze_cursors";
-                size = 26;
+                xcursor-theme = "breeze_cursors";
+                xcursor-size = 26;
               };
               environment = {
                 ELECTRON_OZONE_PLATFORM_HINT = "auto";
               };
-              prefer-no-csd = true;
-              debug.honor-xdg-activation-with-invalid-serial = [ ];
+              prefer-no-csd = { };
+              debug = {
+                honor-xdg-activation-with-invalid-serial = { };
+              };
               layout = {
                 gaps = 8;
                 tab-indicator = {
-                  place-within-column = true;
-                  length.total-proportion = 0.8;
+                  place-within-column = { };
+                  length = {
+                    _props.total-proportion = 0.8;
+                  };
                 };
               };
-              spawn-at-startup = [
-                {
-                  sh = "QS_ICON_THEME=\"Papirus\" QT_QPA_PLATFORMTHEME=gtk3 ${lib.getExe config.programs.noctalia-shell.package}";
-                }
-                {
-                  # to unblock bluetooth on startup - for some reason neither niri nor quickshell
-                  # does this automatically
-                  command = [
-                    "rfkill"
-                    "unblock"
-                    "bluetooth"
-                  ];
-                }
-                {
-                  command = [
-                    "vicinae"
-                    "server"
-                  ];
-                }
-                { command = [ "firefox" ]; }
-                { command = [ "discord" ]; }
-                { command = [ "beeper" ]; }
-                { command = [ "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init" ]; }
-              ];
-              workspaces = {
-                "1-browser".name = "browser";
-                "2-social".name = "social";
-                "3-editor".name = "editor";
-                "4-extra".name = "extra";
+              input = {
+                keyboard.xkb.layout = "de";
+                touchpad = {
+                  tap = { };
+                  dwt = { };
+                  dwtp = { };
+                  natural-scroll = { };
+                  accel-profile = "flat";
+                  click-method = "clickfinger";
+                };
+                focus-follows-mouse = {
+                  _props.max-scroll-amount = "10%";
+                };
+                warp-mouse-to-focus = { };
+                workspace-auto-back-and-forth = false;
               };
-              window-rules = [
-                # TODO: Add window rule here to block out screencasts:
-                # https://github.com/YaLTeR/niri/wiki/Screencasting
-                {
-                  matches = [
-                    { is-window-cast-target = true; }
-                  ];
-                  focus-ring = {
-                    active.color = "#f38ba8";
-                    inactive.color = "#7d0d2d";
-                  };
-                  border.inactive.color = "#7d0d2d";
-                  shadow.color = "#7d0d2d70";
-                  tab-indicator = {
-                    active.color = "#f38ba8";
-                    inactive.color = "#7d0d2d";
-                  };
-                }
-                {
-                  matches = [
-                    { app-id = "^firefox$"; }
-                    { app-id = "^anki$"; }
-                  ];
-                  open-on-workspace = "browser";
-                  open-maximized = true;
-                }
-                {
-                  matches = [
-                    { app-id = "dev.zed.Zed"; }
-                    { app-id = "^obsidian$"; }
-                  ];
-                  open-on-workspace = "editor";
-                  open-maximized = true;
-                }
-                {
-                  matches = [
-                    { app-id = "^discord$"; }
-                    { app-id = "^signal$"; }
-                    { app-id = "^BeeperTexts$"; }
-                    { app-id = "^thunderbird$"; }
-                  ];
-                  open-on-workspace = "social";
-                  open-maximized = true;
-                }
-                {
-                  matches = [
-                    { app-id = "^deezer-enhanced$"; }
-                    { app-id = "^Todoist$"; }
-                  ];
-                  open-on-workspace = "extra";
-                  open-maximized = true;
-                }
-              ];
               binds = {
                 "XF86AudioRaiseVolume" = action-with-arg "spawn" [
                   "pactl"
@@ -238,8 +172,8 @@
                 # ];
                 "Mod+Shift+F" = action "fullscreen-window";
                 "Mod+P" = {
-                  repeat = false;
-                  action.spawn-sh = "wl-mirror $(niri msg --json focused-output | jq -r .name)";
+                  _props.repeat = false;
+                  spawn-sh = "wl-mirror $(niri msg --json focused-output | jq -r .name)";
                 };
                 # "Mod+M" = action "maximize-column";
                 "Mod+L" = noctalia-action "sessionMenu lockAndSuspend";
@@ -266,10 +200,10 @@
                 "KP_Subtract" = noctalia-action "notifications clear";
                 "KP_enter" = noctalia-action "notifications toggleDND";
 
-                "Mod+1" = action-with-arg "focus-workspace" "browser";
-                "Mod+2" = action-with-arg "focus-workspace" "social";
-                "Mod+3" = action-with-arg "focus-workspace" "editor";
-                "Mod+4" = action-with-arg "focus-workspace" "extra";
+                "Mod+1" = action-with-arg "focus-workspace" 1;
+                "Mod+2" = action-with-arg "focus-workspace" 2;
+                "Mod+3" = action-with-arg "focus-workspace" 3;
+                "Mod+4" = action-with-arg "focus-workspace" 4;
                 "Mod+5" = action-with-arg "focus-workspace" 5;
                 "Mod+6" = action-with-arg "focus-workspace" 6;
                 "Mod+7" = action-with-arg "focus-workspace" 7;
@@ -290,26 +224,67 @@
                 "Mod+Minus" = action-with-arg "set-column-width" "-10%";
                 "Mod+Plus" = action-with-arg "set-column-width" "+10%";
               };
-              input = {
-                keyboard.xkb.layout = "de";
-                touchpad = {
-                  tap = true;
-                  dwt = true;
-                  dwtp = true;
-                  natural-scroll = true;
-                  accel-profile = "flat";
-                  click-method = "clickfinger";
-                };
-                focus-follows-mouse = {
-                  enable = true;
-                  max-scroll-amount = "10%";
-                };
-                warp-mouse-to-focus.enable = true;
-                workspace-auto-back-and-forth = false;
-              };
               switch-events = {
                 lid-close = noctalia-action "sessionMenu lockAndSuspend";
               };
+
+              # repeated top-level nodes: workspaces, spawns and window rules
+              _children = [
+                {
+                  spawn-sh-at-startup = "QS_ICON_THEME=\"Papirus\" QT_QPA_PLATFORMTHEME=gtk3 ${lib.getExe config.programs.noctalia-shell.package}";
+                }
+                # to unblock bluetooth on startup - for some reason neither niri nor quickshell
+                # does this automatically
+                {
+                  spawn-at-startup = [
+                    "rfkill"
+                    "unblock"
+                    "bluetooth"
+                  ];
+                }
+                {
+                  spawn-at-startup = [
+                    "vicinae"
+                    "server"
+                  ];
+                }
+                { spawn-at-startup = [ "firefox" ]; }
+                { spawn-at-startup = [ "discord" ]; }
+                { spawn-at-startup = [ "beeper" ]; }
+                { spawn-at-startup = [ "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init" ]; }
+
+                # TODO: Add window rule here to block out screencasts:
+                # https://github.com/YaLTeR/niri/wiki/Screencasting
+                {
+                  window-rule = {
+                    _children = [
+                      { match._props.is-window-cast-target = true; }
+                      {
+                        focus-ring = {
+                          active-color = "#f38ba8";
+                          inactive-color = "#7d0d2d";
+                        };
+                      }
+                      {
+                        border = {
+                          inactive-color = "#7d0d2d";
+                        };
+                      }
+                      {
+                        shadow = {
+                          color = "#7d0d2d70";
+                        };
+                      }
+                      {
+                        tab-indicator = {
+                          active-color = "#f38ba8";
+                          inactive-color = "#7d0d2d";
+                        };
+                      }
+                    ];
+                  };
+                }
+              ];
             };
           };
       };

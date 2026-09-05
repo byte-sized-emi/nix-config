@@ -7,9 +7,13 @@
       home.packages = with perSystem.llm-agents; [
         agent-browser
         rtk
+        pkgs.rust-analyzer
       ];
+
+      # TODO: fix agent sandbox
       programs.zed-editor = {
         enable = true;
+        package = pkgs.zed-editor;
         enableMcpIntegration = true;
         # extraPackages = with pkgs; [ bubblewrap ];
         # name needs to be one of these (warning, very long): https://github.com/zed-industries/extensions/tree/main/extensions
@@ -64,34 +68,49 @@
             };
           };
           agent = {
+            sandbox_permissions = {
+              allow_unsandboxed = true;
+              # network_hosts = [
+              #   "raw.githubusercontent.com"
+              # ];
+            };
             play_sound_when_agent_done = "when_hidden";
             tool_permissions = {
               default = "confirm";
               tools = {
                 terminal = {
                   default = "confirm";
-                  always_allow = [
-                    { pattern = "^awk\\b"; }
-                    { pattern = "^cat\\b"; }
-                    { pattern = "^cargo\\s+(check|clippy|test|build)\\b"; }
-                    { pattern = "^curl\\b"; }
-                    { pattern = "^cut\\b"; }
-                    { pattern = "^file\\b"; }
-                    { pattern = "^find\\b"; }
-                    { pattern = "^grep\\b"; }
-                    { pattern = "^printf\\b"; }
-                    { pattern = "^head\\b"; }
-                    { pattern = "^jq\\b"; }
-                    { pattern = "^ls\\b"; }
-                    { pattern = "^rg\\b"; }
-                    { pattern = "^sed\\b"; }
-                    { pattern = "^sort\\b"; }
-                    { pattern = "^stat\\b"; }
-                    { pattern = "^tail\\b"; }
-                    { pattern = "^tr\\b"; }
-                    { pattern = "^uniq\\b"; }
-                    { pattern = "^wc\\b"; }
-                  ];
+                  always_allow =
+                    let
+                      basic_commands = [
+                        "awk"
+                        "cat"
+                        "curl"
+                        "cut"
+                        "file"
+                        "find"
+                        "grep"
+                        "printf"
+                        "head"
+                        "jq"
+                        "ls"
+                        "rg"
+                        "sed"
+                        "sort"
+                        "stat"
+                        "tail"
+                        "tr"
+                        "uniq"
+                        "wc"
+                      ];
+                    in
+                    [
+                      { pattern = "^nix\\s+(build|eval)\\b"; }
+                      { pattern = "^nixos-rebuild build\\b"; }
+                      { pattern = "^cargo\\s+(check|clippy|test|build)\\b"; }
+                    ]
+                    ++ map (cmd: { pattern = "^${cmd}\\b"; }) basic_commands
+                    ++ map (cmd: { pattern = "^rtk\\s+${cmd}\\b"; }) basic_commands;
                 };
                 edit_file = {
                   default = "allow";

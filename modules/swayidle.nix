@@ -13,7 +13,7 @@
             lockTimeout = 5 * 60; # 300 seconds
             suspendTimeout = 7 * 60; # 420 seconds
             noctalia-ipc = "${lib.getExe config.programs.noctalia-shell.package} ipc call";
-            screenOn = "${lib.getExe config.programs.niri.package} msg action power-on-monitors";
+            screenOn = "${lib.getExe config.wayland.windowManager.niri.package} msg action power-on-monitors";
           in
           {
             enable = true;
