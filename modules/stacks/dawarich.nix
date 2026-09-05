@@ -6,7 +6,7 @@
         port = 3000;
         domain = "location.${config.settings.services.domain}";
         # renovate: datasource=docker depName=freikin/dawarich
-        version = "1.7.9";
+        version = "1.14.3";
       in
       {
         sops.secrets."dawarich/databasePassword" = { };
