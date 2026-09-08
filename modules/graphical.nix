@@ -22,6 +22,7 @@
         "beeper"
         "obsidian"
         "todoist-electron"
+        "deezer-desktop"
       ])
     ];
 
@@ -167,7 +168,7 @@
         file
         jellyflix
         plezy
-        deezer-enhanced
+        deezer-desktop
         mission-center
         beeper
       ];
