@@ -162,6 +162,16 @@
             ];
           }
           {
+           job_name = "caddy";
+           static_configs = [
+             {
+               targets = [
+                 "127.0.0.1:2019"
+               ];
+             }
+           ];
+          }
+          {
             job_name = "cadvisor";
             static_configs = [
               {

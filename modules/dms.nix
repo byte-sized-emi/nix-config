@@ -17,6 +17,9 @@
           "XF86MonBrightnessUp".spawn = [ "${lib.getExe pkgs.dms-shell}" "ipc" "call" "brightness" "increment" "5" ];
           "XF86MonBrightnessDown".spawn = [ "${lib.getExe pkgs.dms-shell}" "ipc" "call" "brightness" "decrement" "5" ];
           "Mod+L".spawn = [ "${lib.getExe pkgs.dms-shell}" "ipc" "call" "lock" "lockAndOutputsOff" ];
+          "Mod+N".spawn = [ "${lib.getExe pkgs.dms-shell}" "ipc" "call" "notifications" "toggle" ];
+          "Mod+Shift+N".spawn = [ "${lib.getExe pkgs.dms-shell}" "ipc" "call" "notifications" "clearAll" ];
+          "Mod+B".spawn = [ "${lib.getExe pkgs.dms-shell}" "ipc" "call" "notifications" "toggleDoNotDisturb" ];
           # TODO:
           # "KP_Add".spawn = "${lib.getExe pkgs.dms-shell} ipc";
           # "KP_Subtract".spawn = "${lib.getExe pkgs.dms-shell} ipc";

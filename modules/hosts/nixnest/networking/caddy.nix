@@ -26,6 +26,9 @@
         servers {
           trusted_proxies static 127.0.0.1/8
         }
+        metrics {
+          per_host
+       	}
       '';
 
       # more virtualHosts are defined in nix/modules/nixos/service.nix
