@@ -58,25 +58,25 @@
 
         wayland.windowManager.niri =
           let
-            noctalia-ipc-call =
-              cmd:
-              [
-                (lib.getExe config.programs.noctalia-shell.package)
-                "ipc"
-                "call"
-              ]
-              ++ (lib.splitString " " cmd);
-            noctalia-action = cmd: {
-              spawn = noctalia-ipc-call cmd;
-            };
-            noctalia-action-hidden = cmd: {
-              _props.hotkey-overlay-title = null;
-              spawn = noctalia-ipc-call cmd;
-            };
-            noctalia-action-locked = cmd: {
-              _props.allow-when-locked = true;
-              spawn = noctalia-ipc-call cmd;
-            };
+            #   noctalia-ipc-call =
+            #     cmd:
+            #     [
+            #       (lib.getExe config.programs.noctalia-shell.package)
+            #       "ipc"
+            #       "call"
+            #     ]
+            #     ++ (lib.splitString " " cmd);
+            #   noctalia-action = cmd: {
+            #     spawn = noctalia-ipc-call cmd;
+            #   };
+            #   noctalia-action-hidden = cmd: {
+            #     _props.hotkey-overlay-title = null;
+            #     spawn = noctalia-ipc-call cmd;
+            #   };
+            #   noctalia-action-locked = cmd: {
+            #     _props.allow-when-locked = true;
+            #     spawn = noctalia-ipc-call cmd;
+            #   };
             action-with-arg = actionName: arg: {
               ${actionName} = arg;
             };
@@ -149,11 +149,11 @@
                   "@DEFAULT_SOURCE@"
                   "toggle"
                 ];
-                "XF86AudioPlay" = noctalia-action-hidden "media playPause";
-                "XF86AudioNext" = noctalia-action-hidden "media next";
-                "XF86AudioPrev" = noctalia-action-hidden "media previous";
-                "XF86MonBrightnessUp" = noctalia-action-locked "brightness increase";
-                "XF86MonBrightnessDown" = noctalia-action-locked "brightness decrease";
+                # "XF86AudioPlay" = noctalia-action-hidden "media playPause";
+                # "XF86AudioNext" = noctalia-action-hidden "media next";
+                # "XF86AudioPrev" = noctalia-action-hidden "media previous";
+                # "XF86MonBrightnessUp" = noctalia-action-locked "brightness increase";
+                # "XF86MonBrightnessDown" = noctalia-action-locked "brightness decrease";
                 "Alt+Space" = action-with-arg "spawn" [
                   "vicinae"
                   "toggle"
@@ -176,8 +176,8 @@
                   spawn-sh = "wl-mirror $(niri msg --json focused-output | jq -r .name)";
                 };
                 # "Mod+M" = action "maximize-column";
-                "Mod+L" = noctalia-action "sessionMenu lockAndSuspend";
-                "Mod+V" = noctalia-action "launcher clipboard";
+                # "Mod+L" = noctalia-action "sessionMenu lockAndSuspend";
+                # "Mod+V" = noctalia-action "launcher clipboard";
                 "Mod+Shift+S" = action "screenshot";
                 "Mod+Left" = action "focus-column-or-monitor-left";
                 "Mod+Right" = action "focus-column-or-monitor-right";
@@ -196,9 +196,9 @@
                 "KP_Left" = action "focus-column-left";
                 "KP_Right" = action "focus-column-right";
                 "KP_Begin" = action "toggle-overview"; # under the 5 key
-                "KP_Add" = noctalia-action "notifications toggleHistory";
-                "KP_Subtract" = noctalia-action "notifications clear";
-                "KP_enter" = noctalia-action "notifications toggleDND";
+                # "KP_Add" = noctalia-action "notifications toggleHistory";
+                # "KP_Subtract" = noctalia-action "notifications clear";
+                # "KP_enter" = noctalia-action "notifications toggleDND";
 
                 "Mod+1" = action-with-arg "focus-workspace" 1;
                 "Mod+2" = action-with-arg "focus-workspace" 2;
@@ -224,15 +224,12 @@
                 "Mod+Minus" = action-with-arg "set-column-width" "-10%";
                 "Mod+Plus" = action-with-arg "set-column-width" "+10%";
               };
-              switch-events = {
-                lid-close = noctalia-action "sessionMenu lockAndSuspend";
-              };
+              # switch-events = {
+              #   lid-close = noctalia-action "sessionMenu lockAndSuspend";
+              # };
 
               # repeated top-level nodes: workspaces, spawns and window rules
               _children = [
-                {
-                  spawn-sh-at-startup = "QS_ICON_THEME=\"Papirus\" QT_QPA_PLATFORMTHEME=gtk3 ${lib.getExe config.programs.noctalia-shell.package}";
-                }
                 # to unblock bluetooth on startup - for some reason neither niri nor quickshell
                 # does this automatically
                 {

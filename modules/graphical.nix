@@ -11,10 +11,11 @@
       <apps/zed>
       <audio>
       <controller>
+      <dms>
       <docker>
       <fonts>
       <niri>
-      <noctalia>
+      # <noctalia>
       <swayidle>
       (<den/unfree> [
         "discord"

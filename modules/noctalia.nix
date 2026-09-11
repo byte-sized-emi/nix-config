@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   den.aspects.noctalia = {
-    homeManager = {
+    homeManager = { config, ... }: {
       imports = [
         inputs.noctalia.homeModules.default
       ];
@@ -36,6 +36,14 @@
           icon = "bell";
         };
       };
+
+      wayland.windowManager.niri.settings._children = [
+        {
+          spawn-sh-at-startup = "QS_ICON_THEME=\"Papirus\" QT_QPA_PLATFORMTHEME=gtk3 ${lib.getExe config.programs.noctalia-shell.package}";
+        }
+      ];
+
+      services.swayidle.events.lock = "${lib.getExe config.programs.noctalia-shell.package} ipc call lockScreen lock";
 
       # to see the changes between current settings and nix settings:
       # nix shell nixpkgs#json-diff -c bash -c "json-diff <(jq -S . ~/.config/noctalia/settings.json) <(noctalia-shell ipc call state all | jq -S .settings)"

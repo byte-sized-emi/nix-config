@@ -12,7 +12,6 @@
           let
             lockTimeout = 5 * 60; # 300 seconds
             suspendTimeout = 7 * 60; # 420 seconds
-            noctalia-ipc = "${lib.getExe config.programs.noctalia-shell.package} ipc call";
             screenOn = "${lib.getExe config.wayland.windowManager.niri.package} msg action power-on-monitors";
           in
           {
@@ -35,7 +34,6 @@
             ];
             events = {
               before-sleep = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
-              lock = "${noctalia-ipc} lockScreen lock";
               unlock = screenOn;
               after-resume = screenOn;
             };
