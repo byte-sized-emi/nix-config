@@ -48,6 +48,10 @@
     slippi.url = "github:lytedev/slippi-nix";
     slippi.inputs.nixpkgs.follows = "nixpkgs";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    cc-search = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "git+https://git.byte-sized.fyi/emilia/cc-search";
+    };
   };
 
   outputs =
