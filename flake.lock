@@ -43,11 +43,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789233284,
-        "narHash": "sha256-AbLFJ1FTHzPJ1n4Jq0sUxGR2bmKELkaWvzFo3elxvoM=",
+        "lastModified": 1789233761,
+        "narHash": "sha256-SV5M++ABtKzjCqlk6PNSjR6SZQcmpv4BrJchOYPNaRU=",
         "ref": "refs/heads/main",
-        "rev": "b2306e8042ee1f182602aa3a87e313d2715bef6c",
-        "revCount": 3,
+        "rev": "5aa16d25d7cb23e6b46b88446f18e9f46394a56a",
+        "revCount": 4,
         "type": "git",
         "url": "https://git.byte-sized.fyi/emilia/cc-search"
       },
