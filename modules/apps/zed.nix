@@ -15,7 +15,7 @@
         enable = true;
         package = pkgs.zed-editor;
         enableMcpIntegration = true;
-        # extraPackages = with pkgs; [ bubblewrap ];
+        extraPackages = with pkgs; [ bubblewrap ];
         # name needs to be one of these (warning, very long): https://github.com/zed-industries/extensions/tree/main/extensions
         extensions = [
           "git-firefly"
@@ -70,6 +70,7 @@
           agent = {
             sandbox_permissions = {
               allow_unsandboxed = true;
+              allow_all_hosts = true;
               # network_hosts = [
               #   "raw.githubusercontent.com"
               # ];
@@ -105,7 +106,7 @@
                       ];
                     in
                     [
-                      { pattern = "^nix\\s+(build|eval)\\b"; }
+                      { pattern = "^nix\\s+(flake|build|eval)\\b"; }
                       { pattern = "^nixos-rebuild build\\b"; }
                       { pattern = "^cargo\\s+(check|clippy|test|build)\\b"; }
                     ]

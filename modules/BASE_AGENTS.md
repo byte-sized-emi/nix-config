@@ -17,7 +17,7 @@ Load usage patterns with `agent-browser skills get core --full` before complex f
 
 ## RTK
 
-RTK is an agent-focused binary which makes common command outputs shorter. Use it before any `git`, `cargo`, `docker` , `nix`, `nixos-rebuild` or similar commands where you do not need the 100% exact output.
+RTK is an agent-focused binary which makes common command outputs more token-efficient. Use it before ALL `git`, `cargo`, `docker` , `nix`, `nixos-rebuild` or similar commands where you do not need the 100% exact output. This is a hard requirement - use it as much as possible.
 
 Usage examples:
 
@@ -46,4 +46,9 @@ Use `rtk grep` and `rtk find` whenever possible, these just wrap the shell comma
 ## Downloading files
 
 Some fetches can result in very large files, of which only a part is necessary for completion of the task. This is especially the case when downloading files or reading the file tree from a git provider like github. Only download the minimum required, for example a line and some context around it, for example by using curl like this: `curl -s https://raw.githubusercontent.com/...RepositoryApi.java | sed -n 5,10p` (returns only lines 5-10).
-Be careful - always limit the amount of data downloaded, for example with `head`. You can always request more context, but only have a limited context window.
+Be careful - ALWAYS limit the amount of data downloaded, for example with `head`, or with the options from the built-in `fetch` tool. You can always request more context at a later time, but only have a limited context window.
+DO NOT, UNDER ANY CIRCUMSTANCES, FETCH THE GITHUB API TREE, using, for example, https://api.github.com/repos/AvengeMedia/DankMaterialShell/git/trees/fe293b7379a51f62a4db7043fc09df71f78e72ef?recursive=1 and other URLs. THIS OUTPUTS A HUGE AMOUNT OF DATA.
+
+## Inspecting projects
+
+When trying to look at the inner workings of a project, prefer to clone the repository into a folder in /tmp, and then find information using the built-in tools or `rtk` commands as described above. If you cannot find the context you need, stop and request manual intervention.

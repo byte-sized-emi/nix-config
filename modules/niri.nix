@@ -109,7 +109,11 @@
                 };
               };
               input = {
-                keyboard.xkb.layout = "de";
+                keyboard.xkb = {
+                  layout = "de,de";
+                  variant = ",neo_qwertz";
+                  options = "grp:win_space_toggle";
+                };
                 touchpad = {
                   tap = { };
                   dwt = { };
@@ -237,12 +241,6 @@
                     "rfkill"
                     "unblock"
                     "bluetooth"
-                  ];
-                }
-                {
-                  spawn-at-startup = [
-                    "vicinae"
-                    "server"
                   ];
                 }
                 { spawn-at-startup = [ "firefox" ]; }
