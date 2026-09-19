@@ -4,7 +4,7 @@
     let
       uploadLocation = "/var/immich/upload_location";
       # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
-      immichVersion = "v3.0.3";
+      immichVersion = "v3.2.2";
       stackPath = "/etc/stacks/immich";
       port = 2283;
     in
@@ -95,7 +95,7 @@
 
             immich-redis = {
               containerConfig = {
-                image = "docker.io/valkey/valkey:9.1@sha256:50b70cdef934d4b6a4aced5579ac3e3a4a34f36a045851bb7a3306ead1931d27";
+                image = "docker.io/valkey/valkey:9.2@sha256:b0eef48ff6c2d8c4cf38a60e046171cf9693fb77f71d5b271f2c391f1b52c6f2";
                 healthCmd = "redis-cli ping || exit 1";
                 networks = [ networks.immich.ref ];
                 networkAliases = [ "redis" ];
