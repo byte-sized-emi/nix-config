@@ -6,7 +6,7 @@
         port = 3000;
         domain = "location.${config.settings.services.domain}";
         # renovate: datasource=docker depName=freikin/dawarich
-        version = "1.7.9";
+        version = "1.14.5";
       in
       {
         sops.secrets."dawarich/databasePassword" = { };
@@ -61,7 +61,7 @@
 
             containers.dawarich-redis = {
               containerConfig = {
-                image = "docker.io/valkey/valkey:9.1@sha256:50b70cdef934d4b6a4aced5579ac3e3a4a34f36a045851bb7a3306ead1931d27";
+                image = "docker.io/valkey/valkey:9.2@sha256:b0eef48ff6c2d8c4cf38a60e046171cf9693fb77f71d5b271f2c391f1b52c6f2";
                 exec = "redis-server --save 900 1 --save 300 10 --appendonly no";
                 networks = [ networks.dawarich.ref ];
                 networkAliases = [ "dawarich_redis" ];
