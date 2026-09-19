@@ -49,7 +49,7 @@
                   };
                 }
                 {
-                  name = "glm-5.2";
+                  name = "glm-5.3";
                   max_tokens = 1000000;
                   max_output_tokens = 128000;
                   max_completion_tokens = 100000;
@@ -84,6 +84,7 @@
                   always_allow =
                     let
                       basic_commands = [
+                        "cd"
                         "awk"
                         "cat"
                         "curl"
@@ -103,12 +104,13 @@
                         "tr"
                         "uniq"
                         "wc"
+                        "aggent-browser"
                       ];
                     in
                     [
                       { pattern = "^nix\\s+(flake|build|eval)\\b"; }
                       { pattern = "^nixos-rebuild build\\b"; }
-                      { pattern = "^cargo\\s+(check|clippy|test|build)\\b"; }
+                      { pattern = "^cargo\\s+(check|clippy|test|build|search)\\b"; }
                     ]
                     ++ map (cmd: { pattern = "^${cmd}\\b"; }) basic_commands
                     ++ map (cmd: { pattern = "^rtk\\s+${cmd}\\b"; }) basic_commands;

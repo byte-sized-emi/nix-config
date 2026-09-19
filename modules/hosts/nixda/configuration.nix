@@ -52,10 +52,9 @@
     };
 
     provides.to-users.homeManager = {
-      wayland.windowManager.niri.settings.outputs."DP-3".mode = {
-        height = 1440;
-        width = 2560;
-        refresh = 179.998;
+      wayland.windowManager.niri.settings.output = {
+        _args = [ "DP-3" ];
+        mode = "2560x1440@179.998";
       };
     };
   };
