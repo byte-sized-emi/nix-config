@@ -49,6 +49,22 @@
                   };
                 }
                 {
+                  name = "deepseek-v4.1-flash";
+                  max_tokens = 1000000;
+                  max_output_tokens = 262000;
+                  max_completion_tokens = 100000;
+                  reasoning_effort = "medium";
+                  capabilities = {
+                    tools = true;
+                    images = true;
+                    parallel_tool_calls = true;
+                    prompt_cache_key = false;
+                    chat_completions = true;
+                    interleaved_reasoning = true;
+                    max_tokens_parameter = true;
+                  };
+                }
+                {
                   name = "glm-5.3";
                   max_tokens = 1000000;
                   max_output_tokens = 128000;

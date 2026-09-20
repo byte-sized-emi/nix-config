@@ -72,5 +72,44 @@
         };
       };
     };
+
+    accounts.calendar.accounts = {
+      "emilia@byte-sized.fyi" = {
+        remote = {
+          type = "caldav";
+          url = "https://cdav.migadu.com/calendars/admin@byte-sized.fyi/calendar/";
+          userName = "admin@byte-sized.fyi";
+        };
+        primary = true;
+        thunderbird = {
+          enable = true;
+          settings = id: {
+            "calendar.registry.${id}.refreshInterval" = 5;
+            "calendar.registry.${id}.imip.identity.key" =
+              "id_${builtins.hashString "sha256" "emilia@byte-sized.fyi"}";
+          };
+        };
+      };
+      "zpa" = {
+        remote = {
+          type = "http";
+          url = "https://zpa.cs.hm.edu/global/ics_feed/rss/ba6e7a4d-06b5-48a9-b7c6-c49c5fec9138/";
+        };
+        thunderbird = {
+          enable = true;
+          readOnly = true;
+        };
+      };
+      "fs07" = {
+        remote = {
+          type = "http";
+          url = "https://nc.fs.cs.hm.edu/remote.php/dav/public-calendars/DHmpqy3nGYDjBQW7/";
+        };
+        thunderbird = {
+          enable = true;
+          readOnly = true;
+        };
+      };
+    };
   };
 }
