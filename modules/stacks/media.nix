@@ -159,7 +159,7 @@
 
           containers.jellyfin = {
             containerConfig = {
-              image = "jellyfin/jellyfin:10.11.6.20260119-010354";
+              image = "docker.io/jellyfin/jellyfin:12.1.20260915-010956@sha256:326be1010b16c92e492f6c7dd6fd105943db84ce723c73183279a1ab357b8f9b";
               publishPorts = [
                 "127.0.0.1:${toString jellyfinPort}:${toString jellyfinPort}/tcp"
                 "7359:7359/udp" # client discovery

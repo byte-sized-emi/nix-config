@@ -78,7 +78,7 @@
 
             containers.dawarich-db = {
               containerConfig = {
-                image = "postgis/postgis:17-3.5-alpine";
+                image = "docker.io/postgis/postgis:17-3.5-alpine@sha256:b3a7e782c2123b9eaaff9874318572d2dcb7e925a9e1af994306e56306965bcd";
                 shmSize = "1G";
                 networks = [ networks.dawarich.ref ];
                 networkAliases = [ "dawarich_db" ];
@@ -104,7 +104,7 @@
 
             containers.dawarich-app = {
               containerConfig = {
-                image = "freikin/dawarich:${version}";
+                image = "docker.io/freikin/dawarich:${version}";
                 exec = "web-entrypoint.sh bin/rails server -p ${toString port} -b ::";
                 publishPorts = [ "127.0.0.1:${toString port}:${toString port}" ];
                 networks = [ networks.dawarich.ref ];
