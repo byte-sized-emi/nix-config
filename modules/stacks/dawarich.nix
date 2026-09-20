@@ -78,7 +78,7 @@
 
             containers.dawarich-db = {
               containerConfig = {
-                image = "docker.io/postgis/postgis:17-3.5-alpine@sha256:b3a7e782c2123b9eaaff9874318572d2dcb7e925a9e1af994306e56306965bcd";
+                image = "docker.io/postgis/postgis:17-3.5-alpine@sha256:1e85984a7261b01b38a8e7d4166abcdb35370e6b7667a6d6fd9caa057f64eab6";
                 shmSize = "1G";
                 networks = [ networks.dawarich.ref ];
                 networkAliases = [ "dawarich_db" ];
