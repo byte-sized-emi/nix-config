@@ -672,7 +672,6 @@
         "nixpkgs": "nixpkgs_5",
         "nixpkgs-stable": "nixpkgs-stable",
         "quadlet-nix": "quadlet-nix",
-        "secret-nix-config": "secret-nix-config",
         "slippi": "slippi",
         "sops-nix": "sops-nix"
       }
@@ -730,21 +729,6 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
-      }
-    },
-    "secret-nix-config": {
-      "locked": {
-        "lastModified": 1789914517,
-        "narHash": "sha256-j+RbyOaInIjGmSLuskZoX+rIQERIoIEzJwCuiOqyttI=",
-        "ref": "refs/heads/main",
-        "rev": "13d6459334131f580507ff60e08c2b6d3cbedc62",
-        "revCount": 6,
-        "type": "git",
-        "url": "file:./secret-nix-config"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:./secret-nix-config"
       }
     },
     "slippi": {

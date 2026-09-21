@@ -2,6 +2,7 @@
   description = "Top-Level configuration";
 
   inputs = {
+    self.submodules = true;
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -36,7 +37,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    secret-nix-config.url = "git+file:./secret-nix-config";
     nix-cache-beacon = {
       url = "github:adisbladis/nix-cache-beacon";
       inputs.nixpkgs.follows = "nixpkgs";

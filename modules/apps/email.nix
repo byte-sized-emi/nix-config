@@ -1,8 +1,5 @@
-{ inputs, ... }:
 {
   apps.email.homeManager = {
-    imports = [ inputs.secret-nix-config.homeManagerModules.email ];
-
     programs.thunderbird = {
       enable = true;
       profiles.default = {
