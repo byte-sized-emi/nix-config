@@ -40,6 +40,8 @@
       prepareAllScript = pkgs.writeShellApplication {
         name = "backup-prepare-all";
         text = ''
+          echo "Starting backup preparation"
+
           failed=0
           ${concatStringsSep "\n" (
             mapAttrsToList (name: script: ''
@@ -53,6 +55,8 @@
           if [ "$failed" -gt 0 ]; then
             echo "WARNING: $failed backup prepare step(s) failed" >&2
           fi
+
+          echo "Backup preparation completed"
         '';
       };
     in
