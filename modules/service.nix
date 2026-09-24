@@ -3,9 +3,6 @@
     { lib, config, ... }:
     with lib;
     {
-      # TODO:
-      # - set backup path, with an optional feature for a preparation step
-
       options.my.services = mkOption {
         type = types.attrsOf (
           types.submodule (
@@ -64,26 +61,6 @@
                     default = "";
                   };
                 };
-
-                backups = {
-                  enable = mkEnableOption "Enable automatic backups for the service.";
-                  paths = mkOption {
-                    type = types.listOf types.str;
-                    default = [ ];
-                  };
-                  prepare = {
-                    enable = mkEnableOption "Enable a preparation step before backup.";
-                    action = mkOption {
-                      type = types.nullOr (
-                        types.oneOf [
-                          types.str
-                          types.package
-                        ]
-                      );
-                      default = null;
-                    };
-                  };
-                };
               };
             }
           )
@@ -135,15 +112,6 @@
             ) duplicateDomains
           );
 
-          backupEnabledServices = pipe config.my.services [
-            (filterAttrs (_name: svc: svc.enable && svc.backups.enable))
-            (mapAttrsToList (
-              _name: svc: {
-                inherit (svc) name;
-              }
-            ))
-          ];
-
           missingHttpsCertServices = pipe config.my.services [
             (filterAttrs (_name: svc: svc.enable && svc.https.enable && svc.https.certificate == null))
             (mapAttrsToList (
@@ -168,13 +136,6 @@
               Duplicate domains found in my.services configuration!
               The following domains are used by multiple services:
               ${formatDuplicateDomains}
-            '';
-          }
-          {
-            assertion = backupEnabledServices == [ ];
-            message = ''
-              Backups are currently not supported.
-              Offending services: ${concatMapStringsSep ", " (s: s.name) backupEnabledServices}
             '';
           }
           {
