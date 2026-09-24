@@ -30,7 +30,7 @@
           ++ backup.runtimeInputs;
           text = ''
             rm -rf ${escapeShellArg backup.workDir} && mkdir -p ${escapeShellArg backup.workDir}
-            ${backup.prepareCommands}
+            ${backup.prepareCommands backup.workDir}
             ${postgresStep}
           '';
         };
@@ -93,11 +93,18 @@
                   '';
                 };
 
-                prepareCommands = mkOption {
-                  type = types.lines;
-                  default = "";
-                  description = "Shell commands run to produce artifacts inside workDir. May span multiple lines.";
-                };
+                prepareCommands =
+                  let
+                    workDirToCmd = types.functionTo types.lines;
+                    coerceFunc = lines: (_: lines);
+                    prepareCommandsType = types.coercedTo types.lines coerceFunc workDirToCmd;
+                  in
+                  mkOption {
+                    type = prepareCommandsType;
+                    default = _: "";
+                    example = literalExpression "workDir: \"cp -r /some/folder $\{workDir}\"";
+                    description = "Shell commands run to produce artifacts inside workDir. May span multiple lines. Can be defined as a function that takes in `workDir`.";
+                  };
 
                 postgresContainer = mkOption {
                   type = types.nullOr (

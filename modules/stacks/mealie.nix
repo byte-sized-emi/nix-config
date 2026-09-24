@@ -10,7 +10,7 @@
 
       my.backups.mealie = {
         enable = true;
-        prepareCommands = "podman volume export mealie-data | tar xf - -C /var/backup/mealie/";
+        prepareCommands = workDir: "podman volume export mealie-data | tar xf - -C ${workDir}/";
       };
 
       my.services.mealie = {
