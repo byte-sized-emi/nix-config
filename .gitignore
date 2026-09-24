@@ -1,3 +1,4 @@
+.gitmodules
 .env
 target/
 .direnv/
