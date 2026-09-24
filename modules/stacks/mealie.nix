@@ -41,7 +41,7 @@
 
           containers.mealie = {
             containerConfig = {
-              image = "ghcr.io/mealie-recipes/mealie:v3.27.0@sha256:cb6f7ccbfa0d369d1ff60e1652e66ff7fa81d6cc1a8560ce5542774b3be81999";
+              image = "ghcr.io/mealie-recipes/mealie:v3.28.0@sha256:3e57058bfcb4343bd7c43d8f04306f6d37523d06ef7a7a395ebfcfc2a752cee4";
               publishPorts = [ "127.0.0.1:${toString port}:9000" ];
               environments = {
                 PUID = "1000";
