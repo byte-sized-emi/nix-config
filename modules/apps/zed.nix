@@ -87,6 +87,9 @@
             sandbox_permissions = {
               allow_unsandboxed = true;
               allow_all_hosts = true;
+              write_paths = [
+                "/tmp"
+              ];
               # network_hosts = [
               #   "raw.githubusercontent.com"
               # ];
@@ -124,12 +127,22 @@
                       ];
                     in
                     [
-                      { pattern = "^nix\\s+(flake|build|eval)\\b"; }
-                      { pattern = "^nixos-rebuild build\\b"; }
-                      { pattern = "^cargo\\s+(check|clippy|test|build|search)\\b"; }
+                      { pattern = "^nix\\s+(flake|build|eval)"; }
+                      { pattern = "^nixos-rebuild build"; }
+                      { pattern = "^cargo\\s+(check|clippy|test|build|search)"; }
+                      { pattern = "^rtk\\s+read"; }
                     ]
-                    ++ map (cmd: { pattern = "^${cmd}\\b"; }) basic_commands
-                    ++ map (cmd: { pattern = "^rtk\\s+${cmd}\\b"; }) basic_commands;
+                    ++ map (cmd: { pattern = "^${cmd}"; }) basic_commands
+                    ++ map (cmd: { pattern = "^rtk\\s+${cmd}"; }) basic_commands;
+                };
+                move_path = {
+                  default = "allow";
+                };
+                copy_path = {
+                  default = "allow";
+                };
+                "mcp:nixos:nix" = {
+                  default = "allow";
                 };
                 edit_file = {
                   default = "allow";

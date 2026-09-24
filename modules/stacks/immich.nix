@@ -26,6 +26,14 @@
         "d /var/immich/upload_location 0770 root root"
       ];
 
+      my.backups.immich_db = {
+        enable = true;
+        postgresContainer.containerName = "immich-database";
+        # NOTE: This stores both the images as well as automatic database dumps (inside ./backups).
+        #   If these get too big, you can change the settings in the admin menu
+        paths = [ uploadLocation ];
+      };
+
       my.services.immich = {
         enable = true;
         name = "Immich";
@@ -106,7 +114,7 @@
               };
             };
 
-            # this is backed up in ./backups.nix
+            # backed up via my.backups.immich_db
             immich-database = {
               containerConfig = {
                 image = "ghcr.io/immich-app/postgres:18-vectorchord0.5.3-pgvector0.8.1";

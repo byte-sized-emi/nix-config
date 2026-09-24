@@ -4,13 +4,14 @@
     includes = [
       <audio>
       <auto-update>
+      <backup-registry>
       <cloudflared>
       <podman>
       <server-default>
       <service>
       <ssh-server>
       <stacks/atuin>
-      <stacks/backups>
+      <stacks/borg>
       <stacks/beeper>
       <stacks/cc-search>
       <stacks/control-server>

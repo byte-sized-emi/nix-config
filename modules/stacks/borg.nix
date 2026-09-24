@@ -1,24 +1,8 @@
 {
-  stacks.backups.nixos =
+  stacks.borg.nixos =
     { config, pkgs, ... }:
     let
-      prepareBackupApp = pkgs.writeShellApplication {
-        name = "prepare-backup";
-        runtimeInputs = [
-          config.virtualisation.podman.package
-          pkgs.gnutar
-          pkgs.gzip
-        ];
-        text = ''
-          rm -rf /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/ /var/backup/dawarich_db/
-          mkdir /var/backup/mealie/ /var/backup/immich_db/ /var/backup/umami_db/ /var/backup/dawarich_db/
-          podman volume export mealie-data | tar xf - -C /var/backup/mealie/
-          podman exec -t immich-database pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/immich_db/dump.sql.gz"
-          podman exec -t umami-db pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/umami_db/dump.sql.gz"
-          podman exec -t dawarich-db pg_dumpall --clean --if-exists --username=postgres | gzip > "/var/backup/dawarich_db/dump.sql.gz"
-        '';
-      };
-      prepareBackupScript = pkgs.lib.getExe prepareBackupApp;
+      prepareBackupScript = pkgs.lib.getExe config.my.backup.prepareAllScript;
     in
     {
       sops.secrets."borg/backupKey" = {
@@ -43,8 +27,7 @@
       systemd.services =
         let
           serviceConfig = {
-            ReadOnlyPaths = [
-              "/var/immich/upload_location"
+            ReadOnlyPaths = config.my.backup.extraPaths ++ [
               config.sops.secrets."borg/backupKey".path
               config.sops.secrets."ssh_keys/nas_backup/priv".path
             ];
@@ -55,13 +38,6 @@
         {
           borgbackup-job-nixnest = { inherit serviceConfig; };
           borgbackup-job-nixnest-nas-backup = { inherit serviceConfig; };
-          prepare-backup = {
-            serviceConfig = {
-              ExecStart = prepareBackupScript;
-              Type = "oneshot";
-              User = "root";
-            };
-          };
         };
 
       users.groups.borg = { };
@@ -92,12 +68,7 @@
       };
 
       services.borgbackup.jobs.nixnest = {
-        paths = [
-          "/var/backup"
-          # NOTE: This stores both the images as well as automatic database dumps (inside ./backups).
-          #   If these get too big, you can change the settings in the admin menu
-          "/var/immich/upload_location"
-        ];
+        paths = [ "/var/backup" ] ++ config.my.backup.extraPaths;
         environment.BORG_RSH = "ssh -i /home/emilia/.ssh/id_borgbase";
         repo = "ssh://d0804253@d0804253.repo.borgbase.com/./repo";
         compression = "auto,zstd";
@@ -112,10 +83,7 @@
       };
 
       services.borgbackup.jobs.nixnest-nas-backup = {
-        paths = [
-          "/var/backup"
-          "/var/immich/upload_location"
-        ];
+        paths = [ "/var/backup" ] ++ config.my.backup.extraPaths;
         environment = {
           BORG_RSH = "ssh -i ${config.sops.secrets."ssh_keys/nas_backup/priv".path} -p 2222";
           BORG_RELOCATED_REPO_ACCESS_IS_OK = "yes";
@@ -135,7 +103,7 @@
         preHook = ''
           ${prepareBackupScript}
         '';
-        # "borg help prune" for informatino
+        # "borg help prune" for information
         prune.keep = {
           within = "1w"; # Keep all archives from the last week
           daily = 7;

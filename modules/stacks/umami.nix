@@ -19,6 +19,11 @@
         APP_SECRET=${config.sops.placeholder."umami/appSecret"}
       '';
 
+      my.backups.umami_db = {
+        enable = true;
+        postgresContainer.containerName = "umami-db";
+      };
+
       my.services.umami = {
         enable = true;
         name = "Umami";
@@ -68,7 +73,7 @@
             };
           };
 
-          # this is backed up in ./backups.nix
+          # backed up via my.backups.umami_db
           containers.umami-db = {
             containerConfig = {
               image = "postgres:18-alpine";

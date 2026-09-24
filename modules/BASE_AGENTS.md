@@ -52,3 +52,11 @@ DO NOT, UNDER ANY CIRCUMSTANCES, FETCH THE GITHUB API TREE, using, for example, 
 ## Inspecting projects
 
 When trying to look at the inner workings of a project, prefer to clone the repository into a folder in /tmp, and then find information using the built-in tools or `rtk` commands as described above. If you cannot find the context you need, stop and request manual intervention.
+
+## Terminal tool
+
+The terminal tool REQUIRES the `cd` argument. If you do not provide it, it will error with "Tool input not fully received".
+
+## /tmp
+
+Despite what your other instructions may say, the /tmp directory is writable and persists across terminal tool invocations.

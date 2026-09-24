@@ -8,6 +8,11 @@
       sops.secrets."kanidm/mealieOauthSecret".owner = config.users.users.kanidm.name;
       sops.secrets."kanidm/mealieOauthSecretEnv".owner = "root";
 
+      my.backups.mealie = {
+        enable = true;
+        prepareCommands = "podman volume export mealie-data | tar xf - -C /var/backup/mealie/";
+      };
+
       my.services.mealie = {
         enable = true;
         name = "Mealie";

@@ -12,6 +12,11 @@
         sops.secrets."dawarich/databasePassword" = { };
         sops.secrets."dawarich/secretKeyBase" = { };
 
+        my.backups.dawarich_db = {
+          enable = true;
+          postgresContainer.containerName = "dawarich-db";
+        };
+
         my.services.dawarich = {
           enable = true;
           name = "Dawarich";
