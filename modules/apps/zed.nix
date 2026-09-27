@@ -204,13 +204,13 @@
                         "tr"
                         "uniq"
                         "wc"
-                        "aggent-browser"
+                        "agent-browser"
+                        "cargo\\s+(check|clippy|test|build|search)"
+                        "nix\\s+(flake|build|eval)"
+                        "nixos-rebuild build"
                       ];
                     in
                     [
-                      { pattern = "^nix\\s+(flake|build|eval)"; }
-                      { pattern = "^nixos-rebuild build"; }
-                      { pattern = "^cargo\\s+(check|clippy|test|build|search)"; }
                       { pattern = "^rtk\\s+read"; }
                     ]
                     ++ map (cmd: { pattern = "^${cmd}"; }) basic_commands

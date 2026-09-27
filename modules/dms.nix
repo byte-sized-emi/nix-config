@@ -266,26 +266,6 @@
           categories = [ "Utility" ];
           icon = "caffeine";
         };
-
-        clear-notification = {
-          name = "Clear Notifications";
-          comment = "Clear all noctalia notifications";
-          exec = "noctalia-shell ipc call notifications clear";
-          terminal = false;
-          type = "Application";
-          categories = [ "Utility" ];
-          icon = "notification-disabled";
-        };
-
-        toggle-notifications = {
-          name = "Toggle Notifications";
-          comment = "Toggles noctalia notifications / do not disturb mode";
-          exec = "noctalia-shell ipc call notifications toggleDND";
-          terminal = false;
-          type = "Application";
-          categories = [ "Utility" ];
-          icon = "bell";
-        };
       };
     };
   };
