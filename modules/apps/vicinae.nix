@@ -6,6 +6,11 @@
       ...
     }:
     {
+      # for zed-recents
+      systemd.user.services.vicinae.Service.Environment = [
+        "PATH=${pkgs.sqlite}/bin"
+      ];
+
       programs.vicinae = {
         enable = true;
         systemd = {

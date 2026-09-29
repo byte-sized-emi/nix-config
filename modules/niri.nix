@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 {
   den.aspects.niri = {
     nixos = { pkgs, ... }: {
@@ -18,7 +18,6 @@
     homeManager =
       {
         pkgs,
-        config,
         ...
       }:
       {

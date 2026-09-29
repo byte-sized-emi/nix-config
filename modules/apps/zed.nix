@@ -206,6 +206,7 @@
                         "wc"
                         "agent-browser"
                         "cargo\\s+(check|clippy|test|build|search)"
+                        "git\\s+(log|status)"
                         "nix\\s+(flake|build|eval)"
                         "nixos-rebuild build"
                       ];
@@ -290,16 +291,8 @@
           collaboration_panel.dock = "left";
           git_panel.dock = "left";
           agent_servers = {
-            opencode = {
-              default_config_options = {
-                effort = "high";
-                model = "opencode/big-pickle";
-                mode = "build";
-              };
-              type = "custom";
-              command = "opencode";
-              args = [ "acp" ];
-              env = { };
+            pi-acp = {
+              type = "registry";
             };
           };
           languages.Nix.inlay_hints.enabled = true;

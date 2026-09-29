@@ -48,6 +48,10 @@
     slippi.url = "github:lytedev/slippi-nix";
     slippi.inputs.nixpkgs.follows = "nixpkgs";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    pi = {
+      url = "github:lukasl-dev/pi.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     cc-search = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "git+https://git.byte-sized.fyi/emilia/cc-search";
@@ -56,8 +60,16 @@
 
   outputs =
     inputs:
-    (inputs.nixpkgs.lib.evalModules {
-      modules = [ (inputs.import-tree ./modules) ];
-      specialArgs.inputs = inputs;
-    }).config.flake;
+    let
+      moduleSystem = (
+        inputs.nixpkgs.lib.evalModules {
+          modules = [ (inputs.import-tree ./modules) ];
+          specialArgs.inputs = inputs;
+        }
+      );
+    in
+    moduleSystem.config.flake
+    // {
+      den.options = moduleSystem.options;
+    };
 }
