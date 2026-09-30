@@ -18,7 +18,6 @@
     <stacks/linktree>
     <nixos-checks>
     <build-paths>
-    <control-server>
     <dev-shell>
     # <diagrams>
   ];

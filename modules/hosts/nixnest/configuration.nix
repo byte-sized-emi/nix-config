@@ -14,7 +14,6 @@
       <stacks/borg>
       <stacks/beeper>
       <stacks/cc-search>
-      <stacks/control-server>
       <stacks/dawarich>
       <stacks/forgejo>
       <stacks/freshrss>

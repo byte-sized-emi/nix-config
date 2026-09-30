@@ -37,10 +37,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-cache-beacon = {
-      url = "github:adisbladis/nix-cache-beacon";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     import-tree.url = "github:denful/import-tree";
     den.url = "github:denful/den";
     den-diagram.url = "github:denful/den-diagram";
@@ -55,6 +51,10 @@
     cc-search = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "git+https://git.byte-sized.fyi/emilia/cc-search";
+    };
+    comin = {
+      url = "github:nlewo/comin";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
