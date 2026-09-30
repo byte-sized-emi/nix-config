@@ -80,6 +80,7 @@
               ];
               rightWidgets = [
                 "systemTray"
+                "idleInhibitor"
                 "cpuUsage"
                 "memUsage"
                 "battery"

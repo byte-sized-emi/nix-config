@@ -16,10 +16,7 @@
     };
 
     homeManager =
-      {
-        pkgs,
-        ...
-      }:
+      { pkgs, ... }:
       {
         programs.alacritty.enable = true;
 
