@@ -17,7 +17,6 @@
     <auto-update>
     <stacks/linktree>
     <nixos-checks>
-    <build-paths>
     <dev-shell>
     # <diagrams>
   ];

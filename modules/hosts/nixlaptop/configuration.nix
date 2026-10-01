@@ -11,8 +11,6 @@
     ];
 
     nixos = { pkgs, ... }: {
-      services.comin.enable = lib.mkForce false;
-
       networking.networkmanager.wifi.powersave = true;
 
       programs.ausweisapp = {

@@ -30,11 +30,12 @@
               };
             };
             providers = {
-              "@ricoberger/gitmoji" = {
-                preferences = {
-                  copy = "code";
-                  action = "paste";
-                };
+              "@ricoberger/gitmoji".preferences = {
+                copy = "code";
+                action = "paste";
+              };
+              "wifi-commander".preferences = {
+                network-cli-tool = "nmcli";
               };
               clipboard.preferences = {
                 encryption = true;
