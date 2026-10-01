@@ -71,8 +71,11 @@
           };
           settings = {
             init.defaultBranch = "main";
-            user.name = "byte-sized-emi";
-            user.email = "emilia.git@byte-sized.fyi";
+            user = {
+              name = "byte-sized-emi";
+              email = "emilia.git@byte-sized.fyi";
+              signingKey = "~/.ssh/id_byte_sized";
+            };
             push.autoSetupRemote = true;
             credential.helper = lib.mkBefore [
               "cache --timeout 172800"

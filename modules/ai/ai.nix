@@ -1,9 +1,8 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   den.aspects.ai.homeManager =
     {
       pkgs,
-      lib,
       perSystem,
       config,
       ...

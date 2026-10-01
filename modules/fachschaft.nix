@@ -109,6 +109,7 @@
             fs-nextcloud = genViaGateway "10.19.5.43";
             fs-kasse = genViaGateway "10.19.5.46";
             fs-pretix = genViaGateway "10.19.5.47";
+            fs-biernet = genViaGateway "10.19.5.48";
             fs-infoscreen-vm = genViaGateway "10.19.5.62";
           };
       };
