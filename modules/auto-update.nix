@@ -1,6 +1,13 @@
 { inputs, ... }:
 {
-  den.aspects.auto-update = { host, ... }: {
+  den.aspects.auto-update = {
+    desktop.nixos = {
+      services.comin = {
+        desktop.enable = true;
+        buildConfirmer.mode = "manual";
+        deployConfirmer.mode = "manual";
+      };
+    };
     nixos = { config, ... }: {
       imports = [ inputs.comin.nixosModules.comin ];
 
@@ -9,9 +16,6 @@
       services.comin = {
         enable = true;
         submodules = true;
-        desktop.enable = host.role == "desktop";
-        buildConfirmer.mode = if host.role == "desktop" then "manual" else "without";
-        deployConfirmer.mode = if host.role == "desktop" then "manual" else "without";
         remotes = [
           {
             name = "origin";

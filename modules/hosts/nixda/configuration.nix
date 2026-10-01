@@ -3,6 +3,7 @@
   den.aspects.nixda = {
     includes = [
       <auto-update>
+      <auto-update/desktop>
       <graphical>
       <syncthing>
       (<den/unfree> [

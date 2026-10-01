@@ -40,23 +40,23 @@
         };
 
         environment.NEURALWATT_API_KEY.file = config.sops.secrets."pi/neuralwatt".path;
+      };
 
-        xdg.configFile."zed/AGENTS.md".source = ./BASE_AGENTS.md;
+      xdg.configFile."zed/AGENTS.md".source = ./BASE_AGENTS.md;
 
-        programs.mcp = {
-          enable = true;
-          servers = {
-            context7 = {
-              url = "https://mcp.context7.com/mcp";
-            };
-            nixos = {
-              command = lib.getExe pkgs.mcp-nixos;
-              args = [ ];
-            };
-            icm = {
-              command = lib.getExe perSystem.llm-agents.icm;
-              args = [ "serve" ];
-            };
+      programs.mcp = {
+        enable = true;
+        servers = {
+          context7 = {
+            url = "https://mcp.context7.com/mcp";
+          };
+          nixos = {
+            command = lib.getExe pkgs.mcp-nixos;
+            args = [ ];
+          };
+          icm = {
+            command = lib.getExe perSystem.llm-agents.icm;
+            args = [ "serve" ];
           };
         };
       };

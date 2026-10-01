@@ -1,8 +1,9 @@
-{ __findFile, lib, ... }:
+{ __findFile, ... }:
 {
   den.aspects.nixlaptop = {
     includes = [
       <auto-update>
+      <auto-update/desktop>
       <fachschaft>
       <graphical>
       <vpn>
