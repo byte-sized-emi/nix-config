@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   den.aspects.auto-update = {
     desktop.nixos = {
@@ -8,14 +8,30 @@
         deployConfirmer.mode = "manual";
       };
     };
-    nixos = { config, ... }: {
+    nixos = { pkgs, config, ... }: {
       imports = [ inputs.comin.nixosModules.comin ];
+
+      environment.systemPackages = [ pkgs.libnotify ];
 
       sops.secrets."comin-access-token" = { };
 
       services.comin = {
         enable = true;
         submodules = true;
+        postDeploymentCommand = lib.getExe (
+          pkgs.writeShellApplication {
+            name = "comin-post-deployment";
+            runtimeInputs = [ pkgs.curl ];
+            text = ''
+              curl -Ls \
+                -H "Title: Deploy $COMIN_HOSTNAME" \
+                -d "Status: $COMIN_STATUS
+                Commit: $COMIN_GIT_MSG ($COMIN_GIT_SHA)
+                Error message: $COMIN_ERROR_MSG" \
+                https://ntfy.service.byte-sized.fyi/deploys
+            '';
+          }
+        );
         remotes = [
           {
             name = "origin";
