@@ -3,7 +3,8 @@
 
   inputs = {
     self.submodules = true;
-    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+    nixpkgs-stable.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,8 +22,6 @@
     };
 
     naersk.url = "github:nix-community/naersk";
-
-    nixpkgs-stable.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-25.11";
 
     dms = {
       url = "github:AvengeMedia/DankMaterialShell/stable";
