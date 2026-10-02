@@ -3,5 +3,6 @@
     environment.systemPackages = with pkgs; [
       tmux
     ];
+    documentation.nixos.enable = false;
   };
 }
