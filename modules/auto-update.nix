@@ -46,6 +46,55 @@
         ];
       };
 
+      services.fluent-bit = {
+        enable = true;
+        settings = {
+          pipeline = {
+            inputs = [
+              {
+                name = "systemd";
+                tag = "comin";
+                strip_underscores = true;
+                lowercase = true;
+                systemd_filter = "_SYSTEMD_UNIT=comin.service";
+              }
+            ];
+            filters = [
+              {
+                name = "record_modifier";
+                match = "comin";
+                allowlist_key = [
+                  "systemd_unit"
+                  "message"
+                  "hostname"
+                  "machine_id"
+                  "gid"
+                  "pid"
+                  "exe"
+                  "service_name"
+                  "boot_id"
+                  "detected_level"
+                  "priority"
+                  "cmdline"
+                ];
+              }
+            ];
+            outputs = [
+              {
+                name = "loki";
+                host = "loki.service.byte-sized.fyi";
+                port = 443;
+                match = "comin";
+                tls = "on";
+                "tls.verify" = "on";
+                labels = "job=comin,systemd_unit=$systemd_unit,hostname=$hostname";
+              }
+            ];
+          };
+          service.grace = 30;
+        };
+      };
+
       programs.git.enable = true;
       programs.git.config.safe.directory = "/home/emilia/nix-config";
     };
