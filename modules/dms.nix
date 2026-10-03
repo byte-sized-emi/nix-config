@@ -2,14 +2,39 @@
 {
   den.aspects.dms = {
     homeManager = { pkgs, ... }: {
-      imports = [ inputs.dms.homeModules.dank-material-shell ];
+      imports = [
+        inputs.dms.homeModules.dank-material-shell
+        inputs.dms-plugin-registry.nixosModules.default
+      ];
 
       xdg.configFile."DankMaterialShell/themes/catppuccin/theme.json".source =
         ./dms/themes/catppuccin/theme.json;
 
+      # for ntfy plugin
+      home.packages = [ pkgs.libsecret ];
+
       programs.dank-material-shell = {
         enable = true;
         systemd.enable = true;
+
+        plugins = {
+          # ID here is last part of the install URL
+          ntfy = {
+            enable = true;
+            settings = {
+              instances = [
+                {
+                  id = "byte-sized-service";
+                  baseUrl = "https://ntfy.service.byte-sized.fyi";
+                  topics = [
+                    "alerts"
+                    "deploys"
+                  ];
+                }
+              ];
+            };
+          };
+        };
 
         settings = {
           currentThemeName = "custom";
@@ -86,6 +111,7 @@
                 "battery"
                 "notificationButton"
                 "clock"
+                "ntfy"
                 "controlCenterButton"
               ];
               spacing = 4;

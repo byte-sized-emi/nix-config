@@ -27,7 +27,7 @@
                 -H "Title: Deploy $COMIN_HOSTNAME" \
                 -d "Status: $COMIN_STATUS
                 Commit: $COMIN_GIT_MSG ($COMIN_GIT_SHA)
-                Error message: $COMIN_ERROR_MSG" \
+                $COMIN_ERROR_MSG" \
                 https://ntfy.service.byte-sized.fyi/deploys
             '';
           }
