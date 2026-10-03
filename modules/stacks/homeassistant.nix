@@ -75,7 +75,7 @@
         {
           containers.home-assistant = {
             containerConfig = {
-              image = "ghcr.io/home-assistant/home-assistant:2026.9.3";
+              image = "ghcr.io/home-assistant/home-assistant:2026.9.4";
               environments.TZ = "Europe/Berlin";
               exposePorts = [ (toString port) ];
               addCapabilities = [ "CAP_NET_RAW" ];
@@ -187,7 +187,7 @@
           };
           containers.esphome = {
             containerConfig = {
-              image = "ghcr.io/esphome/esphome:2026.9.0";
+              image = "ghcr.io/esphome/esphome:2026.9.1";
               environments = {
                 TZ = "Europe/Berlin";
               };
