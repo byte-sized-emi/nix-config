@@ -18,6 +18,7 @@
 - [ ] show notification with cancel button before updating
 - [ ] make nix use my cache only when it makes sense
 - [x] backup dawarich
+- [ ] Fleet-wide service provider / consumer mechanism (use on loki to try out)
 
 # nixnest stability fixes
 

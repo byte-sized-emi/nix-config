@@ -23,7 +23,6 @@
       <stacks/linktree>
       <stacks/mealie>
       <stacks/media>
-      <stacks/monitoring>
       <stacks/nix-serve>
       <stacks/ntfy>
       <stacks/renovate>

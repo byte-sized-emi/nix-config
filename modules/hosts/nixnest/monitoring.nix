@@ -1,5 +1,5 @@
 {
-  stacks.monitoring.nixos =
+  den.aspects.nixnest.nixos =
     { config, ... }:
     {
       my.services.grafana = {
@@ -7,10 +7,14 @@
         name = "Grafana";
         port = config.services.grafana.settings.server.http_port;
         description = "Monitoring and analytics platform";
-        internal = {
-          enable = true;
-          domain = "grafana.${config.settings.services.domain}";
-        };
+        internal.enable = true;
+      };
+
+      my.services.loki = {
+        enable = true;
+        name = "Loki";
+        port = config.services.loki.configuration.server.http_listen_port;
+        internal.enable = true;
       };
 
       # TODO: plan for upgrading this:
@@ -64,7 +68,7 @@
                 name = "loki";
                 port = config.services.loki.configuration.server.http_listen_port;
                 match = "systemd.*";
-                labels = "job=systemd,systemd_unit=$systemd_unit";
+                labels = "job=systemd,systemd_unit=$systemd_unit,hostname=$hostname";
               }
             ];
           };
