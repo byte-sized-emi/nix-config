@@ -1,8 +1,9 @@
 {
   stacks.ntfy = {
-    http-services = { config, ... }: {
+    http-services = {
       service_name = "ntfy";
-      host = config.my.services.ntfy.internal.domain;
+      host = "ntfy.service.byte-sized.fyi";
+      # host = config.my.services.ntfy.internal.domain;
       https = true;
     };
     nixos =

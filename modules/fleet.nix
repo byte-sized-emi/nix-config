@@ -10,15 +10,15 @@
     # - url (optional, defaults to "http(s)://host:port")
   };
 
-  # Collect policy: each host sees all hosts' backends
-  den.policies.fleet-http-services =
+  # Collect policy: each host sees all hosts backends
+  den.policies.collect-fleet-http-services =
     { host, ... }:
     let
       inherit (den.lib.policy) pipe;
     in
     [
       (pipe.from "http-services" [
-        (pipe.collect ({ host, ... }: true))
+        (pipe.collectAll ({ host, ... }: true))
         (pipe.transform (
           # applies the default values for https, port, and url
           s:
@@ -40,6 +40,6 @@
       ])
     ];
 
-  den.schema.host.includes = [ den.policies.fleet-http-services ];
+  den.schema.host.includes = [ den.policies.collect-fleet-http-services ];
 
 }

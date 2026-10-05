@@ -59,6 +59,11 @@
       url = "github:nlewo/comin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    pi-bwrap-sandbox = {
+      url = "git+https://git.byte-sized.fyi/emilia/pi-bwrap-sandbox";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

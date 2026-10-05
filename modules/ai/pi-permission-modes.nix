@@ -6,12 +6,13 @@
         sandboxWithWritable = writable: {
           enabled = true;
           inherit writable;
+          allowRead = [
+            "/nix"
+          ];
           allowWrite = [
+            "/tmp"
             "."
-            "~/.pi"
-            "~/.cache/uv"
-            "~/.cache/nix"
-            "~/.rustup"
+            "~"
           ];
           denyWrite = [ ];
           denyRead = [
@@ -28,6 +29,7 @@
             "~/.pi/agent/oauth.json"
           ];
           network = {
+            allowAllUnixSockets = true;
             allowedDomains = [
               # package registries + git hosts
               "npmjs.org"

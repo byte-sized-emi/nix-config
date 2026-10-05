@@ -813,6 +813,26 @@
         "type": "github"
       }
     },
+    "pi-bwrap-sandbox": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791147175,
+        "narHash": "sha256-YIsz7RQPa3PVbfqtXPA+gOajUTAcQ6wpOD2qPTSlq/s=",
+        "ref": "refs/heads/main",
+        "rev": "dd36d028dab3e0b4803cf09854ef769f06bf009d",
+        "revCount": 8,
+        "type": "git",
+        "url": "https://git.byte-sized.fyi/emilia/pi-bwrap-sandbox"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.byte-sized.fyi/emilia/pi-bwrap-sandbox"
+      }
+    },
     "pre-commit": {
       "inputs": {
         "flake-compat": "flake-compat_3",
@@ -868,6 +888,7 @@
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-stable": "nixpkgs-stable",
         "pi": "pi",
+        "pi-bwrap-sandbox": "pi-bwrap-sandbox",
         "quadlet-nix": "quadlet-nix",
         "slippi": "slippi",
         "sops-nix": "sops-nix"
