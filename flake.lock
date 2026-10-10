@@ -820,11 +820,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791147175,
-        "narHash": "sha256-YIsz7RQPa3PVbfqtXPA+gOajUTAcQ6wpOD2qPTSlq/s=",
+        "lastModified": 1791219948,
+        "narHash": "sha256-dnc0uN23xlQgNLdgvhnUp0HD/U7tkoWalTS5CLL6fvQ=",
         "ref": "refs/heads/main",
-        "rev": "dd36d028dab3e0b4803cf09854ef769f06bf009d",
-        "revCount": 8,
+        "rev": "f2abfe89812d34a6435f16bc9f38f447571f048a",
+        "revCount": 9,
         "type": "git",
         "url": "https://git.byte-sized.fyi/emilia/pi-bwrap-sandbox"
       },

@@ -71,11 +71,6 @@
         };
       };
 
-      programs.yazi = {
-        enable = true;
-        shellWrapperName = "z";
-      };
-
       programs.bat.enable = true;
     };
   };

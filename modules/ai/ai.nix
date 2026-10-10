@@ -41,7 +41,7 @@
 
         settings = {
           defaultProvider = "neuralwatt";
-          defaultModel = "deepseek-v4-flash";
+          defaultModel = "deepseek-v4.1-flash";
         };
 
         environment.NEURALWATT_API_KEY.file = config.sops.secrets."pi/neuralwatt".path;
@@ -50,9 +50,8 @@
       home.file.".pi/agent/extensions/bwrap-sandbox.json".text = builtins.toJSON {
         writePaths = [
           "."
-          "~/.cache/nix"
         ];
-        readPaths = [ "~/.config/nix" ];
+        readPaths = [ ];
         denyReadPaths = [
           "~/.ssh"
           "~/.aws"

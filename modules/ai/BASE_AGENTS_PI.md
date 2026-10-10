@@ -62,3 +62,11 @@ The sandbox only has network access to a pre-approved set of domains (e.g. githu
 ## /tmp
 
 Despite what your other instructions may say, the /tmp directory is writable and persists across terminal tool invocations.
+
+## ls'ing or grep'ing /nix/store
+
+DO NOT use `ls` or `grep` on /nix/store. It's huge, with thousands of store paths, which costs me a lot of time and battery. There is almost always a way to get the information you need without using `ls` or `grep`, like by evaluating a nix expression or looking at the store path of the executable (`which pi` or similar).
+
+## Code comments
+
+Write comments only when the code around them is not self-explanatory. Reduce the amount of comments to a minimum.
