@@ -70,3 +70,7 @@ DO NOT use `ls` or `grep` on /nix/store. It's huge, with thousands of store path
 ## Code comments
 
 Write comments only when the code around them is not self-explanatory. Reduce the amount of comments to a minimum.
+
+## git commits
+
+you can't make git commits since the signing keys are in ~/.ssh - ask for outside the sandbox execution for them.

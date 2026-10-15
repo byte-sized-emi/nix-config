@@ -16,6 +16,7 @@
   den.schema.flake-system.includes = [
     <auto-update>
     <stacks/linktree>
+    <stacks/nw-usage>
     # <nixos-checks>
     <dev-shell>
     # <diagrams>

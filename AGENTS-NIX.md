@@ -23,6 +23,10 @@
 - **Conditional wiring**: aspects like `<graphical>` and `<ai>` are only included for
   hosts / users that opt in.
 
+## Flakes
+
+Nix flakes only see things that are staged by git. When adding new files, always run `git add` before running nix commands.
+
 ## mcp-nixos tool
 
 The MCP nixos tool can search for Home Manager and NixOS packages / options. Make sure that, when defining an option, that the specified values / format exactly matches what MCP nixos expects.

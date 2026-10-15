@@ -1,9 +1,8 @@
 {
   den.aspects.nixnest = {
-    http-services = {
+    http-services = { config, ... }: {
       service_name = "loki";
-      host = "loki.service.byte-sized.fyi";
-      # host = config.my.services.loki.internal.domain;
+      host = config.my.services.loki.internal.domain;
       https = true;
     };
     nixos =

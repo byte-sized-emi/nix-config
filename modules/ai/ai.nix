@@ -7,12 +7,21 @@
       config,
       ...
     }:
+    let
+      nw-usage = (
+        pkgs.writeShellScriptBin "nw-usage" ''
+          export NEURALWATT_API_KEY="$(cat ${config.sops.secrets."pi/neuralwatt".path})"
+          exec ${lib.getExe perSystem.self.nw-usage} "$@"
+        ''
+      );
+    in
     {
       home.packages = with pkgs; [
         mcp-nixos
         ripgrep
         socat
         python3
+        nw-usage
       ];
 
       imports = [ inputs.pi.homeModules.default ];
@@ -50,6 +59,7 @@
       home.file.".pi/agent/extensions/bwrap-sandbox.json".text = builtins.toJSON {
         writePaths = [
           "."
+          "~/.agent-browser"
         ];
         readPaths = [ ];
         denyReadPaths = [
