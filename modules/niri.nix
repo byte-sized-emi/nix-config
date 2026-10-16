@@ -19,6 +19,7 @@
       { pkgs, ... }:
       {
         programs.alacritty.enable = true;
+        programs.kitty.enable = true;
 
         home.packages = with pkgs; [
           xwayland-satellite
@@ -210,7 +211,7 @@
                 "Mod+8" = action-with-arg "focus-workspace" 8;
                 "Mod+9" = action-with-arg "focus-workspace" 9;
                 "Alt+F4" = action "close-window";
-                "Ctrl+Alt+T" = action-with-arg "spawn" "alacritty";
+                "Ctrl+Alt+T" = action-with-arg "spawn" "kitty";
 
                 "Mod+R" = action "switch-preset-column-width";
                 "Mod+Shift+R" = action "switch-preset-column-width-back";
