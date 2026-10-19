@@ -12,10 +12,10 @@
       <audio>
       <controller>
       <dms>
-      <docker>
       <fonts>
       <niri>
       # <noctalia>
+      <podman>
       <swayidle>
       (<den/unfree> [
         "discord"

@@ -83,6 +83,7 @@
             url."ssh://git@gitlab.lrz.de/" = {
               insteadOf = "https://gitlab.lrz.de/";
             };
+            rebase.autoStash = true;
           };
         };
 

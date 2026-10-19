@@ -40,6 +40,7 @@
           # "npm:pi-sandbox"
           "npm:pi-web-access"
           "npm:@juicesharp/rpiv-todo"
+          "npm:@juicesharp/rpiv-ask-user-question"
           # "git:github.com/byte-sized-emi/pi-permission-modes"
           ./rtk.ts
           ./sounds.ts
