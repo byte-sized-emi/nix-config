@@ -34,6 +34,11 @@
       users.emilia = { };
       ipv4 = "192.168.0.204";
     };
+    # ephemeral pi agent VM, started imperatively with `pi-vm` on nixnest
+    pi-vm = {
+      users.emilia = { };
+      excludes = [ den.aspects.secrets ];
+    };
   };
 
   den.schema.host.includes = [

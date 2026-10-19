@@ -6,6 +6,7 @@
       <auto-update>
       <backup-registry>
       <cloudflared>
+      <microvm-host>
       <podman>
       <server-default>
       <service>

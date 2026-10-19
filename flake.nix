@@ -1,6 +1,11 @@
 {
   description = "Top-Level configuration";
 
+  nixConfig = {
+    extra-substituters = [ "https://microvm.cachix.org" ];
+    extra-trusted-public-keys = [ "microvm.cachix.org-1:oXnBc6hRE3eX5rSYdRyMYXnfzcCxC7yKPTbZXALsqys=" ];
+  };
+
   inputs = {
     self.submodules = true;
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
@@ -62,6 +67,11 @@
 
     pi-bwrap-sandbox = {
       url = "git+https://git.byte-sized.fyi/emilia/pi-bwrap-sandbox";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

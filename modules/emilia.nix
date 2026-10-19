@@ -12,6 +12,9 @@
       <fachschaft>
       <graphical>
     ]
+    ++ lib.optionals (host.hostName == "pi-vm") [
+      <ai>
+    ]
     ++ lib.optionals (host.hostName == "nixda") [
       <ai>
       <graphical>
