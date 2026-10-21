@@ -74,19 +74,23 @@
         };
       };
 
-      services.gitea-actions-runner = {
-        package = pkgs.forgejo-runner;
+      services.forgejo-runner = {
         instances.default = {
           enable = true;
-          name = "monolith";
-          url = "https://${config.settings.git.domain}";
-          tokenFile = config.sops.secrets."forgejo/actionsRunnerToken".path;
-          labels = [
-            "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
-            "alpine-${pkgs.stdenv.hostPlatform.system}:docker://docker.io/node:26-alpine3.23"
-          ];
+
+          secrets.server.connections.default.token_url =
+            config.sops.secrets."forgejo/actionsRunnerToken".path;
 
           settings = {
+            runner.labels = [
+              "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:rust-latest"
+              "alpine-${pkgs.stdenv.hostPlatform.system}:docker://docker.io/node:26-alpine3.23"
+            ];
+            server.connections.default = {
+              uuid = "61d06139-9f68-45f6-9585-e5bc51d7cb80";
+              url = "https://${config.settings.git.domain}";
+            };
+
             cache.enabled = true;
             # runner.envs.NIX_BIN_PATH = "${pkgs.nix}/bin";
             container.valid_volumes = [
