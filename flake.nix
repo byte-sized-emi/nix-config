@@ -5,6 +5,7 @@
     self.submodules = true;
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     nixpkgs-stable.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
+    rayfish-nixpkgs.url = "github:debtquity/nixpkgs/init/pkgs/rayfish";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
