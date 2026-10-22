@@ -19,6 +19,7 @@
     <stacks/nw-usage>
     # <nixos-checks>
     <dev-shell>
+    <rayfish-generate>
     # <diagrams>
   ];
 
