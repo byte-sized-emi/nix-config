@@ -22,17 +22,33 @@
   den.hosts.x86_64-linux = {
     nixlaptop = {
       users.emilia = { };
+      ray = {
+        id = "";
+        networks.core.operator = true;
+      };
     };
     nixda = {
       users.emilia = { };
+      ray = {
+        id = "";
+        networks.core.operator = true;
+      };
     };
     nixnest = {
       users.emilia = { };
       ipv4 = "192.168.0.201";
+      ray = {
+        id = "";
+        networks.core = { };
+      };
     };
     nixdort = {
       users.emilia = { };
       ipv4 = "192.168.0.204";
+      ray = {
+        id = "";
+        networks.core = { };
+      };
     };
   };
 
