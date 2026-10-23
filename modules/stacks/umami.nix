@@ -57,7 +57,7 @@
 
           containers.umami = {
             containerConfig = {
-              image = "ghcr.io/umami-software/umami:3.4.0";
+              image = "ghcr.io/umami-software/umami:3.4.1";
               publishPorts = [
                 "127.0.0.1:${toString port}:3000"
               ];
