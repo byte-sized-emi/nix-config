@@ -21,6 +21,7 @@
         ripgrep
         socat
         python3
+        bubblewrap
         nw-usage
         perSystem.llm-agents.icm
       ];
@@ -42,7 +43,7 @@
           "npm:pi-web-access"
           "npm:@juicesharp/rpiv-todo"
           "npm:@juicesharp/rpiv-ask-user-question"
-          "npm:pi-token-speed"
+          # "npm:pi-token-speed"
           # "git:github.com/byte-sized-emi/pi-permission-modes"
           ./rtk.ts
           ./sounds.ts

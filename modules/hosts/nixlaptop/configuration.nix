@@ -8,6 +8,7 @@
       <graphical>
       <vpn>
       <syncthing>
+      <rayfish>
       # <cache-beacon>
     ];
 
@@ -25,6 +26,34 @@
         dynamips.enable = true;
         ubridge.enable = true;
       };
+
+      #       services.rayfish = {
+      #         enable = true;
+      #         # settings = {
+      #         #   default_hostname = host.hostName;
+      #         #   # operator_uid = config.users.users.emilia.uid;
+      #         # };
+      #
+      #         # TODO: The spec is applied from a controller to all hosts - it doesn't
+      #         # make much sense to give it to all hosts.
+      #         spec = {
+      #           aliases.operator = [
+      #             "nixlaptop"
+      #             "nixda"
+      #           ];
+      #
+      #           networks.mesh = {
+      #             nixlaptop.ssh.operator = [ ];
+      #             nixda.ssh.operator = [ ];
+      #             # TODO: give nixnest NFS access to nixdort
+      #             nixnest.ssh.operator = [ ];
+      #             nixdort.ssh = {
+      #               operator = [ ];
+      #               nixnest = [ "borg" ];
+      #             };
+      #           };
+      #         };
+      #       };
 
       environment.systemPackages = with pkgs; [
         uv

@@ -1,5 +1,10 @@
 { __findFile, lib, ... }:
 {
+  # TODO:
+  den.aspects."emilia@nixlaptop".includes = [
+
+  ];
+
   den.aspects.emilia = { host, ... }: {
     includes = [
       <apps/git>

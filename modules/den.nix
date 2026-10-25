@@ -23,7 +23,7 @@
     nixlaptop = {
       users.emilia = { };
       ray = {
-        id = "";
+        id = "db9bd2e0329935be585fdbe409c1c3bd546d0a324e1e4f3ff892dc3b2f536028";
         networks.core.operator = true;
       };
     };

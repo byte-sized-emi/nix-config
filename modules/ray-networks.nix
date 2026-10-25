@@ -14,15 +14,6 @@ let
       seed = open(sys.argv[1], "rb").read()
       print(nacl.signing.SigningKey(seed).verify_key.encode().hex())
     '';
-
-  keygenScript =
-    pkgs:
-    let
-      python = pkgs.python3.withPackages (ps: [ ps.pynacl ]);
-    in
-    ''
-    '';
-
 in
 {
   config.den.schema.ray-networks = {
@@ -47,7 +38,7 @@ in
       name = "rayfish-generate";
       runtimeInputs = [ (pkgs.python3.withPackages (ps: [ ps.pynacl ])) ];
       text = ''
-        head -c 32 /dev/urandom > "secret-key"
+        head -c 32 /dev/random > "secret-key"
         python3 ${keygenPy pkgs} "secret-key" > "id"
         base64 -w 0 "secret-key" > "secret-key.b64"
         rm secret-key
@@ -85,6 +76,6 @@ in
 
   config.den.ray-networks = {
     # TODO: put the actual network id in here
-    core.id = "";
+    core.id = "a95d0d38f538157e1b1b5463320506a1feee724a7829782cec2585e9a81515a5";
   };
 }
