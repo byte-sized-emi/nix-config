@@ -17,7 +17,7 @@
     in
     {
       home.packages = with pkgs; [
-        mcp-nixos
+        # mcp-nixos
         ripgrep
         socat
         python3
@@ -129,10 +129,10 @@
           context7 = {
             url = "https://mcp.context7.com/mcp";
           };
-          nixos = {
-            command = lib.getExe pkgs.mcp-nixos;
-            args = [ ];
-          };
+          # nixos = {
+          #   command = lib.getExe pkgs.mcp-nixos;
+          #   args = [ ];
+          # };
           icm = {
             command = lib.getExe perSystem.llm-agents.icm;
             args = [ "serve" ];
