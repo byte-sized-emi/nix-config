@@ -28,6 +28,7 @@
         ];
 
         userSettings = {
+          markdown_preview.open_markdown_files_in_preview = true;
           language_models = {
             openai_compatible.NeuralWatt = {
               api_url = "https://api.neuralwatt.com/v1";
