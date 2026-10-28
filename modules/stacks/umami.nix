@@ -39,6 +39,8 @@
         };
       };
 
+      firewall.interfaces."umami".allowedUDPPorts = [ 53 ];
+
       virtualisation.quadlet =
         let
           inherit (config.virtualisation.quadlet) volumes networks;

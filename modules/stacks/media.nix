@@ -147,6 +147,8 @@
         }
       ];
 
+      firewall.interfaces."media".allowedUDPPorts = [ 53 ];
+
       virtualisation.quadlet =
         let
           inherit (config.virtualisation.quadlet) networks;
