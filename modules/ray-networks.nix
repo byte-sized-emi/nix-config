@@ -57,25 +57,41 @@ in
   };
 
   config.den.aspects.ray-networks = { host, ... }: {
+    # The rayfish options live in the rayfish aspect; pull it in so a host only
+    # has to include ray-networks.
+    includes = [ den.aspects.rayfish ];
+
     nixos =
       { config, ... }:
       let
         networks = host.ray.networks;
-        networksWithOperator = builtins.filter (net: net.operator or false) networks;
-        networkIds = map (net: den.ray-networks.${net}.id) (lib.attrNames networks);
+        identitySecret = "rayfish/identities/${host.hostName}/secret-key";
+        networkSecret = name: "rayfish/networks/${name}/secret-key";
+        hasSecret = host.ray.hasSecret or false;
       in
       {
+        # Only hosts whose identity / network secret lives in secrets.yaml get
+        # it seeded; everyone else runs with what it already has on disk.
+        sops.secrets = lib.mkMerge [
+          (lib.mkIf hasSecret { ${identitySecret} = { }; })
+          (lib.mapAttrs' (
+            name: net: lib.nameValuePair (networkSecret name) (lib.mkIf (net.operator or false) { })
+          ) networks)
+        ];
+
         services.rayfish = {
           enable = true;
-          id = host.ray.id;
-          secretFile = config.sops.secrets."rayfish/identities/${host.hostName}/secret-key";
-          joinNetworks = networkIds;
+          secretFile = lib.mkIf hasSecret config.sops.secrets.${identitySecret}.path;
+          networks = lib.mapAttrs (name: net: {
+            open = net.open or false;
+            roomId = den.ray-networks.${name}.id;
+            secretFile = lib.mkIf (net.operator or false) config.sops.secrets.${networkSecret name}.path;
+          }) networks;
         };
       };
   };
 
   config.den.ray-networks = {
-    # TODO: put the actual network id in here
     core.id = "a95d0d38f538157e1b1b5463320506a1feee724a7829782cec2585e9a81515a5";
   };
 }
