@@ -41,6 +41,7 @@
           "npm:pi-web-access"
           "npm:@juicesharp/rpiv-todo"
           "npm:@juicesharp/rpiv-ask-user-question"
+          "npm:pi-token-speed"
           # "git:github.com/byte-sized-emi/pi-permission-modes"
           ./rtk.ts
           ./sounds.ts

@@ -207,28 +207,28 @@
         wayland.windowManager.niri.settings = {
           binds = {
             "XF86AudioPlay".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "mpris"
               "playPause"
             ];
             "XF86AudioNext".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "mpris"
               "next"
             ];
             "XF86AudioPrev".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "mpris"
               "previous"
             ];
             "XF86MonBrightnessUp".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "brightness"
@@ -237,7 +237,7 @@
               ""
             ];
             "XF86MonBrightnessDown".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "brightness"
@@ -246,40 +246,40 @@
               ""
             ];
             "Mod+L".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "lock"
               "lockAndOutputsOff"
             ];
             "Mod+N".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "notifications"
               "toggle"
             ];
             "Mod+Shift+N".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "notifications"
               "clearAll"
             ];
             "Mod+B".spawn = [
-              "${lib.getExe pkgs.dms-shell}"
+              "${lib.getExe pkgs.dux-shell}"
               "ipc"
               "call"
               "notifications"
               "toggleDoNotDisturb"
             ];
             # TODO:
-            # "KP_Add".spawn = "${lib.getExe pkgs.dms-shell} ipc";
-            # "KP_Subtract".spawn = "${lib.getExe pkgs.dms-shell} ipc";
-            # "KP_enter".spawn = "${lib.getExe pkgs.dms-shell} ipc";
+            # "KP_Add".spawn = "${lib.getExe pkgs.dux-shell} ipc";
+            # "KP_Subtract".spawn = "${lib.getExe pkgs.dux-shell} ipc";
+            # "KP_enter".spawn = "${lib.getExe pkgs.dux-shell} ipc";
           };
           switch-events.lid-close.spawn = [
-            "${lib.getExe pkgs.dms-shell}"
+            "${lib.getExe pkgs.dux-shell}"
             "ipc"
             "call"
             "lock"
@@ -287,12 +287,12 @@
           ];
         };
 
-        services.swayidle.events.lock = "${lib.getExe pkgs.dms-shell} ipc call lock lock";
+        services.swayidle.events.lock = "${lib.getExe pkgs.dux-shell} ipc call lock lock";
 
         xdg.desktopEntries = {
           caffeine = {
             name = "Toggle idle / sleep inhibitor";
-            exec = "${lib.getExe pkgs.dms-shell} ipc call inhibit toggle";
+            exec = "${lib.getExe pkgs.dux-shell} ipc call inhibit toggle";
             terminal = false;
             type = "Application";
             categories = [ "Utility" ];
