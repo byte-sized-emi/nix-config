@@ -39,7 +39,7 @@
         };
       };
 
-      firewall.interfaces."umami".allowedUDPPorts = [ 53 ];
+      networking.firewall.interfaces."umami".allowedUDPPorts = [ 53 ];
 
       virtualisation.quadlet =
         let

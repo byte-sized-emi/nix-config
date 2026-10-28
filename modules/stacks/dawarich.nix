@@ -36,7 +36,7 @@
           '';
         };
 
-        firewall.interfaces."dawarich".allowedUDPPorts = [ 53 ];
+        networking.firewall.interfaces."dawarich".allowedUDPPorts = [ 53 ];
 
         virtualisation.quadlet =
           let
