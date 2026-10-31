@@ -123,7 +123,7 @@
       virtualisation.quadlet.containers.nixsearch = {
         containerConfig = {
           image = "ghcr.io/benkoppe/nixsearch-with-nix:main@sha256:ffe1ef955ddceebb4cdbdf3f8e9b962d81861b89a6ef8f0ff4d81a9a283891ca";
-          memory = "2g";
+          memory = "3g";
           publishPorts = [ "127.0.0.1:${toString port}:3000" ];
           volumes = [
             "${configPath}:${configPath}:ro"
