@@ -24,6 +24,7 @@
       <stacks/mealie>
       <stacks/media>
       <stacks/nix-serve>
+      <stacks/nixsearch>
       <stacks/ntfy>
       <stacks/renovate>
       <stacks/sso>
