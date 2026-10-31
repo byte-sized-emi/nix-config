@@ -50,6 +50,8 @@
 
       systemd.tmpfiles.rules = [
         "d ${stackPath} 0750 root root -"
+        # TMPDIR=/data/tmp is baked into the image and must already exist.
+        "d ${stackPath}/tmp 0750 root root -"
       ];
 
       virtualisation.quadlet.containers.nixsearch = {
