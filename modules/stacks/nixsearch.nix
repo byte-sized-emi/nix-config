@@ -4,11 +4,22 @@
 }:
 {
   stacks.nixsearch.nixos =
-    { pkgs, ... }:
+    {
+      pkgs,
+      options,
+      ...
+    }:
     let
       port = 3456;
       stackPath = "/var/stacks/nixsearch";
       configPath = "/etc/stacks/nixsearch/nixsearch.toml";
+      # every option of this module system: nixpkgs plus the external modules we
+      # import (sops-nix, quadlet, ...) and our own.
+      nixosOptionsJson =
+        (pkgs.nixosOptionsDoc {
+          inherit options;
+          warningsAreErrors = false;
+        }).optionsJSON;
       # den is indexed from a prebuilt options.json: its nixModule is a function of
       # `inputs` returning a module function, and evalModules only applies one level,
       # so both applications have to happen here.
@@ -81,9 +92,20 @@
         preset_refs = ["nixos-unstable"]
 
         [sources.nixos]
-        preset = "nixos-options"
-        default_ref = "nixos-unstable"
-        preset_refs = ["nixos-unstable"]
+        name = "NixOS"
+        kind = "options"
+        color = "#60a5fa"
+
+        [sources.nixos.refs.nixos-unstable.source_links]
+        type = "github"
+        owner = "NixOS"
+        repo = "nixpkgs"
+        revision = "${inputs.nixpkgs.sourceInfo.rev or "nixos-unstable"}"
+
+        [sources.nixos.refs.nixos-unstable.producer]
+        type = "existing-file"
+        path = "/etc/nixsearch/nixos-options.json"
+        artifact = "options-json"
 
         [sources.home-manager]
         preset = "home-manager-options"
@@ -106,6 +128,7 @@
           volumes = [
             "${configPath}:${configPath}:ro"
             "${denOptionsJson}/share/doc/nixos/options.json:/etc/nixsearch/den-options.json:ro"
+            "${nixosOptionsJson}/share/doc/nixos/options.json:/etc/nixsearch/nixos-options.json:ro"
             "${stackPath}:/data"
           ];
           environments = {
