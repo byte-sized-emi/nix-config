@@ -1,7 +1,9 @@
 { inputs, ... }:
 {
-  den.aspects.podman.nixos = { ... }: {
+  den.aspects.podman.nixos = { pkgs, ... }: {
     imports = [ inputs.quadlet-nix.nixosModules.quadlet ];
+
+    environment.systemPackages = [ pkgs.podman-compose ];
 
     virtualisation.containers.enable = true;
 

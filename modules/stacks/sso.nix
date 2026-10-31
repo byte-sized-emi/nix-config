@@ -96,6 +96,16 @@
                 "mealie_admins"
               ];
             };
+            maria = {
+              displayName = "Maria";
+              mailAddresses = [
+                "maria@sso.byte-sized.fyi"
+                "maria@byte-sized.fyi"
+              ];
+              groups = [
+                "immich_users"
+              ];
+            };
             mika = {
               displayName = "Mika";
               mailAddresses = [
