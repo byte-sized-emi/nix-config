@@ -22,6 +22,7 @@
         socat
         python3
         nw-usage
+        perSystem.llm-agents.icm
       ];
 
       imports = [ inputs.pi.homeModules.default ];
@@ -142,7 +143,10 @@
           # };
           icm = {
             command = lib.getExe perSystem.llm-agents.icm;
-            args = [ "serve" ];
+            args = [
+              "serve"
+              "--no-embeddings"
+            ];
           };
         };
       };
