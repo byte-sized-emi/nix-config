@@ -24,6 +24,7 @@
       users.users.emilia = {
         group = config.users.groups.emilia.name;
         extraGroups = [
+          "users"
           "wheel"
           "podman"
           "docker"
