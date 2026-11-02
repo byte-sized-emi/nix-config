@@ -62,6 +62,9 @@
         writePaths = [
           "."
           "~/.agent-browser"
+          "~/.cargo"
+          "~/.npm"
+          "~/.bun"
         ];
         readPaths = [ ];
         denyReadPaths = [
@@ -129,6 +132,9 @@
         servers = {
           context7 = {
             url = "https://mcp.context7.com/mcp";
+          };
+          nixsearch = {
+            url = "https://nixsearch.${config.services.domain}/-/mcp";
           };
           # nixos = {
           #   command = lib.getExe pkgs.mcp-nixos;

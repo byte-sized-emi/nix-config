@@ -6,6 +6,7 @@
   stacks.nixsearch.nixos =
     {
       pkgs,
+      config,
       options,
       ...
     }:
@@ -46,13 +47,17 @@
         name = "nixsearch";
         inherit port;
         description = "Search engine for Nix packages and options";
-        internal.enable = true;
+        internal = {
+          enable = true;
+          domain = "nixsearch.${config.services.domain}";
+        };
       };
 
       environment.etc."stacks/nixsearch/nixsearch.toml".text = ''
         [server]
         # Builds the first index on startup; /data is populated afterwards.
         bootstrap = true
+        public_url = "https://${config.my.services.nixsearch.internal.domain}"
 
         [server.schedule]
         enabled = true
@@ -122,7 +127,7 @@
 
       virtualisation.quadlet.containers.nixsearch = {
         containerConfig = {
-          image = "ghcr.io/benkoppe/nixsearch-with-nix:main@sha256:ffe1ef955ddceebb4cdbdf3f8e9b962d81861b89a6ef8f0ff4d81a9a283891ca";
+          image = "ghcr.io/byte-sized-emi/nixsearch-with-nix:sha-6957a316afb6cf4fd209040d47784cc1ff881c4f-amd64@sha256:d390dc32eba1ccac0e7a0b9a0d052052954cb28e16526d3b603723203d6abbbe";
           memory = "3g";
           publishPorts = [ "127.0.0.1:${toString port}:3000" ];
           volumes = [
