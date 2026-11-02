@@ -134,7 +134,7 @@
             url = "https://mcp.context7.com/mcp";
           };
           nixsearch = {
-            url = "https://nixsearch.${config.services.domain}/-/mcp";
+            url = "https://nixsearch.service.byte-sized.fyi/-/mcp";
           };
           # nixos = {
           #   command = lib.getExe pkgs.mcp-nixos;
