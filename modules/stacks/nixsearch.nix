@@ -49,7 +49,7 @@
         description = "Search engine for Nix packages and options";
         internal = {
           enable = true;
-          domain = "nixsearch.${config.services.domain}";
+          domain = "nixsearch.${config.settings.services.domain}";
         };
       };
 
