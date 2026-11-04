@@ -65,6 +65,7 @@
       url = "git+https://git.byte-sized.fyi/emilia/pi-bwrap-sandbox";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # tangled.url = "git+https://tangled.org/did:plc:j5hmlfdrwkvtxm7cjmu7j2is";
   };
 
   outputs =

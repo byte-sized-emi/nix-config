@@ -23,6 +23,7 @@
         python3
         nw-usage
         perSystem.llm-agents.icm
+        bubblewrap
       ];
 
       imports = [ inputs.pi.homeModules.default ];
