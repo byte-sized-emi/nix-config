@@ -46,7 +46,7 @@
       systemd.services.kanidm.serviceConfig.Restart = "always";
 
       services.kanidm = {
-        package = pkgs.kanidmWithSecretProvisioning_1_11; # also update modules/emilia.nix
+        package = pkgs.kanidmWithSecretProvisioning_1_12; # also update modules/emilia.nix
         server = {
           enable = true;
           settings = {
