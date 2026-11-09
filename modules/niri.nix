@@ -211,7 +211,7 @@
                 "Mod+8" = action-with-arg "focus-workspace" 8;
                 "Mod+9" = action-with-arg "focus-workspace" 9;
                 "Alt+F4" = action "close-window";
-                "Ctrl+Alt+T" = action-with-arg "spawn" "kitty";
+                "Ctrl+Alt+T" = action-with-arg "spawn" "alacritty";
 
                 "Mod+R" = action "switch-preset-column-width";
                 "Mod+Shift+R" = action "switch-preset-column-width-back";

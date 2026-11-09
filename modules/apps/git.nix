@@ -22,6 +22,11 @@
           "Host 192.168.0.204" = {
             IdentityFile = "~/.ssh/id_byte_sized";
           };
+          "Host it-sec-2" = {
+            User = "root";
+            HostName = "10.28.27.183";
+            IdentityFile = "~/.ssh/id_byte_sized";
+          };
         };
 
         programs.git = {

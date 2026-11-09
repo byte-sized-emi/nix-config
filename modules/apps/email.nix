@@ -2,13 +2,13 @@
   apps.email.homeManager =
     { config, pkgs, ... }:
     {
-      sops.secrets."aerc/migadu/password" = { };
+      # sops.secrets."aerc/migadu/password" = { };
 
       # w3m's kitty image protocol shells out to ImageMagick's convert
-      home.packages = [ pkgs.imagemagick ];
+      # home.packages = [ pkgs.imagemagick ];
 
       programs.aerc = {
-        enable = true;
+        enable = false;
         extraConfig = {
           general.unsafe-accounts-conf = true;
           ui = {
@@ -181,7 +181,7 @@
             config.sops.secrets."aerc/migadu/password".path
           ];
           aerc = {
-            enable = true;
+            enable = false;
             extraAccounts.check-mail = "5m";
           };
           thunderbird.enable = true;
