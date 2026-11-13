@@ -75,7 +75,7 @@
         {
           containers.home-assistant = {
             containerConfig = {
-              image = "ghcr.io/home-assistant/home-assistant:2026.9.3";
+              image = "ghcr.io/home-assistant/home-assistant:2026.11.1";
               environments.TZ = "Europe/Berlin";
               exposePorts = [ (toString port) ];
               addCapabilities = [ "CAP_NET_RAW" ];
@@ -124,7 +124,7 @@
 
           # containers.piper = {
           #   containerConfig = {
-          #     image = "rhasspy/wyoming-piper:2.5.2";
+          #     image = "rhasspy/wyoming-piper:2.5.3";
           #     environments.TZ = "Europe/Berlin";
           #     publishPorts = [ "127.0.0.1:10200:10200" ];
           #     exec = "--voice de_DE-ramona-low";
@@ -187,7 +187,7 @@
           };
           containers.esphome = {
             containerConfig = {
-              image = "ghcr.io/esphome/esphome:2026.9.0";
+              image = "ghcr.io/esphome/esphome:2026.10.2";
               environments = {
                 TZ = "Europe/Berlin";
               };
