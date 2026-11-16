@@ -13,8 +13,7 @@
 
         package = lib.mkOption {
           type = lib.types.package;
-          default =
-            inputs.rayfish-nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.rayfish;
+          default = inputs.rayfish-nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.rayfish;
           defaultText = lib.literalExpression ''
             inputs.rayfish-nixpkgs.legacyPackages.''${pkgs.stdenv.hostPlatform.system}.rayfish
           '';
@@ -84,7 +83,10 @@
           description = "Reconcile Rayfish networks against the deploy spec";
           wantedBy = [ "multi-user.target" ];
           wants = [ "network-online.target" ];
-          after = [ "rayfish.service" "network-online.target" ];
+          after = [
+            "rayfish.service"
+            "network-online.target"
+          ];
           requires = [ "rayfish.service" ];
           partOf = [ "rayfish.service" ];
           # The daemon may not listen yet, or the network may still be down:

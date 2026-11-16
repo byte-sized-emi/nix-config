@@ -4,20 +4,12 @@
       { lib, pkgs, ... }:
       {
         programs.ssh.settings = {
-          "Host git.byte-sized.fyi" = {
-            IdentityFile = "~/.ssh/id_byte_sized";
-          };
-          "Host git.fs.cs.hm.edu" = {
-            IdentityFile = "~/.ssh/id_byte_sized";
-          };
+          "*".IdentityFile = "~/.ssh/id_byte_sized";
           "Host github.com" = {
             IdentityFile = "~/.ssh/id_github";
           };
           "Host gitlab.lrz.de" = {
             IdentityFile = "~/.ssh/id_lrz_gitlab";
-          };
-          "Host d0804253.repo.borgbase.com" = {
-            IdentityFile = "~/.ssh/id_byte_sized";
           };
           "Host 192.168.0.204" = {
             IdentityFile = "~/.ssh/id_byte_sized";

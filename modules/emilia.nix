@@ -8,7 +8,7 @@
     ]
     ++ lib.optionals (host.hostName == "nixlaptop") [
       <ai>
-      <anki>
+      # <anki>
       <fachschaft>
       <graphical>
     ]

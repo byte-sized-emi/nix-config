@@ -46,6 +46,12 @@
         home.packages = with pkgs; [
           keepassxc
         ];
+
+        home.shellAliases = {
+          fsup = "nmcli con up FS-Emilia-Jaser";
+          fsdown = "nmcli con down FS-Emilia-Jaser";
+        };
+
         programs.ssh.enable = true;
         programs.ssh.enableDefaultConfig = false;
 

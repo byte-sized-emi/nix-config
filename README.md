@@ -1,26 +1,12 @@
 # nix-config
 
-## TODO:
+Hosted on:
 
-- [x] setup proper automatic updates of docker images, esp. for the services and the forgejo CI/CD Actions
+- https://git.byte-sized.fyi/emilia/nix-config
+- https://github.com/byte-sized-emi/nix-config
+- https://tangled.org/byte-sized-emi.tngl.sh/nix-config (permalink: https://tangled.org/did:plc:ppql4joco7c2yr5csy3mmpux)
 
-# nix-update-server
-
-## TODOs
-
-- [x] automatically update nixlaptop
-- [x] how to update nix-update-server with nix-update-server?
-- [x] stop server after successful update
-- [x] make auto-update fail when the rebuild fails - output a recognisable string on success and failure, and check for it in the ci/cd using the test command
-- [x] automatic nix flake updates
-- [ ] don't update with local changes in the git repo
-- [x] don't show a failed update as success in the CI/CD
-- [ ] show notification with cancel button before updating
-- [ ] make nix use my cache only when it makes sense
-- [x] backup dawarich
-- [ ] Fleet-wide service provider / consumer mechanism (use on loki to try out)
-
-# nixnest stability fixes
+## nixnest stability fixes
 
 The Soyo M4 Plus (Intel N150) can hard-hang in deep C-states (C8/C10), see
 <https://bugs.launchpad.net/bugs/2160711>. Two mitigations are in [modules/hosts/nixnest/configuration.nix](modules/hosts/nixnest/configuration.nix).
