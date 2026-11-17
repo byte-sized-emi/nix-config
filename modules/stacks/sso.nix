@@ -96,6 +96,19 @@
                 "mealie_admins"
               ];
             };
+            elias = {
+              displayName = "Elias";
+              mailAddresses = [
+                "elias@sso.byte-sized.fyi"
+                "elias@byte-sized.fyi"
+                "noreply@ekleimeier.de"
+              ];
+              groups = [
+                "immich_users"
+                "hedgedocs_users"
+                "media"
+              ];
+            };
             maria = {
               displayName = "Maria";
               mailAddresses = [

@@ -216,7 +216,7 @@
               <div id="_rc_sig">
               <div class="moz-signature" style="color: #000000;"><span style="font-family: Arial;"><strong><span style="color: #e03e2d;">Emilia Jaser</span></strong></span>
               <div class="moz-signature">
-              <div class="pre"><span style="font-family: Arial;"><span style="color: #7e8c8d;">Leitung Home-Sektor</span></span></div>
+              <div class="pre"><span style="font-family: Arial;"><span style="color: #7e8c8d;"></span></span></div>
               <div class="pre">&nbsp;</div>
               <div class="pre"><span style="color: #7e8c8d; font-size: 12pt; font-family: arial, helvetica, sans-serif;"><img src="https://fs.cs.hm.edu/wp-content/uploads/2024/03/fs-logo-256.png" width="98" height="120" align="left" hspace="24" /></span><span style="color: #7e8c8d; font-size: 12pt; font-family: arial, helvetica, sans-serif;"></span>
               <div class="pre">

@@ -23,7 +23,9 @@
       {
         imports = [ inputs.comin.nixosModules.comin ];
 
-        environment.systemPackages = [ pkgs.libnotify ];
+        environment.systemPackages = [
+          pkgs.libnotify
+        ];
 
         sops.secrets."comin-access-token" = { };
 
