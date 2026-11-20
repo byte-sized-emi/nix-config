@@ -1,162 +1,9 @@
 {
   apps.email.homeManager =
-    { config, pkgs, ... }:
+    { config, ... }:
     {
       # sops.secrets."aerc/migadu/password" = { };
-
-      # w3m's kitty image protocol shells out to ImageMagick's convert
-      # home.packages = [ pkgs.imagemagick ];
-
-      programs.aerc = {
-        enable = false;
-        extraConfig = {
-          general.unsafe-accounts-conf = true;
-          ui = {
-            fuzzy-complete = true;
-            mouse-enabled = true;
-            show-thread-context = true;
-            threading-enabled = true;
-            message-list-split = "vertical 100";
-          };
-          viewer = {
-            html-inline-images = true;
-          };
-          # ponytail: fires for watched folders + check-mail polled ones, not every folder
-          hooks.mail-received = "notify-send -a aerc \"[$AERC_ACCOUNT/$AERC_FOLDER] New mail from $AERC_FROM_NAME\" \"$AERC_SUBJECT\"";
-          filters = {
-            ".headers" = "colorize";
-            "message/delivery-status" = "colorize";
-            "message/rfc822" = "colorize";
-            "text/calendar" = "calendar";
-            "text/html" = "! html -o inline_img_protocol=kitty -o display_link_number=true";
-            "text/plain" = "colorize";
-          };
-        };
-        # home-manager's binds.conf replaces aerc's shipped one wholesale (no merge),
-        # so the defaults live here; arrows added for navigation.
-        extraBinds = {
-          global = {
-            "<C-p>" = ":prev-tab<Enter>";
-            "<C-n>" = ":next-tab<Enter>";
-            "?" = ":help keys<Enter>";
-            "<C-c>" = ":prompt 'Quit?' quit<Enter>";
-            "<C-q>" = ":prompt 'Quit?' quit<Enter>";
-          };
-          messages = {
-            "<Enter>" = ":view<Enter>";
-            "<Up>" = ":prev<Enter>";
-            "<Down>" = ":next<Enter>";
-            "<Left>" = ":prev-folder<Enter>";
-            "<Right>" = ":next-folder<Enter>";
-            "<C-Up>" = ":prev-folder<Enter>";
-            "<C-Down>" = ":next-folder<Enter>";
-            "<C-Left>" = ":collapse-folder<Enter>";
-            "<C-Right>" = ":expand-folder<Enter>";
-            "<Home>" = ":select 0<Enter>";
-            "<End>" = ":select -1<Enter>";
-            "<PgUp>" = ":prev 100%<Enter>";
-            "<PgDn>" = ":next 100%<Enter>";
-            "<C-u>" = ":prev 50%<Enter>";
-            "<C-d>" = ":next 50%<Enter>";
-            "<Space>" = ":mark -t<Enter>:next<Enter>";
-            "<Esc>" = ":clear<Enter>";
-            j = ":next<Enter>";
-            k = ":prev<Enter>";
-            g = ":select 0<Enter>";
-            G = ":select -1<Enter>";
-            J = ":next-folder<Enter>";
-            K = ":prev-folder<Enter>";
-            H = ":collapse-folder<Enter>";
-            L = ":expand-folder<Enter>";
-            T = ":toggle-threads<Enter>";
-            "<tab>" = ":fold -t<Enter>";
-            q = ":prompt 'Quit?' quit<Enter>";
-            d = ":choose -o y 'Really delete this message' delete-message<Enter>";
-            D = ":delete<Enter>";
-            a = ":archive flat<Enter>";
-            A = ":unmark -a<Enter>:mark -T<Enter>:archive flat<Enter>";
-            C = ":compose<Enter>";
-            m = ":compose<Enter>";
-            rr = ":reply -a<Enter>";
-            rq = ":reply -aq<Enter>";
-            Rr = ":reply<Enter>";
-            Rq = ":reply -q<Enter>";
-            c = ":cf<space>";
-            "$" = ":term<space>";
-            "!" = ":term<space>";
-            "|" = ":pipe<space>";
-            "/" = ":search<space>";
-            "\\" = ":filter<space>";
-            n = ":next-result<Enter>";
-            N = ":prev-result<Enter>";
-            s = ":split<Enter>";
-            S = ":vsplit<Enter>";
-          };
-          "messages:folder=Drafts" = {
-            "<Enter>" = ":recall<Enter>";
-          };
-          view = {
-            "/" = ":toggle-key-passthrough<Enter>/";
-            "<Left>" = ":prev<Enter>";
-            "<Right>" = ":next<Enter>";
-            "<C-Left>" = ":prev<Enter>";
-            "<C-Right>" = ":next<Enter>";
-            "<C-Up>" = ":prev-part<Enter>";
-            "<C-Down>" = ":next-part<Enter>";
-            "<C-l>" = ":open-link <space>";
-            q = ":close<Enter>";
-            o = ":open<Enter>";
-            O = ":open<Enter>";
-            S = ":save<space>";
-            "|" = ":pipe<space>";
-            D = ":delete<Enter>";
-            A = ":archive flat<Enter>";
-            f = ":forward<Enter>";
-            rr = ":reply -a<Enter>";
-            rq = ":reply -aq<Enter>";
-            Rr = ":reply<Enter>";
-            Rq = ":reply -q<Enter>";
-            H = ":toggle-headers<Enter>";
-          };
-          compose = {
-            "$noinherit" = true;
-            "$ex" = "<C-x>";
-            "$complete" = "<C-o>";
-            "<C-Up>" = ":prev-field<Enter>";
-            "<C-Down>" = ":next-field<Enter>";
-            "<tab>" = ":next-field<Enter>";
-            "<backtab>" = ":prev-field<Enter>";
-            "<C-p>" = ":prev-tab<Enter>";
-            "<C-n>" = ":next-tab<Enter>";
-          };
-          "compose::editor" = {
-            "$noinherit" = true;
-            "$ex" = "<C-x>";
-            "<C-Up>" = ":prev-field<Enter>";
-            "<C-Down>" = ":next-field<Enter>";
-            "<C-p>" = ":prev-tab<Enter>";
-            "<C-n>" = ":next-tab<Enter>";
-          };
-          "compose::review" = {
-            y = ":send<Enter>";
-            n = ":abort<Enter>";
-            s = ":sign<Enter>";
-            x = ":encrypt<Enter>";
-            v = ":preview<Enter>";
-            p = ":postpone<Enter>";
-            q = ":choose -o d discard abort -o p postpone postpone<Enter>";
-            e = ":edit<Enter>";
-            a = ":attach<space>";
-            d = ":detach<space>";
-          };
-          terminal = {
-            "$noinherit" = true;
-            "$ex" = "<C-x>";
-            "<C-p>" = ":prev-tab<Enter>";
-            "<C-n>" = ":next-tab<Enter>";
-          };
-        };
-      };
+      # sops.secrets."email/fs.ee.hm.edu/password" = { };
 
       programs.thunderbird = {
         enable = true;
@@ -192,6 +39,25 @@
           address = "emilia.jaser@hm.edu";
           flavor = "outlook.office365.com-ews";
           thunderbird.enable = true;
+        };
+        "ejaser@fs04.ee.hm.edu" = {
+          enable = true;
+          realName = "Emilia Jaser";
+          address = "ejaser@fs04.ee.hm.edu";
+          userName = "ejaser";
+          thunderbird.enable = true;
+          smtp = {
+            host = "smtp.fs04.ee.hm.edu";
+            port = 465;
+            tls.enable = true;
+            authentication = "plain";
+          };
+          imap = {
+            host = "imap.fs04.ee.hm.edu";
+            port = 993;
+            tls.enable = true;
+            authentication = "plain";
+          };
         };
         "ejaser@fs.cs.hm.edu" = {
           enable = true;

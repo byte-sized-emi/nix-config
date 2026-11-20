@@ -27,7 +27,7 @@
           };
           proxy = { };
           wireguard = {
-            mtu = "1450";
+            mtu = "1280";
             private-key = "$FS_WIREGUARD_PRIV_KEY";
           };
           "wireguard-peer.If3/NKCnOfdJZmZFCR/2GXVR1+sdEBJ1JaBEdeYE9Uo=" = {
@@ -35,6 +35,38 @@
             endpoint = "141.40.176.36:51820";
             persistent-keepalive = "15";
             preshared-key = "$FS_WIREGUARD_PSK";
+            preshared-key-flags = "0";
+          };
+        };
+        FS04-Emilia-Jaser = {
+          connection = {
+            autoconnect = "false";
+            id = "FS04-Emilia-Jaser";
+            interface-name = "fs04-wg";
+            type = "wireguard";
+            uuid = "57612da5-0918-45d4-ba2a-8b5dae769566";
+          };
+          ipv4 = {
+            address1 = "10.250.1.47/32";
+            dns = "10.250.2.1;";
+            dns-search = "~;";
+            method = "manual";
+          };
+          ipv6 = {
+            addr-gen-mode = "default";
+            method = "disabled";
+          };
+          proxy = { };
+          wireguard = {
+            # mtu = "1450";
+            private-key = "$FS04_WIREGUARD_PRIV_KEY";
+          };
+          "wireguard-peer.lpuTrQK9GORfse3Zh2z+cJ3NZUqOoSmvoZKqYR7xXnc=" = {
+            allowed-ips = "10.50.0.0/24;10.250.0.0/16;10.27.0.0/16";
+            # allowed-ips = "0.0.0.0/0";
+            endpoint = "129.187.206.205:34966";
+            persistent-keepalive = "15";
+            preshared-key = "$FS04_WIREGUARD_PSK";
             preshared-key-flags = "0";
           };
         };
@@ -50,6 +82,10 @@
         home.shellAliases = {
           fsup = "nmcli con up FS-Emilia-Jaser";
           fsdown = "nmcli con down FS-Emilia-Jaser";
+          fs07up = "nmcli con up FS-Emilia-Jaser";
+          fs07down = "nmcli con down FS-Emilia-Jaser";
+          fs04up = "nmcli con up FS04-Emilia-Jaser";
+          fs04down = "nmcli con down FS04-Emilia-Jaser";
         };
 
         programs.ssh.enable = true;
