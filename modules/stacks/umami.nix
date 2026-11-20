@@ -78,7 +78,7 @@
           # backed up via my.backups.umami_db
           containers.umami-db = {
             containerConfig = {
-              image = "postgres:18-alpine";
+              image = "postgres:19-alpine";
               environmentFiles = [ config.sops.templates."umami/postgresEnvFile".path ];
               environments = {
                 POSTGRES_USER = "postgres";
