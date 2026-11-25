@@ -1,8 +1,8 @@
-{ __findFile, ... }:
+{ den, ... }:
 {
   apps.steam = {
     includes = [
-      (<den/unfree> [
+      (den.batteries.unfree [
         "steam"
         "steam-unwrapped"
       ])

@@ -1,12 +1,12 @@
-{ __findFile, ... }:
+{ den, ... }:
 {
   den.aspects.nixda = {
     includes = [
-      <auto-update>
-      <auto-update/desktop>
-      <graphical>
-      <syncthing>
-      (<den/unfree> [
+      den.aspects.auto-update
+      den.aspects.auto-update.desktop
+      den.aspects.graphical
+      den.aspects.syncthing
+      (den.batteries.unfree [
         "nvidia-x11"
         "nvidia-settings"
         "nvidia-kernel-modules"

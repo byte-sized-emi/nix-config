@@ -1,14 +1,14 @@
-{ __findFile, ... }:
+{ den, ... }:
 {
   den.aspects.nixlaptop = {
     includes = [
-      <auto-update>
-      <auto-update/desktop>
-      <fachschaft>
-      <graphical>
-      <vpn>
-      <syncthing>
-      # <cache-beacon>
+      den.aspects.auto-update
+      den.aspects.auto-update.desktop
+      den.aspects.fachschaft
+      den.aspects.graphical
+      den.aspects.vpn
+      den.aspects.syncthing
+      # den.aspects.cache-beacon
     ];
 
     nixos = { lib, pkgs, ... }: {

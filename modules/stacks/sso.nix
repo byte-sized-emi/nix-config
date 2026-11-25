@@ -105,6 +105,22 @@
               ];
               groups = [
                 "immich_users"
+                "mealie_users"
+                "git"
+                "hedgedocs_users"
+                "media"
+              ];
+            };
+            moritz = {
+              displayName = "Moritz";
+              mailAddresses = [
+                "moritz@sso.byte-sized.fyi"
+                "moritz@byte-sized.fyi"
+              ];
+              groups = [
+                "immich_users"
+                "mealie_users"
+                "git"
                 "hedgedocs_users"
                 "media"
               ];

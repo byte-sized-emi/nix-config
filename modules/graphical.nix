@@ -1,23 +1,23 @@
-{ __findFile, ... }:
+{ apps, den, ... }:
 {
   den.aspects.graphical = {
     includes = [
-      <apps/browser>
-      <apps/email>
-      <apps/rclone>
-      <apps/signal>
-      <apps/steam>
-      <apps/vicinae>
-      <apps/zed>
-      <audio>
-      <controller>
-      <dms>
-      <fonts>
-      <niri>
-      # <noctalia>
-      <podman>
-      <swayidle>
-      (<den/unfree> [
+      apps.browser
+      apps.email
+      apps.rclone
+      apps.signal
+      apps.steam
+      apps.vicinae
+      apps.zed
+      den.aspects.audio
+      den.aspects.controller
+      den.aspects.dms
+      den.aspects.fonts
+      den.aspects.niri
+      # den.aspects.noctalia
+      den.aspects.podman
+      den.aspects.swayidle
+      (den.batteries.unfree [
         "discord"
         "discord-unwrapped"
         "beeper"

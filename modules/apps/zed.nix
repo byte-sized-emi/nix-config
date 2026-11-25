@@ -329,13 +329,13 @@
               ctrl-tab = "pane::ActivateNextItem";
               ctrl-shift-tab = "pane::ActivatePreviousItem";
               alt-left = "pane::GoBack";
+              ctrl-t = "workspace::NewCenterTerminal";
               alt-right = "pane::GoForward";
             };
           }
           {
             context = "Editor";
             bindings = {
-              "ctrl-t" = "workspace::NewCenterTerminal";
               "ctrl-k ctrl-c" = "editor::ToggleComments";
               "ctrl-k c" = "editor::ToggleComments";
             };

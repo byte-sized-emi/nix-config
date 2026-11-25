@@ -3,6 +3,7 @@
     { config, ... }:
     {
       # sops.secrets."aerc/migadu/password" = { };
+      # sops.secrets."aerc/migadu-2/password" = { };
       # sops.secrets."email/fs.ee.hm.edu/password" = { };
 
       programs.thunderbird = {
@@ -31,6 +32,21 @@
             enable = false;
             extraAccounts.check-mail = "5m";
           };
+          thunderbird.enable = true;
+        };
+        "emilia@byte.sized.space" = {
+          enable = true;
+          realName = "Emilia Jaser";
+          address = "emilia@byte.sized.space";
+          userName = "emilia@byte.sized.space";
+          flavor = "migadu.com";
+          aliases = [
+            # "admin@byte.sized.space"
+          ];
+          passwordCommand = [
+            "cat"
+            config.sops.secrets."aerc/migadu-2/password".path
+          ];
           thunderbird.enable = true;
         };
         "emilia.jaser@hm.edu" = {

@@ -1,37 +1,37 @@
-{ __findFile, ... }:
+{ den, stacks, ... }:
 {
   den.aspects.nixnest = {
     includes = [
-      <audio>
-      <auto-update>
-      <backup-registry>
-      <cloudflared>
-      <podman>
-      <server-default>
-      <service>
-      <ssh-server>
-      <stacks/atuin>
-      <stacks/borg>
-      <stacks/beeper>
-      <stacks/cc-search>
-      <stacks/dawarich>
-      <stacks/forgejo>
-      <stacks/freshrss>
-      <stacks/hedgedoc>
-      <stacks/homeassistant>
-      <stacks/immich>
-      <stacks/linktree>
-      <stacks/mealie>
-      <stacks/media>
-      <stacks/nix-serve>
-      <stacks/nixsearch>
-      <stacks/ntfy>
-      <stacks/renovate>
-      <stacks/sso>
-      <stacks/umami>
-      <stacks/vaultwarden>
-      <syncthing>
-      <tailscale-server>
+      den.aspects.audio
+      den.aspects.auto-update
+      den.aspects.backup-registry
+      den.aspects.cloudflared
+      den.aspects.podman
+      den.aspects.server-default
+      den.aspects.service
+      den.aspects.ssh-server
+      stacks.atuin
+      stacks.borg
+      stacks.beeper
+      stacks.cc-search
+      stacks.dawarich
+      stacks.forgejo
+      stacks.freshrss
+      stacks.hedgedoc
+      stacks.homeassistant
+      stacks.immich
+      stacks.linktree
+      stacks.mealie
+      stacks.media
+      stacks.nix-serve
+      stacks.nixsearch
+      stacks.ntfy
+      stacks.renovate
+      stacks.sso
+      stacks.umami
+      stacks.vaultwarden
+      den.aspects.syncthing
+      den.aspects.tailscale-server
     ];
 
     nixos = { pkgs, ... }: {

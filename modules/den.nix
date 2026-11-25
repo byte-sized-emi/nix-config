@@ -2,20 +2,16 @@
   inputs,
   den,
   lib,
-  __findFile,
   ...
 }:
 {
-  # angle brackets syntax
-  _module.args.__findFile = den.lib.__findFile;
-
   imports = [
     inputs.den.flakeModule
     (inputs.den.namespace "apps" false)
     (inputs.den.namespace "stacks" false)
   ];
 
-  den.default.includes = [ <per-system> ];
+  den.default.includes = [ den.aspects.per-system ];
 
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 
@@ -37,21 +33,22 @@
   };
 
   den.schema.host.includes = [
-    <boot>
-    <den/hostname>
-    <nix-settings>
-    <secrets>
-    <tailscale>
+    den.batteries.user-aspects
+    den.batteries.hostname
+    den.aspects.boot
+    den.aspects.nix-settings
+    den.aspects.secrets
+    den.aspects.tailscale
   ];
 
   # maybe add <den/host-aspects>?
   # https://den.denful.dev/reference/batteries/#denbatterieshost-aspects
   den.schema.user.includes = [
-    <den/define-user>
-    <secrets>
+    den.batteries.define-user
+    den.aspects.secrets
   ];
 
   den.aspects.emilia.includes = [
-    <den/primary-user>
+    den.batteries.primary-user
   ];
 }

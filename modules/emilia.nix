@@ -1,21 +1,26 @@
-{ __findFile, lib, ... }:
+{
+  apps,
+  den,
+  lib,
+  ...
+}:
 {
   den.aspects.emilia = { host, ... }: {
     includes = [
-      <apps/git>
-      <apps/shell>
-      (<den/user-shell> "zsh")
+      apps.git
+      apps.shell
+      (den.batteries.user-shell "zsh")
     ]
     ++ lib.optionals (host.hostName == "nixlaptop") [
-      <ai>
-      # <anki>
-      <fachschaft>
-      <graphical>
+      den.aspects.ai
+      # den.aspects.anki
+      den.aspects.fachschaft
+      den.aspects.graphical
     ]
     ++ lib.optionals (host.hostName == "nixda") [
-      <ai>
-      <graphical>
-      <gaming>
+      den.aspects.ai
+      den.aspects.graphical
+      den.aspects.gaming
     ];
 
     nixos = { config, pkgs, ... }: {

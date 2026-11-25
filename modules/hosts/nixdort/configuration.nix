@@ -1,11 +1,11 @@
-{ __findFile, lib, ... }:
+{ den, lib, ... }:
 {
   den.aspects.nixdort = {
     includes = [
-      <auto-update>
-      <server-default>
-      <ssh-server>
-      <tailscale-server>
+      den.aspects.auto-update
+      den.aspects.server-default
+      den.aspects.ssh-server
+      den.aspects.tailscale-server
     ];
 
     nixos = { pkgs, ... }: {

@@ -1,4 +1,4 @@
-{ __findFile, ... }:
+{ den, ... }:
 {
-  den.aspects.gaming.includes = [ <slippi> ];
+  den.aspects.gaming.includes = [ den.aspects.slippi ];
 }
