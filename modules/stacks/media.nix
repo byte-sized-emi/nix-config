@@ -265,7 +265,7 @@
 
           containers.qui = {
             containerConfig = {
-              image = "ghcr.io/autobrr/qui:v1.29.0@sha256:90d0e143c98dd1f63801b964ed56283d98bfe442f1f1ade977eb9d174f793537";
+              image = "ghcr.io/autobrr/qui:v1.37.0@sha256:898d89bd4bfd0fed52c1aa9a8bd0a138477d36954e39597d85733a441f5a084b";
               user = "${toString uid}:${toString gid}";
               publishPorts = [
                 "127.0.0.1:${toString quiPort}:${toString quiPort}/tcp"
